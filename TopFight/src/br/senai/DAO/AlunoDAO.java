@@ -1,7 +1,6 @@
 package br.senai.DAO;
 
 import br.senai.model.Aluno;
-
 import br.senai.util.ConexaoSingleton;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
