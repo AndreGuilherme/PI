@@ -5,11 +5,14 @@
 package br.senai.view;
 
 import br.senai.controller.AulaController;
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -24,7 +27,17 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
      */
     public CadastroAulaUI() {
         initComponents();
+        ajustQntAlunos();
+        checkAtivoAula.setSelected(true);
+    }
 
+    private void ajustQntAlunos() {
+        Integer value = new Integer(0);
+        Integer min = new Integer(0);
+        Integer max = new Integer(100);
+        Integer step = new Integer(1);
+        SpinnerNumberModel model = new SpinnerNumberModel(value, min, max, step);
+        jQntAlunos.setModel(model);
     }
 
     /**
@@ -68,7 +81,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         checkAtivoAula = new javax.swing.JCheckBox();
         jLabel7 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        jQntAlunos = new javax.swing.JSpinner();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
@@ -134,7 +147,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jQntAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -159,7 +172,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
                     .addComponent(btnBuscarProfessor))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jQntAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,7 +225,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
-            aulaController.Salvar(this);
+            aulaController.Salvar();
         } catch (ParseException ex) {
             Logger.getLogger(CadastroAulaUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -232,38 +245,73 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jQntAlunos;
     private javax.swing.JTextField txtHrFinalAula;
     private javax.swing.JTextField txtHrInicioAula;
     private javax.swing.JTextField txtProfessorAula;
     // End of variables declaration//GEN-END:variables
 
     public int getDiaSemana() {
-        if (cbxDiaSemanaAula.getSelectedIndex() != 0) {
+        if (cbxDiaSemanaAula.getSelectedIndex() > 1 || cbxDiaSemanaAula.getSelectedIndex() > 7) {
             return cbxDiaSemanaAula.getSelectedIndex();
         }
         return 0;
     }
 
-    public java.util.Date getHoraInicio() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-        try {
-            System.out.println(sdf.parse(txtHrInicioAula.getText()));
-            return sdf.parse(txtHrInicioAula.getText());
-        } catch (ParseException ex) {
-            System.out.println(sdf.parse(txtHrInicioAula.getText()));
+    public Time getHoraInicio() throws ParseException {
+        String hrInicio = txtHrInicioAula.getText().toString();
+        if (isHour(hrInicio)) {
+            String str = hrInicio;
+            SimpleDateFormat formatador = new SimpleDateFormat("HH:mm");
+            Date data = formatador.parse(str);
+            Time time = new Time(data.getTime());
+            System.out.println(time);
+            return time;
+            //return (Timestamp)formattedDate;
         }
         return null;
     }
 
-    public java.util.Date getHoraFinal() throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-        try {
-            System.out.println(sdf.parse(txtHrFinalAula.getText()));
-            return sdf.parse(txtHrFinalAula.getText());
-        } catch (ParseException ex) {
-            System.out.println(sdf.parse(txtHrFinalAula.getText()));
+    public Boolean isHour(String hour) {
+        String hora = hour;
+        if (hora.equals("  :  ")) {
+            JOptionPane.showMessageDialog(null, "Digite a hora", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        String horas = hora.substring(0, 2);
+        String minutos = hora.substring(3, 5);
+        int conta_horas = Integer.parseInt(horas);
+        int conta_minutos = Integer.parseInt(minutos);
+        if (conta_horas > 23 || conta_minutos > 59) {
+            JOptionPane.showMessageDialog(null, "Hora digitada inválida", "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    public Time getHoraFinal() throws ParseException {
+        String hrFinal = txtHrFinalAula.getText().toString();
+        if (isHour(hrFinal)) {
+            String str = hrFinal;
+            SimpleDateFormat formatador = new SimpleDateFormat("HH:mm");
+            Date data = formatador.parse(str);
+            Time time = new Time(data.getTime());
+            System.out.println(time);
+            return time;
         }
         return null;
+    }
+
+    public int getQntAlunos() {
+        return jQntAlunos.getComponentCount();
+    }
+
+    public int getIsActive() {
+        if (checkAtivoAula.isSelected()) {
+            return 0;
+        } else {
+            return 1;
+        }
+
     }
 }

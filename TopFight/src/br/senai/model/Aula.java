@@ -1,12 +1,12 @@
 
 package br.senai.model;
 
-import java.sql.Timestamp;
+import java.sql.Time;
 
 public class Aula {
     private Professor professor;
-    private Timestamp hInicio;
-    private Timestamp hFim;
+    private Time hInicio;
+    private Time hFim;
     private int status;
     private int numeroAlunos;
     private int diaSemana;
@@ -19,19 +19,19 @@ public class Aula {
         this.professor = professor;
     }
 
-    public Timestamp gethInicio() {
+    public Time gethInicio() {
         return hInicio;
     }
 
-    public void sethInicio(Timestamp hInicio) {
+    public void sethInicio(Time hInicio) {
         this.hInicio = hInicio;
     }
 
-    public Timestamp gethFim() {
+    public Time gethFim() {
         return hFim;
     }
 
-    public void sethFim(Timestamp hFim) {
+    public void sethFim(Time hFim) {
         this.hFim = hFim;
     }
 
