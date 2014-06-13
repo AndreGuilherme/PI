@@ -87,6 +87,37 @@ public class AlunoDAO {
             return 0;
         }
     }
+    
+    public Aluno obtemAluno(int id) {
+        try {
+            Statement executorSQL = con.getConnection().createStatement();
+            String sql = "SELECT * FROM aluno where id_aluno = "+id +";";
+            ResultSet rs = executorSQL.executeQuery(sql);
+            while (rs.next()) {
+                Aluno a = new Aluno();
+                a.setNumId(rs.getInt("id_Aluno"));
+                a.setDscNome(rs.getString("dsc_Nome"));
+                a.setDscCPF(rs.getString("dsc_CPF"));
+                a.setDtDataNasc(rs.getDate("dt_DataNasc"));
+                a.setDscEndereco(rs.getString("dsc_Endereco"));
+                a.setNunNumero(rs.getInt("nun_Numero"));
+                a.setDscBairro(rs.getString("dsc_Bairro"));
+                a.setDscCEP(rs.getString("dsc_CEP"));
+                a.setDscComplemento(rs.getString("dsc_Complemento"));
+                a.setSexo(rs.getInt("Sexo"));
+                a.setDscEmail(rs.getString("dsc_Email"));
+                a.setStatus(rs.getInt("Status"));
+                a.setPeso(rs.getDouble("Peso"));
+                a.setAltura(rs.getDouble("Altura"));
+                a.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                return a;
+            }
+            executorSQL.close();
+            return null; 
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
     public ArrayList<Aluno> listarTodos() {
         this.listaAluno = new ArrayList<>();

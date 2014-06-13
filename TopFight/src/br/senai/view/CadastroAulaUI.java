@@ -15,14 +15,14 @@ import java.util.logging.Logger;
  *
  * @author bruno_andrade
  */
-public class Aula extends javax.swing.JInternalFrame {
+public class CadastroAulaUI extends javax.swing.JInternalFrame {
 
     AulaController aulaController = new AulaController();
 
     /**
      * Creates new form Aula
      */
-    public Aula() {
+    public CadastroAulaUI() {
         initComponents();
 
     }
@@ -214,7 +214,7 @@ public class Aula extends javax.swing.JInternalFrame {
         try {
             aulaController.Salvar(this);
         } catch (ParseException ex) {
-            Logger.getLogger(Aula.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CadastroAulaUI.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_btnSalvarActionPerformed

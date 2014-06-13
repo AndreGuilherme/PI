@@ -184,37 +184,37 @@ public class FormPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuCadAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCadAlunoActionPerformed
-        Aluno aluno = new Aluno();
+        CadastroAlunoUI aluno = new CadastroAlunoUI(null);
         aluno.setVisible(true);
         jdpPainelPrincipal.add(aluno);
     }//GEN-LAST:event_jMenuCadAlunoActionPerformed
 
     private void jMenuCadAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCadAulaActionPerformed
-        Aula aula = new Aula();
+        CadastroAulaUI aula = new CadastroAulaUI();
         aula.setVisible(true);
         jdpPainelPrincipal.add(aula);
     }//GEN-LAST:event_jMenuCadAulaActionPerformed
 
     private void jMenuCadProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCadProfessorActionPerformed
-        Professor prof = new Professor();
+        CadastraProfessorUI prof = new CadastraProfessorUI();
         prof.setVisible(true);
         jdpPainelPrincipal.add(prof);
     }//GEN-LAST:event_jMenuCadProfessorActionPerformed
 
     private void jMenuPesAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesAlunoActionPerformed
-        PesquisarAluno pesqAluno = new PesquisarAluno();
+        ConsultaAlunoUI pesqAluno = new ConsultaAlunoUI();
         pesqAluno.setVisible(true);
         jdpPainelPrincipal.add(pesqAluno);
     }//GEN-LAST:event_jMenuPesAlunoActionPerformed
 
     private void jMenuPesAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesAulaActionPerformed
-        PesquisarAula pesqAula = new PesquisarAula();
+        ConsultaAulaUI pesqAula = new ConsultaAulaUI();
         pesqAula.setVisible(true);
         jdpPainelPrincipal.add(pesqAula);
     }//GEN-LAST:event_jMenuPesAulaActionPerformed
 
     private void jMenuPesProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesProfessorActionPerformed
-        PesquisarProfessor pesqProf = new PesquisarProfessor();
+        ConsultaProfessorUI pesqProf = new ConsultaProfessorUI();
         pesqProf.setVisible(true);
         jdpPainelPrincipal.add(pesqProf);
     }//GEN-LAST:event_jMenuPesProfessorActionPerformed

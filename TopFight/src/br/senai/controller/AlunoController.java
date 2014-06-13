@@ -1,11 +1,11 @@
 package br.senai.controller;
 
+import br.senai.DAO.AlunoDAO;
 import br.senai.model.Aluno;
 
 public class AlunoController {
 
     private static AlunoController instanciaRep;
-
     public static AlunoController obterInstancia() {
         if (instanciaRep == null) {
             instanciaRep = new AlunoController();
@@ -33,4 +33,12 @@ public class AlunoController {
             throw new Exception ("Altura inválida");
         }
     }
+    public void alterar(Aluno aluno) throws Exception {
+        
+    }
+    
+    public Aluno obterAluno(int id) throws Exception {
+        return AlunoDAO.obterInstancia().obtemAluno(id);
+    }
+    
 }

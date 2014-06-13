@@ -8,12 +8,12 @@ package br.senai.view;
  *
  * @author bruno_andrade
  */
-public class PesquisarProfessor extends javax.swing.JInternalFrame {
+public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form PesquisarProfessor
      */
-    public PesquisarProfessor() {
+    public ConsultaProfessorUI() {
         initComponents();
     }
 
