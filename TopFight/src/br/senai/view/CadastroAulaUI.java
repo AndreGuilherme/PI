@@ -4,7 +4,10 @@
  */
 package br.senai.view;
 
+import br.senai.DAO.ProfessorDAO;
 import br.senai.controller.AulaController;
+import br.senai.model.Aula;
+import br.senai.model.Professor;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -20,7 +23,9 @@ import javax.swing.SpinnerNumberModel;
  */
 public class CadastroAulaUI extends javax.swing.JInternalFrame {
 
-    AulaController aulaController = new AulaController();
+    AulaController aulaController;
+    Aula aula;
+    ProfessorDAO profDAO;
 
     /**
      * Creates new form Aula
@@ -224,10 +229,44 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        try {
-            aulaController.Salvar();
-        } catch (ParseException ex) {
-            Logger.getLogger(CadastroAulaUI.class.getName()).log(Level.SEVERE, null, ex);
+        aula = new Aula();
+        profDAO = new ProfessorDAO();
+        aulaController = new AulaController();
+
+        if (!txtHrFinalAula.getText().equals("__:__")) {
+            if (!txtHrInicioAula.getText().equals("__:__")) {
+                if (cbxDiaSemanaAula.getSelectedIndex() != 0) {
+                    if (isHour(txtHrInicioAula.getText())) {
+                        if (isHour(txtHrFinalAula.getText())) {
+                            aula.setDiaSemana(cbxDiaSemanaAula.getSelectedIndex());
+                            aula.sethFim(getHoraFinal());
+                            aula.sethInicio(getHoraInicio());
+                            aula.setNumeroAlunos(getQntAlunos());
+                            aula.setStatus(getIsActive());
+                            Professor bla = profDAO.obtemProfessor(1);
+                            aula.setProfessor(bla);
+                            if (aulaController.ValidaInsert(aula)) {
+                                if (aulaController.Salvar(aula)) {
+                                    this.limparCampos();
+                                    JOptionPane.showMessageDialog(rootPane, "Cadastrado com sucesso!");
+                                } else {
+                                    JOptionPane.showMessageDialog(rootPane, "Erro no Cadastro");
+                                }
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(rootPane, "Hora Final Invalido!");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Hora Inicio Invalido!");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "Dia da semana invalido!");
+                }
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Campo hora vazio");
+            }
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Campo hora vazio");
         }
 
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -252,18 +291,20 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
 
     public int getDiaSemana() {
-        if (cbxDiaSemanaAula.getSelectedIndex() > 1 || cbxDiaSemanaAula.getSelectedIndex() > 7) {
-            return cbxDiaSemanaAula.getSelectedIndex();
-        }
-        return 0;
+        return cbxDiaSemanaAula.getSelectedIndex();
     }
 
-    public Time getHoraInicio() throws ParseException {
+    public Time getHoraInicio() {
         String hrInicio = txtHrInicioAula.getText().toString();
         if (isHour(hrInicio)) {
             String str = hrInicio;
             SimpleDateFormat formatador = new SimpleDateFormat("HH:mm");
-            Date data = formatador.parse(str);
+            Date data = null;
+            try {
+                data = formatador.parse(str);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao converter horas!");
+            }
             Time time = new Time(data.getTime());
             System.out.println(time);
             return time;
@@ -289,12 +330,17 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         return true;
     }
 
-    public Time getHoraFinal() throws ParseException {
+    public Time getHoraFinal() {
         String hrFinal = txtHrFinalAula.getText().toString();
         if (isHour(hrFinal)) {
             String str = hrFinal;
             SimpleDateFormat formatador = new SimpleDateFormat("HH:mm");
-            Date data = formatador.parse(str);
+            Date data = null;
+            try {
+                data = formatador.parse(str);
+            } catch (ParseException ex) {
+                JOptionPane.showMessageDialog(null, "Erro ao converter horas!");
+            }
             Time time = new Time(data.getTime());
             System.out.println(time);
             return time;
@@ -303,15 +349,24 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
     }
 
     public int getQntAlunos() {
-        return jQntAlunos.getComponentCount();
+        return (Integer) jQntAlunos.getValue();
     }
 
     public int getIsActive() {
         if (checkAtivoAula.isSelected()) {
-            return 0;
-        } else {
             return 1;
+        } else {
+            return 0;
         }
 
+    }
+
+    private void limparCampos() {
+        cbxDiaSemanaAula.setSelectedIndex(0);
+        txtHrInicioAula.setText("");
+        txtHrFinalAula.setText("");
+        txtProfessorAula.setText("");
+        jQntAlunos.setValue(0);
+        checkAtivoAula.setSelected(true);
     }
 }

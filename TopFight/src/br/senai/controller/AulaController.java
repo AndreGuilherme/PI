@@ -1,38 +1,39 @@
 package br.senai.controller;
 
 import br.senai.DAO.AulaDAO;
+import br.senai.model.Aula;
 import br.senai.model.Professor;
 import br.senai.view.CadastroAulaUI;
 import java.sql.Time;
-import java.text.ParseException;
+import javax.swing.JOptionPane;
 
 public class AulaController {
 
     CadastroAulaUI aulaView;
     AulaDAO aulaDAO;
-    br.senai.model.Aula aulaInsert;
+    Aula aulaInsert;
     Professor prof;
 
-    public void Salvar() throws ParseException {
-
-        int dia = aulaView.getDiaSemana();
-        Time hsInicio = aulaView.getHoraInicio();
-        Time hsFinal = aulaView.getHoraFinal();
-        int qntAlunos = aulaView.getQntAlunos();
-        int isActive = aulaView.getIsActive();
-        int idProf = 1;
-
-        aulaInsert.setDiaSemana(dia);
-        aulaInsert.sethInicio(hsInicio);
-        aulaInsert.sethFim(hsFinal);
-        aulaInsert.setNumeroAlunos(qntAlunos);
-        aulaInsert.setStatus(isActive);
-        aulaInsert.setProfessor(prof);
-
-        aulaDAO.Inserir(aulaInsert);
+    public boolean Salvar(Aula aula) {
+        aulaDAO = new AulaDAO();
+        return aulaDAO.insertAula(aula);
     }
 
-    private void validateAula() throws ParseException {
+    public boolean ValidaInsert(Aula aula) {
+        aulaDAO = new AulaDAO();
+        Time hrInicio = aula.gethInicio();
+        Time hrFinal = aula.gethFim();
+        int idProfessor = aula.getProfessor().getNumIdProfessor();
+        int diaSemana = aula.getDiaSemana();
+
+        if (aulaDAO.ValidaHorarioAulas(hrInicio, hrFinal, idProfessor, diaSemana)) {
+            System.out.println("Pode ser inserido");
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null, "ERRO!\n"
+                    + "Professor já tem aula nesse dia e hora.", "Informação", JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        }
 
     }
 }

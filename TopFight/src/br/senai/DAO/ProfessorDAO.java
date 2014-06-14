@@ -85,7 +85,7 @@ public class ProfessorDAO {
             return 0;
         }
     }
-    
+
     public ArrayList<Professor> listarTodos() {
         this.listaProfessor = new ArrayList<>();
         try {
@@ -109,7 +109,7 @@ public class ProfessorDAO {
                 f.setSexo(rs.getInt("Sexo"));
                 f.setDscEmail(rs.getString("dsc_Email"));
                 f.setStatus(rs.getInt("Status"));
-                
+
                 f.setNumIdPessoa(rs.getInt("id_Pessoa"));
                 this.listaProfessor.add(f);
             }
@@ -120,7 +120,25 @@ public class ProfessorDAO {
         }
         return this.listaProfessor;
     }
-    
+
+    public Professor obtemProfessor(int id) {
+        try {
+            Statement st = ConexaoSingleton.getConnection().createStatement();
+            String sql = "SELECT * FROM Professor where id_Professor = " + id + ";";
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                Professor p = new Professor();
+                p.setNumIdProfessor(rs.getInt("id_Professor"));
+                p.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                return p;
+            }
+            st.close();
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public void alterar(Professor professor) {
         try {
             SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
@@ -128,7 +146,7 @@ public class ProfessorDAO {
             String queryPessoa = "update pessoa set dsc_CPF = ?, dsc_Nome = ?, dt_DataNasc = ?, dsc_Endereco = ?, num_Numero = ?,"
                     + "dsc_Bairro = ?, dsc_CEP = ?, dsc_Complemento = ?, Sexo = ?, dsc_Email = ?, dsc_Obsrevacao = ?, Status = ? ";
             String queryProfessor = "update professor set id_Pessoa = ? ";
-            
+
             //Execução Query Pessoa 
             PreparedStatement pstPessoa = con.getConnection().prepareStatement(queryPessoa);
             pstPessoa.setString(1, professor.getDscCPF());
@@ -144,10 +162,10 @@ public class ProfessorDAO {
             pstPessoa.setString(11, professor.getDscObservacao());
             pstPessoa.setString(12, professor.getStatus().toString());
             pstPessoa.executeUpdate();
-            
+
             //Inserindo o Id da Pessoa para o Professor
             professor.setNumIdPessoa(codigoUltimoPessoa());
-            
+
             //Execução Query Professor
             PreparedStatement pstProfessor = con.getConnection().prepareStatement(queryProfessor);
             pstProfessor.setString(1, professor.getNumIdPessoa().toString());
@@ -155,12 +173,11 @@ public class ProfessorDAO {
             con.closeConnection();
             pstProfessor.close();
             pstPessoa.close();
-            
+
             con.closeConnection();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
-  
-       
+
     }
 }
