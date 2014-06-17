@@ -24,7 +24,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         return instanciaRep;
     }
 
-    public JDesktopPane getPainelPrincipal() {
+    public static JDesktopPane getPainelPrincipal() {
         return obterInstancia().jdpPainelPrincipal;
     }
 
@@ -262,7 +262,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FormPrincipal().setVisible(true);
+                obterInstancia().setVisible(true);
             }
         });
     }
