@@ -319,6 +319,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtNumAluno">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNumAlunoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel12">
           <Properties>

@@ -17,7 +17,8 @@ public class Pessoa {
     private String dscEmail;
     private String dscObservacao;
     private Integer status;
-
+    private String telefone;
+    
     public Integer getNumIdPessoa() {
         return numIdPessoa;
     }
@@ -120,6 +121,14 @@ public class Pessoa {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
     }
     
 }

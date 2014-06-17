@@ -6,6 +6,7 @@ import br.senai.model.Aluno;
 public class AlunoController {
 
     private static AlunoController instanciaRep;
+
     public static AlunoController obterInstancia() {
         if (instanciaRep == null) {
             instanciaRep = new AlunoController();
@@ -17,47 +18,78 @@ public class AlunoController {
         if (aluno.getDscNome().isEmpty() || aluno.getDscNome() == null) {
             throw new Exception("Nome do Aluno inválido");
         }
-        if(aluno.getDscCPF().isEmpty()){
-            throw  new Exception ("CPF inválido");
+        aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
+        aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
+        aluno.setDscCPF(aluno.getDscCPF().replace("_", ""));
+        if (aluno.getDscCPF().isEmpty() || aluno.getDscCPF().equals("")) {
+            throw new Exception("CPF inválido");
         }
-        if(aluno.getSexo() != 1 && aluno.getSexo() != 2){
-            throw new Exception ("Sexo inválido");
+
+        if (aluno.getDtDataNasc() == null) {
+            throw new Exception("Data inválida");
         }
-        if(aluno.getDtDataNasc() == null){
-            throw new Exception ("Data inválida");
+
+        try {
+            aluno.setPeso(Double.parseDouble(aluno.getPeso().toString()));
+        } catch (Exception e) {
+            throw new Exception("Peso inválido");
         }
-        if(aluno.getPeso() == null){
-            throw new Exception ("Peso inválido");
+
+        try {
+            aluno.setAltura(Double.parseDouble(aluno.getAltura().toString()));
+        } catch (Exception e) {
+            throw new Exception("Altura inválida");
         }
-        if(aluno.getAltura() == null){
-            throw new Exception ("Altura inválida");
+
+//        try {
+//            aluno.setNunNumero(Integer.parseInt(aluno.getNunNumero().toString()));
+//        } catch (Exception e) {
+//            throw new Exception("Número invalido");
+//        }
+        aluno.setTelefone(aluno.getTelefone().replace("(", ""));
+        aluno.setTelefone(aluno.getTelefone().replace(")", ""));
+        aluno.setTelefone(aluno.getTelefone().replace("-", ""));
+        aluno.setTelefone(aluno.getTelefone().replace("_", ""));
+        if (aluno.getTelefone().isEmpty() || aluno.getTelefone().equals("")) {
+            throw new Exception("Telefone inválido");
         }
-        AlunoDAO.obterInstancia().inserir(aluno);
+
+        
+        
     }
+
     public void alterar(Aluno aluno) throws Exception {
-         if (aluno.getDscNome().isEmpty()) {
+        if (aluno.getDscNome().isEmpty()) {
             throw new Exception("Nome do Aluno inválido");
         }
-        if(aluno.getDscCPF().isEmpty()){
-            throw  new Exception ("CPF inválido");
+
+        aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
+        aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
+        if (aluno.getDscCPF().isEmpty() || aluno.getDscCPF().equals("")) {
+            throw new Exception("CPF inválido");
         }
-        if(aluno.getSexo() != 1 && aluno.getSexo() != 2){
-            throw new Exception ("Sexo inválido");
+
+        if (aluno.getNunNumero() == null || aluno.getNunNumero() == 0) {
+            throw new Exception("Número invalido");
         }
-        if(aluno.getDtDataNasc() == null){
-            throw new Exception ("Data inválida");
+        if (aluno.getSexo() != 1 && aluno.getSexo() != 2) {
+            throw new Exception("Sexo inválido");
         }
-        if(aluno.getPeso() == null){
-            throw new Exception ("Peso inválido");
+        if (aluno.getDtDataNasc() == null) {
+            throw new Exception("Data inválida");
         }
-        if(aluno.getAltura() == null){
-            throw new Exception ("Altura inválida");
+        if (aluno.getPeso() == null) {
+            throw new Exception("Peso inválido");
         }
+        if (aluno.getAltura() == null) {
+            throw new Exception("Altura inválida");
+        }
+
         //AlunoDAO.obterInstancia().alterar(aluno);
     }
-    
+
     public Aluno obterAluno(int id) throws Exception {
         return AlunoDAO.obterInstancia().obtemAluno(id);
     }
-    
+
 }

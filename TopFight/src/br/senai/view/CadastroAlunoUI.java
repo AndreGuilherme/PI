@@ -5,7 +5,7 @@ import br.senai.model.Aluno;
 import javax.swing.JOptionPane;
 
 public class CadastroAlunoUI extends javax.swing.JInternalFrame {
-
+    
     private Aluno alunoAlteracao;
 
     /**
@@ -14,11 +14,13 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
      */
     public CadastroAlunoUI(Aluno aluno) {
         initComponents();
+        checkAtivoAluno.setSelected(true);
+        rbSexoMascAluno.setSelected(true);
         if (aluno != null) {
             this.alunoAlteracao = aluno;
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -128,6 +130,12 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         jLabel10.setText("Endereço:");
 
         jLabel11.setText("Nº:");
+
+        txtNumAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumAlunoActionPerformed(evt);
+            }
+        });
 
         jLabel12.setText("Bairro:");
 
@@ -406,16 +414,22 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 this.alunoAlteracao.setDscEndereco(txtEnderecoAluno.getText());
                 this.alunoAlteracao.setDscObservacao(txAreaObs.getText());
                 this.alunoAlteracao.setDscCPF(txtCPFAluno.getText());
-                this.alunoAlteracao.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                if (!txtNumAluno.getText().equals("")) {
+                    this.alunoAlteracao.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                }
                 this.alunoAlteracao.setStatus(1); //Ativo
                 this.alunoAlteracao.setSexo(1);
-                //if(rbSexoFemAluno)){ Verificar se ta marcado o feminino
-                // this.aluno.setSexo(2);   
-                // }
-                this.alunoAlteracao.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
-                this.alunoAlteracao.setPeso(Double.parseDouble(txtPesoAluno.getText()));
+                if (rbSexoFemAluno.isSelected()) {
+                    this.alunoAlteracao.setSexo(2);                    
+                }
+                if (!txtAlturaAluno.getText().replace(".", "").equals("")) {
+                    this.alunoAlteracao.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
+                }
+                if (!txtPesoAluno.getText().replace(".", "").equals("")) {
+                    this.alunoAlteracao.setPeso(Double.parseDouble(txtPesoAluno.getText()));
+                }
                 this.alunoAlteracao.setDtDataNasc(jDateNasc.getDate());
-
+                
                 AlunoController.obterInstancia().alterar(this.alunoAlteracao);
                 JOptionPane.showMessageDialog(this, "Aluno alterado com sucesso");
                 this.dispose();
@@ -429,14 +443,21 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 aluno.setDscEndereco(txtEnderecoAluno.getText());
                 aluno.setDscObservacao(txAreaObs.getText());
                 aluno.setDscCPF(txtCPFAluno.getText());
-                aluno.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                if (!txtNumAluno.getText().equals("")) {
+                    aluno.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                }
                 aluno.setStatus(1); //Ativo
                 aluno.setSexo(1);
-                //if(rbSexoFemAluno)){ Verificar se ta marcado o feminino
-                // this.aluno.setSexo(2);   
-                // }
-                aluno.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
-                aluno.setPeso(Double.parseDouble(txtPesoAluno.getText()));
+                if (rbSexoFemAluno.isSelected()) {
+                    aluno.setSexo(2);                    
+                }
+                if (!txtAlturaAluno.getText().replace(".", "").equalsIgnoreCase("   ")) {
+                    System.out.println(txtAlturaAluno.getText().replace(".", ""));
+                    aluno.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
+                }
+                if (!txtPesoAluno.getText().replace(".", "").equals("")) {
+                    aluno.setPeso(Double.parseDouble(txtPesoAluno.getText()));
+                }
                 aluno.setDtDataNasc(jDateNasc.getDate());
                 
                 AlunoController.obterInstancia().inserir(aluno);
@@ -444,10 +465,14 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 this.dispose();
             }
         } catch (Exception e) {
-               JOptionPane.showMessageDialog(this, e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
+    private void txtNumAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumAlunoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNumAlunoActionPerformed
+    
     private String CalcularIMC(Double altura, Double peso) {
         double imc = (peso / (altura * altura));
         if (imc < 16) {
