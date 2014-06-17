@@ -12,8 +12,6 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 
@@ -104,6 +102,11 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         txtProfessorAula.setEnabled(false);
 
         btnBuscarProfessor.setText("...");
+        btnBuscarProfessor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarProfessorActionPerformed(evt);
+            }
+        });
 
         cbxDiaSemanaAula.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione um dia da semana", "Segunda-Feira", "Terca-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sabado", "Domingo" }));
 
@@ -270,6 +273,13 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_btnSalvarActionPerformed
+
+    private void btnBuscarProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProfessorActionPerformed
+        ConsultaProfessorUI consultaProf = new ConsultaProfessorUI();
+        consultaProf.setVisible(true);
+        FormPrincipal.getPainelPrincipal().add(consultaProf);
+    }//GEN-LAST:event_btnBuscarProfessorActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarProfessor;
     private javax.swing.JButton btnCancelar;

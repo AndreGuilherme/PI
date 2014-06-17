@@ -23,6 +23,7 @@ public class ProfessorDAO {
         return instanciaRep;
     }
 
+    
     public ProfessorDAO() {
         this.listaProfessor = new ArrayList<>();
         con = new ConexaoSingleton();
