@@ -89,9 +89,9 @@
                           <Component id="txtCPFAluno" min="-2" pref="119" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="txtDtNascAluno" min="-2" pref="76" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="jDateNasc" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -192,7 +192,7 @@
                       <Component id="txtCPFAluno" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtDtNascAluno" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jDateNasc" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
@@ -270,12 +270,6 @@
             <Property name="text" type="java.lang.String" value="Data de Nasc.:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtDtNascAluno">
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskDtNascAluno);"/>
-            <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskDtNascAluno = null;&#xd;&#xa;try{&#xd;&#xa;maskDtNascAluno= new javax.swing.text.MaskFormatter(&quot;##/##/####&quot;);&#xd;&#xa;maskDtNascAluno.setPlaceholderCharacter(&apos;_&apos;);&#xd;&#xa;&#xd;&#xa;}&#xd;&#xa;catch (java.text.ParseException exc) {}"/>
-          </AuxValues>
-        </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="text" type="java.lang.String" value="CPF:"/>
@@ -293,6 +287,10 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtPesoAluno">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskPesoAluno);"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskPesoAluno = null;&#xd;&#xa; try{&#xd;&#xa; maskPesoAluno= new javax.swing.text.MaskFormatter(&quot;###.#&quot;);&#xd;&#xa; maskPesoAluno.setPlaceholderCharacter(&apos; &apos;);&#xd;&#xa; &#xd;&#xa; }&#xd;&#xa; catch (java.text.ParseException exc) {}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
@@ -303,6 +301,10 @@
           <Events>
             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtAlturaAlunoFocusLost"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskAlturaAluno);"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskAlturaAluno = null;&#xd;&#xa;  try{&#xd;&#xa;  maskAlturaAluno= new javax.swing.text.MaskFormatter(&quot;#.##&quot;);&#xd;&#xa;  maskAlturaAluno.setPlaceholderCharacter(&apos; &apos;);&#xd;&#xa;  &#xd;&#xa;  }&#xd;&#xa;  catch (java.text.ParseException exc) {}"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel10">
           <Properties>
@@ -489,6 +491,8 @@
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskTelAluno);"/>
             <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskTelAluno = null;&#xd;&#xa;try{&#xd;&#xa;maskTelAluno = new javax.swing.text.MaskFormatter(&quot;(##) ####-####&quot;);&#xd;&#xa;maskTelAluno.setPlaceholderCharacter(&apos;_&apos;);&#xd;&#xa;&#xd;&#xa;}&#xd;&#xa;catch (java.text.ParseException exc) {}&#xd;&#xa;"/>
           </AuxValues>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="jDateNasc">
         </Component>
       </SubComponents>
     </Container>

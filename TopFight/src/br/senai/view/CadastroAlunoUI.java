@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
 
 public class CadastroAlunoUI extends javax.swing.JInternalFrame {
 
-    Aluno aluno;
+    private Aluno alunoAlteracao;
 
     /**
      *
@@ -14,8 +14,8 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
      */
     public CadastroAlunoUI(Aluno aluno) {
         initComponents();
-        if (this.aluno != null) {
-            this.aluno = aluno;
+        if (aluno != null) {
+            this.alunoAlteracao = aluno;
         }
     }
 
@@ -29,14 +29,6 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         txtNomeAluno = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        javax.swing.text.MaskFormatter maskDtNascAluno = null;
-        try{
-            maskDtNascAluno= new javax.swing.text.MaskFormatter("##/##/####");
-            maskDtNascAluno.setPlaceholderCharacter('_');
-
-        }
-        catch (java.text.ParseException exc) {}
-        txtDtNascAluno = new javax.swing.JFormattedTextField(maskDtNascAluno);
         jLabel4 = new javax.swing.JLabel();
         javax.swing.text.MaskFormatter maskCPFAluno = null;
         try{
@@ -47,9 +39,23 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         catch (java.text.ParseException exc) {}
         txtCPFAluno = new javax.swing.JFormattedTextField(maskCPFAluno);
         jLabel6 = new javax.swing.JLabel();
-        txtPesoAluno = new javax.swing.JTextField();
+        javax.swing.text.MaskFormatter maskPesoAluno = null;
+        try{
+            maskPesoAluno= new javax.swing.text.MaskFormatter("###.#");
+            maskPesoAluno.setPlaceholderCharacter(' ');
+
+        }
+        catch (java.text.ParseException exc) {}
+        txtPesoAluno = new javax.swing.JFormattedTextField(maskPesoAluno);
         jLabel7 = new javax.swing.JLabel();
-        txtAlturaAluno = new javax.swing.JTextField();
+        javax.swing.text.MaskFormatter maskAlturaAluno = null;
+        try{
+            maskAlturaAluno= new javax.swing.text.MaskFormatter("#.##");
+            maskAlturaAluno.setPlaceholderCharacter(' ');
+
+        }
+        catch (java.text.ParseException exc) {}
+        txtAlturaAluno = new javax.swing.JFormattedTextField(maskAlturaAluno);
         jLabel10 = new javax.swing.JLabel();
         txtEnderecoAluno = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
@@ -92,6 +98,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         }
         catch (java.text.ParseException exc) {}
         txtTelefoneAluno = new javax.swing.JFormattedTextField(maskTelAluno);
+        jDateNasc = new com.toedter.calendar.JDateChooser();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
@@ -208,9 +215,9 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                         .addComponent(txtCPFAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtDtNascAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jDateNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(68, 68, 68))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -291,7 +298,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                     .addComponent(txtCPFAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
-                    .addComponent(txtDtNascAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -390,33 +397,54 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
-                this.aluno.setDscNome(txtNomeAluno.getText());
-                this.aluno.setDscCEP(txtCepAluno.getText());
-                this.aluno.setDscBairro(txtBairroAluno.getText());
-                this.aluno.setDscComplemento(txtComplementoAluno.getText());
-                this.aluno.setDscEmail(txtEmailAluno.getText());
-                this.aluno.setDscEndereco(txtEnderecoAluno.getText());
-                this.aluno.setDscObservacao(txAreaObs.getText());
-                this.aluno.setDscCPF(txtCPFAluno.getText());
-                this.aluno.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
-                this.aluno.setStatus(1); //Ativo
-                this.aluno.setSexo(1);
-            //if(rbSexoFemAluno)){ Verificar se ta marcado o feminino
+            if (this.alunoAlteracao != null) {
+                this.alunoAlteracao.setDscNome(txtNomeAluno.getText());
+                this.alunoAlteracao.setDscCEP(txtCepAluno.getText());
+                this.alunoAlteracao.setDscBairro(txtBairroAluno.getText());
+                this.alunoAlteracao.setDscComplemento(txtComplementoAluno.getText());
+                this.alunoAlteracao.setDscEmail(txtEmailAluno.getText());
+                this.alunoAlteracao.setDscEndereco(txtEnderecoAluno.getText());
+                this.alunoAlteracao.setDscObservacao(txAreaObs.getText());
+                this.alunoAlteracao.setDscCPF(txtCPFAluno.getText());
+                this.alunoAlteracao.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                this.alunoAlteracao.setStatus(1); //Ativo
+                this.alunoAlteracao.setSexo(1);
+                //if(rbSexoFemAluno)){ Verificar se ta marcado o feminino
                 // this.aluno.setSexo(2);   
                 // }
-                this.aluno.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
-                this.aluno.setPeso(Double.parseDouble(txtPesoAluno.getText()));
-                //this.aluno.setDtDataNasc(txtDtNascAluno); Pegar a data do txt
+                this.alunoAlteracao.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
+                this.alunoAlteracao.setPeso(Double.parseDouble(txtPesoAluno.getText()));
+                this.alunoAlteracao.setDtDataNasc(jDateNasc.getDate());
+
+                AlunoController.obterInstancia().alterar(this.alunoAlteracao);
+                JOptionPane.showMessageDialog(this, "Aluno alterado com sucesso");
+                this.dispose();
+            } else {
+                Aluno aluno = new Aluno();
+                aluno.setDscNome(txtNomeAluno.getText());
+                aluno.setDscCEP(txtCepAluno.getText());
+                aluno.setDscBairro(txtBairroAluno.getText());
+                aluno.setDscComplemento(txtComplementoAluno.getText());
+                aluno.setDscEmail(txtEmailAluno.getText());
+                aluno.setDscEndereco(txtEnderecoAluno.getText());
+                aluno.setDscObservacao(txAreaObs.getText());
+                aluno.setDscCPF(txtCPFAluno.getText());
+                aluno.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                aluno.setStatus(1); //Ativo
+                aluno.setSexo(1);
+                //if(rbSexoFemAluno)){ Verificar se ta marcado o feminino
+                // this.aluno.setSexo(2);   
+                // }
+                aluno.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
+                aluno.setPeso(Double.parseDouble(txtPesoAluno.getText()));
+                aluno.setDtDataNasc(jDateNasc.getDate());
                 
-                // Aqui faz uma consulta no banco, verifica se ja existe o Aluno pelo id
-                // se for um aluno ja existente ele altera as informações
-            if (AlunoController.obterInstancia().obterAluno(aluno.getId()) != null) {
-                AlunoController.obterInstancia().alterar(this.aluno);
-            }else{
-                AlunoController.obterInstancia().inserir(this.aluno);
+                AlunoController.obterInstancia().inserir(aluno);
+                JOptionPane.showMessageDialog(this, "Aluno cadastrado com sucesso");
+                this.dispose();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+               JOptionPane.showMessageDialog(this, e.getMessage());
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
@@ -446,6 +474,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnRemoverAulas;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JCheckBox checkAtivoAluno;
+    private com.toedter.calendar.JDateChooser jDateNasc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -477,7 +506,6 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtCPFAluno;
     private javax.swing.JTextField txtCepAluno;
     private javax.swing.JTextField txtComplementoAluno;
-    private javax.swing.JTextField txtDtNascAluno;
     private javax.swing.JTextField txtEmailAluno;
     private javax.swing.JTextField txtEnderecoAluno;
     private javax.swing.JTextField txtNomeAluno;

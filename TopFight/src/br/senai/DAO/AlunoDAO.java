@@ -33,6 +33,10 @@ public class AlunoDAO {
         try {
             SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
             //Query para inserir Pessoa
+            System.out.println(aluno.getDscCPF());
+            aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
+            aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
+            aluno.setDscCEP(aluno.getDscCEP().replace("-", ""));
             String queryPessoa = "INSERT INTO pessoa (dsc_CPF, dsc_Nome, dt_DataNasc, dsc_Endereco, nun_Numero, \n"
                     + "dsc_Bairro, dsc_CEP, dsc_Complemento, Sexo, dsc_Email, dsc_Observacao, Status) VALUES \n"
                     + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -87,11 +91,14 @@ public class AlunoDAO {
             return 0;
         }
     }
-    
+
     public Aluno obtemAluno(int id) {
         try {
             Statement executorSQL = con.getConnection().createStatement();
-            String sql = "SELECT * FROM aluno where id_aluno = "+id +";";
+            String sql = "SELECT p.*, a.id_Aluno, a.Peso, a.Altura FROM pessoa p"
+                    + "JOIN aluno a ON"
+                    + "a.id_Pessoa = p.id_Pessoa"
+                    + "WHERE a.id_aluno = " + id + ";";
             ResultSet rs = executorSQL.executeQuery(sql);
             while (rs.next()) {
                 Aluno a = new Aluno();
@@ -113,7 +120,7 @@ public class AlunoDAO {
                 return a;
             }
             executorSQL.close();
-            return null; 
+            return null;
         } catch (Exception e) {
             return null;
         }

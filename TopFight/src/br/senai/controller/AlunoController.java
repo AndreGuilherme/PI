@@ -14,13 +14,13 @@ public class AlunoController {
     }
 
     public void inserir(Aluno aluno) throws Exception {
-        if (aluno.getDscNome().isEmpty()) {
+        if (aluno.getDscNome().isEmpty() || aluno.getDscNome() == null) {
             throw new Exception("Nome do Aluno inválido");
         }
         if(aluno.getDscCPF().isEmpty()){
             throw  new Exception ("CPF inválido");
         }
-        if(aluno.getSexo() != 1 || aluno.getSexo() != 2){
+        if(aluno.getSexo() != 1 && aluno.getSexo() != 2){
             throw new Exception ("Sexo inválido");
         }
         if(aluno.getDtDataNasc() == null){
@@ -32,9 +32,28 @@ public class AlunoController {
         if(aluno.getAltura() == null){
             throw new Exception ("Altura inválida");
         }
+        AlunoDAO.obterInstancia().inserir(aluno);
     }
     public void alterar(Aluno aluno) throws Exception {
-        
+         if (aluno.getDscNome().isEmpty()) {
+            throw new Exception("Nome do Aluno inválido");
+        }
+        if(aluno.getDscCPF().isEmpty()){
+            throw  new Exception ("CPF inválido");
+        }
+        if(aluno.getSexo() != 1 && aluno.getSexo() != 2){
+            throw new Exception ("Sexo inválido");
+        }
+        if(aluno.getDtDataNasc() == null){
+            throw new Exception ("Data inválida");
+        }
+        if(aluno.getPeso() == null){
+            throw new Exception ("Peso inválido");
+        }
+        if(aluno.getAltura() == null){
+            throw new Exception ("Altura inválida");
+        }
+        //AlunoDAO.obterInstancia().alterar(aluno);
     }
     
     public Aluno obterAluno(int id) throws Exception {
