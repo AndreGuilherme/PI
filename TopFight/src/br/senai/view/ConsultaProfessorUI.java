@@ -4,6 +4,11 @@
  */
 package br.senai.view;
 
+import br.senai.controller.ProfessorController;
+import br.senai.model.Professor;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bruno_andrade
@@ -16,6 +21,8 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
     public ConsultaProfessorUI() {
         initComponents();
     }
+    ProfessorController profController;
+    private ArrayList<Professor> listaProf;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,6 +73,11 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
         btnLimpar.setText("Limpar");
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Somente Ativos: ");
 
@@ -172,6 +184,33 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        profController = new ProfessorController();
+        String coluna = "";
+        Integer status = 0;
+        if (rbCPf.isSelected()) {
+            coluna = "dsc_CPF";
+        } else if (rbNome.isSelected()) {
+            coluna = "dsc_Nome";
+        }
+        if (checkAtivo.isSelected()) {
+            status = 1;
+        } else {
+            status = 0;
+        }
+        atualizarTabelaProfessor(profController.getProfPesquisa(coluna.toString(), txtBuscaProfessor.getText().toString(), status));
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void atualizarTabelaProfessor(ArrayList<Professor> profPesquisa) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
+        for (int i = 0; i < profPesquisa.size(); i++) {
+            modelo.addRow(new Object[]{profPesquisa.get(i).getDscNome(), profPesquisa.get(i).getDscCPF(), profPesquisa.get(i).getDtDataNasc(),
+                profPesquisa.get(i).getSexo(), profPesquisa.get(i).getStatus()});
+        }
+        tableProfessor.setModel(modelo);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnBuscar;

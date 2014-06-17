@@ -28,7 +28,6 @@ public class ProfessorDAO {
         this.listaProfessor = new ArrayList<>();
         con = new ConexaoSingleton();
     }
-
     public void inserir(Professor professor) {
         try {
             SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
@@ -180,5 +179,76 @@ public class ProfessorDAO {
             ex.printStackTrace();
         }
 
+    }
+    
+    public ArrayList<Professor> listarPesquisaAtivos(String coluna, String paramentro, Integer status) {
+        try {
+            this.listaProfessor = new ArrayList<>();
+            Statement execSql = con.getConnection().createStatement();
+            String sql = "select * from Pessoa AS p \n"
+                    + " JOIN Professor AS pr \n"
+                    + " ON p.Id_Pessoa = pr.Id_pessoa \n"
+                    + " where " + coluna + " like '%" + paramentro + "%' \n"
+                    + " AND Status = " + status + ";";
+            ResultSet resultado = execSql.executeQuery(sql);
+            while (resultado.next()) {
+                Professor f = new Professor();
+                f.setNumIdProfessor(resultado.getInt("id_Professor"));
+                f.setDscNome(resultado.getString("dsc_Nome"));
+                f.setDscCPF(resultado.getString("dsc_CPF"));
+                f.setDtDataNasc(resultado.getDate("dt_DataNasc"));
+                f.setDscEndereco(resultado.getString("dsc_Endereco"));
+                f.setNunNumero(resultado.getInt("nun_Numero"));
+                f.setDscBairro(resultado.getString("dsc_Bairro"));
+                f.setDscCEP(resultado.getString("dsc_CEP"));
+                f.setDscComplemento(resultado.getString("dsc_Complemento"));
+                f.setSexo(resultado.getInt("Sexo"));
+                f.setDscEmail(resultado.getString("dsc_Email"));
+                f.setStatus(resultado.getInt("Status"));
+
+                f.setNumIdPessoa(resultado.getInt("id_Pessoa"));
+                this.listaProfessor.add(f);
+            }
+            resultado.close();
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaProfessor;
+    }
+
+    public ArrayList<Professor> listarPesquisa(String coluna, String paramentro) {
+        try {
+            this.listaProfessor = new ArrayList<>();
+            Statement execSql = con.getConnection().createStatement();
+            String sql = "select * from Pessoa AS p \n"
+                    + " JOIN Professor AS pr \n"
+                    + " ON p.Id_Pessoa = pr.Id_pessoa "
+                    + " where " + coluna + " like '%" + paramentro + "%';";
+            ResultSet resultado = execSql.executeQuery(sql);
+            while (resultado.next()) {
+                Professor f = new Professor();
+                f.setNumIdProfessor(resultado.getInt("id_Professor"));
+                f.setDscNome(resultado.getString("dsc_Nome"));
+                f.setDscCPF(resultado.getString("dsc_CPF"));
+                f.setDtDataNasc(resultado.getDate("dt_DataNasc"));
+                f.setDscEndereco(resultado.getString("dsc_Endereco"));
+                f.setNunNumero(resultado.getInt("nun_Numero"));
+                f.setDscBairro(resultado.getString("dsc_Bairro"));
+                f.setDscCEP(resultado.getString("dsc_CEP"));
+                f.setDscComplemento(resultado.getString("dsc_Complemento"));
+                f.setSexo(resultado.getInt("Sexo"));
+                f.setDscEmail(resultado.getString("dsc_Email"));
+                f.setStatus(resultado.getInt("Status"));
+
+                f.setNumIdPessoa(resultado.getInt("id_Pessoa"));
+                this.listaProfessor.add(f);
+            }
+            resultado.close();
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaProfessor;
     }
 }
