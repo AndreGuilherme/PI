@@ -4,7 +4,14 @@
  */
 package br.senai.view;
 
+import br.senai.controller.ProfessorController;
+import br.senai.model.Aluno;
 import br.senai.model.Professor;
+import br.senai.util.Utils;
+import java.awt.Color;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -12,14 +19,155 @@ import br.senai.model.Professor;
  */
 public class CadastraProfessorUI extends javax.swing.JInternalFrame {
 
+    private Professor professorAlteracao;
+
     /**
      * Creates new form Professor
      */
-    public CadastraProfessorUI() {
-        initComponents();
-    }
     public CadastraProfessorUI(Professor professor) {
         initComponents();
+        checkAtivoProfessor.setSelected(true);
+        rbSexoMasc.setSelected(true);
+        if (professor != null) {
+            this.professorAlteracao = professor;
+            preencheProfessor(professor);
+        }
+
+    }
+
+    private void preencheProfessor(Professor professor) {
+        txtNomeProfessor.setText(professor.getDscNome().toString());
+        txtCPF.setText(professor.getDscCPF().toString());
+
+        if (professor.getSexo() == 1) {
+            rbSexoMasc.isSelected();
+        } else {
+            rbSexoFem.isSelected();
+        }
+
+        if (professor.getStatus() == 1) {
+            checkAtivoProfessor.setSelected(true);
+        } else {
+            checkAtivoProfessor.setSelected(false);
+        }
+
+        txtEndereco.setText(professor.getDscEndereco().toString());
+        txtNum.setText(professor.getNunNumero().toString());
+        txtComplemento.setText(professor.getDscComplemento().toString());
+        txtBairro.setText(professor.getDscBairro().toString());
+        txtEmail.setText(professor.getDscEmail().toString());
+        txtTelefone.setText(professor.getTelefone().toString());
+        txtCEP.setText(professor.getDscCEP().toString());
+        txAreaObs.setText(professor.getDscObservacao().toString());
+        //txtDtNasc.setDate(professor.getDtDataNasc());
+    }
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {
+        try {
+            if (this.professorAlteracao != null) {
+                this.professorAlteracao.setDscNome(txtNomeProfessor.getText());
+                this.professorAlteracao.setDscCEP(txtCEP.getText());
+                this.professorAlteracao.setDscBairro(txtBairro.getText());
+                this.professorAlteracao.setDscComplemento(txtComplemento.getText());
+                this.professorAlteracao.setDscEmail(txtEmail.getText());
+                this.professorAlteracao.setDscEndereco(txtEndereco.getText());
+                this.professorAlteracao.setDscObservacao(txAreaObs.getText());
+                this.professorAlteracao.setDscCPF(txtCPF.getText());
+                if (!txtNum.getText().equals("")) {
+                    this.professorAlteracao.setNunNumero(Integer.parseInt(txtNum.getText()));
+                }
+                this.professorAlteracao.setStatus(1); //Ativo
+                this.professorAlteracao.setSexo(1);
+                if (rbSexoFem.isSelected()) {
+                    this.professorAlteracao.setSexo(2);
+                }
+
+                //this.professorAlteracao.setDtDataNasc(txtDtNasc.getDate());
+
+                ProfessorController.obterInstancia().alterar(this.professorAlteracao);
+                JOptionPane.showMessageDialog(this, "Professor alterado com sucesso");
+                this.dispose();
+            } else {
+                Professor professor = new Professor();
+                professor.setDscNome(txtNomeProfessor.getText());
+                professor.setDscCEP(txtCEP.getText());
+                professor.setDscBairro(txtBairro.getText());
+                professor.setDscComplemento(txtComplemento.getText());
+                professor.setDscEmail(txtEmail.getText());
+                professor.setDscEndereco(txtEndereco.getText());
+                professor.setDscObservacao(txAreaObs.getText());
+                professor.setDscCPF(txtCPF.getText());
+                professor.setTelefone(txtTelefone.getText());
+                if (!txtNum.getText().equals("")) {
+                    professor.setNunNumero(Integer.parseInt(txtNum.getText()));
+                }
+                professor.setStatus(1); //Ativo
+                professor.setSexo(1);
+                if (rbSexoFem.isSelected()) {
+                    professor.setSexo(2);
+                }
+                //professor.setDtDataNasc(txtDtNasc.getDate());
+
+                ProfessorController.obterInstancia().inserir(professor);
+                JOptionPane.showMessageDialog(this, "Professor cadastrado com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
+                this.limpaCamposTelas();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void txtCPFAlunoFocusLost(java.awt.event.FocusEvent evt) {
+        try {
+            Icon i = null;
+            //CPF:
+            String cpf = txtCPF.getText().replace("-", "").replace(".", "").replace("_", "").toString();
+            //Valida se CPF informado é Valido e verifica se realmente foi informado algum CPF.
+            if (Utils.validarCPF(cpf)) {
+                i = new ImageIcon("src/imagens/Check_16x16.png");
+                lbValidado.setIcon(i);
+                txtCPF.setBackground(Color.WHITE);
+
+                //Entra no else caso CPF invalido.
+            } else {
+                i = new ImageIcon("src/imagens/Delete_16x16.png");
+                lbValidado.setIcon(i);
+                //   txtCPFCNPJ.setBackground(Color.red);
+                txtCPF.selectAll();
+                txtCPF.setBackground(Color.LIGHT_GRAY);
+            }
+
+        } catch (StringIndexOutOfBoundsException e) {
+            lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
+            txtCPF.setBackground(Color.LIGHT_GRAY);
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
+            txtCPF.setBackground(Color.LIGHT_GRAY);
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
+        this.limpaCamposTelas();
+    }
+
+    private void limpaCamposTelas() {
+        txtNomeProfessor.setText("");
+        txtCPF.setText("");
+        rbSexoMasc.isSelected();
+        checkAtivoProfessor.isSelected();
+        txtEndereco.setText("");
+        txtNum.setText("");
+        txtComplemento.setText("");
+        txtBairro.setText("");
+        txtEmail.setText("");
+        txtTelefone.setText("");
+        txtCEP.setText("");
+        txAreaObs.setText("");
+        lbValidado.setIcon(null);
+        txtCPF.setBackground(Color.WHITE);
+        //txtDtNasc.setDate(null);
     }
 
     /**
@@ -70,7 +218,7 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         txAreaObs = new javax.swing.JTextArea();
         jLabel5 = new javax.swing.JLabel();
-        checkAtivo = new javax.swing.JCheckBox();
+        checkAtivoProfessor = new javax.swing.JCheckBox();
         jLabel6 = new javax.swing.JLabel();
         txtEmail = new javax.swing.JTextField();
         javax.swing.text.MaskFormatter maskTelProf = null;
@@ -91,6 +239,7 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         catch (java.text.ParseException exc) {}
         txtCEP = new javax.swing.JFormattedTextField(maskCEPProf);
         jLabel13 = new javax.swing.JLabel();
+        lbValidado = new javax.swing.JLabel();
 
         setClosable(true);
 
@@ -157,68 +306,71 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel13))
+                        .addComponent(jLabel2)
+                        .addGap(22, 22, 22)
+                        .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                        .addComponent(rbSexoMasc)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel19)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                                .addComponent(rbSexoMasc)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbSexoFem)
-                                .addContainerGap(12, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtNum, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel14)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(113, 113, 113))))
+                        .addComponent(rbSexoFem)
+                        .addContainerGap(12, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(30, 30, 30)
+                        .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lbValidado, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(24, 24, 24)
+                                    .addComponent(jLabel10)
+                                    .addComponent(jLabel11)
+                                    .addComponent(jLabel13))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(checkAtivo)
-                                    .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                        .addComponent(txtNum, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel14)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtComplemento, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel12)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 2, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(txtEndereco, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(jLabel17))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel8)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel5)
+                                        .addGap(24, 24, 24)
+                                        .addComponent(checkAtivoProfessor))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6)
+                                            .addComponent(jLabel17))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(txtCEP, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(jLabel8)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(71, 71, 71))
+                                            .addComponent(jScrollPane3)
+                                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(71, 71, 71))
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 425, Short.MAX_VALUE)
-                                    .addComponent(txtEmail))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addComponent(txtDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(2, 2, 2)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,20 +383,20 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
                     .addComponent(rbSexoMasc)
                     .addComponent(rbSexoFem))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel3)
-                        .addComponent(txtDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(lbValidado, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
+                        .addGap(5, 5, 5)
                         .addComponent(jLabel5))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(checkAtivo)))
+                    .addComponent(checkAtivoProfessor))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -314,11 +466,10 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
     private void txtComplementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtComplementoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtComplementoActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
-    private javax.swing.JCheckBox checkAtivo;
+    private javax.swing.JCheckBox checkAtivoProfessor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -335,6 +486,7 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lbValidado;
     private javax.swing.JRadioButton rbSexoFem;
     private javax.swing.JRadioButton rbSexoMasc;
     private javax.swing.JTextArea txAreaObs;

@@ -196,7 +196,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuCadAulaActionPerformed
 
     private void jMenuCadProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCadProfessorActionPerformed
-        CadastraProfessorUI prof = new CadastraProfessorUI();
+        CadastraProfessorUI prof = new CadastraProfessorUI(null);
         prof.setVisible(true);
         jdpPainelPrincipal.add(prof);
     }//GEN-LAST:event_jMenuCadProfessorActionPerformed
