@@ -214,7 +214,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuPesAulaActionPerformed
 
     private void jMenuPesProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesProfessorActionPerformed
-        ConsultaProfessorUI pesqProf = new ConsultaProfessorUI();
+        ConsultaProfessorUI pesqProf = new ConsultaProfessorUI(false);
         pesqProf.setVisible(true);
         jdpPainelPrincipal.add(pesqProf);
     }//GEN-LAST:event_jMenuPesProfessorActionPerformed

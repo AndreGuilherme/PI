@@ -2,18 +2,32 @@ package br.senai.controller;
 
 import br.senai.DAO.ProfessorDAO;
 import br.senai.model.Professor;
+import br.senai.view.CadastroAulaUI;
+import br.senai.view.ConsultaProfessorUI;
+import br.senai.view.FormPrincipal;
 import java.util.ArrayList;
 
 public class ProfessorController {
 
     private static ProfessorController instanciaRep;
     ProfessorDAO profDAO;
+    CadastroAulaUI cadastroAulaUI;
+    ConsultaProfessorUI consultaProfessorUI;
 
     public static ProfessorController obterInstancia() {
         if (instanciaRep == null) {
             instanciaRep = new ProfessorController();
         }
         return instanciaRep;
+    }
+    public void buscaProfessor(CadastroAulaUI cA){
+        cadastroAulaUI = cA;
+        consultaProfessorUI = new ConsultaProfessorUI(true);
+        consultaProfessorUI.setVisible(true);
+        FormPrincipal.getPainelPrincipal().add(consultaProfessorUI);
+    }
+    public void preencheFormAula(Professor prof){
+        cadastroAulaUI.recebeProfessor(prof);
     }
 
     public void inserir(Professor professor) throws Exception {

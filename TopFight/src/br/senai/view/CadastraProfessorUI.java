@@ -4,6 +4,8 @@
  */
 package br.senai.view;
 
+import br.senai.model.Professor;
+
 /**
  *
  * @author bruno_andrade
@@ -14,6 +16,9 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
      * Creates new form Professor
      */
     public CadastraProfessorUI() {
+        initComponents();
+    }
+    public CadastraProfessorUI(Professor professor) {
         initComponents();
     }
 
