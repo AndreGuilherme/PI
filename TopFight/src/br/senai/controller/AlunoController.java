@@ -6,6 +6,7 @@ import br.senai.model.Aluno;
 public class AlunoController {
 
     private static AlunoController instanciaRep;
+    private AlunoDAO alunoDAO;
 
     public static AlunoController obterInstancia() {
         if (instanciaRep == null) {
@@ -46,16 +47,13 @@ public class AlunoController {
 //        } catch (Exception e) {
 //            throw new Exception("Número invalido");
 //        }
-        aluno.setTelefone(aluno.getTelefone().replace("(", ""));
-        aluno.setTelefone(aluno.getTelefone().replace(")", ""));
-        aluno.setTelefone(aluno.getTelefone().replace("-", ""));
-        aluno.setTelefone(aluno.getTelefone().replace("_", ""));
+        aluno.setTelefone(aluno.getTelefone().replace("(", "").replace(")", "").replace("-", "").replace("_", "")); 
+
         if (aluno.getTelefone().isEmpty() || aluno.getTelefone().equals("")) {
             throw new Exception("Telefone inválido");
         }
-
-        
-        
+        alunoDAO = new AlunoDAO();
+        alunoDAO.inserir(aluno);
     }
 
     public void alterar(Aluno aluno) throws Exception {

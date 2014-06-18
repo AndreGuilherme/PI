@@ -2,10 +2,15 @@ package br.senai.view;
 
 import br.senai.controller.AlunoController;
 import br.senai.model.Aluno;
+import br.senai.util.Utils;
+import java.awt.Color;
+import java.text.DecimalFormat;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 public class CadastroAlunoUI extends javax.swing.JInternalFrame {
-    
+
     private Aluno alunoAlteracao;
 
     /**
@@ -18,9 +23,39 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         rbSexoMascAluno.setSelected(true);
         if (aluno != null) {
             this.alunoAlteracao = aluno;
+            preencheAluno(aluno);
         }
     }
-    
+
+    private void preencheAluno(Aluno aluno) {
+        txtNomeAluno.setText(aluno.getDscNome().toString());
+        txtCPFAluno.setText(aluno.getDscCPF().toString());
+
+        if (aluno.getSexo() == 1) {
+            rbSexoMascAluno.isSelected();
+        } else {
+            rbSexoFemAluno.isSelected();
+        }
+
+        if (aluno.getStatus() == 1) {
+            checkAtivoAluno.setSelected(true);
+        } else {
+            checkAtivoAluno.setSelected(false);
+        }
+
+        txtAlturaAluno.setText(aluno.getAltura().toString());
+        txtPesoAluno.setText(aluno.getPeso().toString());
+        txtEnderecoAluno.setText(aluno.getDscEndereco().toString());
+        txtNumAluno.setText(aluno.getNunNumero().toString());
+        txtComplementoAluno.setText(aluno.getDscComplemento().toString());
+        txtBairroAluno.setText(aluno.getDscBairro().toString());
+        txtEmailAluno.setText(aluno.getDscEmail().toString());
+        txtTelefoneAluno.setText(aluno.getTelefone().toString());
+        txtCepAluno.setText(aluno.getDscCEP().toString());
+        txAreaObs.setText(aluno.getDscObservacao().toString());
+        jDateNasc.setDate(aluno.getDtDataNasc());
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -34,7 +69,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         javax.swing.text.MaskFormatter maskCPFAluno = null;
         try{
-            maskCPFAluno= new javax.swing.text.MaskFormatter("###.###.###.-##");
+            maskCPFAluno= new javax.swing.text.MaskFormatter("###.###.###-##");
             maskCPFAluno.setPlaceholderCharacter('_');
 
         }
@@ -101,6 +136,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         catch (java.text.ParseException exc) {}
         txtTelefoneAluno = new javax.swing.JFormattedTextField(maskTelAluno);
         jDateNasc = new com.toedter.calendar.JDateChooser();
+        lbValidado = new javax.swing.JLabel();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
 
@@ -117,6 +153,12 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
 
         jLabel4.setText("CPF:");
 
+        txtCPFAluno.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCPFAlunoFocusLost(evt);
+            }
+        });
+
         jLabel6.setText("Peso:");
 
         jLabel7.setText("Altura:");
@@ -130,12 +172,6 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         jLabel10.setText("Endereço:");
 
         jLabel11.setText("Nº:");
-
-        txtNumAluno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNumAlunoActionPerformed(evt);
-            }
-        });
 
         jLabel12.setText("Bairro:");
 
@@ -200,8 +236,6 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Ativo:");
 
-        lblImcAluno.setText("IMC");
-
         txAreaObs.setColumns(20);
         txAreaObs.setRows(5);
         jScrollPane3.setViewportView(txAreaObs);
@@ -221,6 +255,8 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                         .addComponent(jLabel4)
                         .addGap(30, 30, 30)
                         .addComponent(txtCPFAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lbValidado, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -274,22 +310,23 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                                 .addGap(25, 25, 25)
                                 .addComponent(rbSexoMascAluno)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(rbSexoFemAluno))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(26, 26, 26)
-                                .addComponent(txtPesoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtAlturaAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lblImcAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(checkAtivoAluno)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(rbSexoFemAluno)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addGap(26, 26, 26)
+                        .addComponent(txtPesoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtAlturaAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblImcAluno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(checkAtivoAluno)
+                        .addGap(28, 28, 28))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,29 +338,26 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                     .addComponent(jLabel19)
                     .addComponent(rbSexoMascAluno)
                     .addComponent(rbSexoFemAluno))
-                .addGap(4, 4, 4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCPFAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
                     .addComponent(jLabel3)
-                    .addComponent(jDateNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtAlturaAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblImcAluno))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(txtPesoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel7)
-                                .addComponent(jLabel6))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(7, 7, 7)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(checkAtivoAluno)
-                            .addComponent(jLabel5))))
+                    .addComponent(jDateNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbValidado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtAlturaAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblImcAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtPesoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel7)
+                        .addComponent(jLabel6))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(checkAtivoAluno)
+                        .addComponent(jLabel5)))
+                .addGap(7, 7, 7)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
                     .addComponent(txtEnderecoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -352,7 +386,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         btnSalvar.setText("Salvar");
@@ -363,6 +397,11 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -390,7 +429,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnCancelar))
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -420,7 +459,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 this.alunoAlteracao.setStatus(1); //Ativo
                 this.alunoAlteracao.setSexo(1);
                 if (rbSexoFemAluno.isSelected()) {
-                    this.alunoAlteracao.setSexo(2);                    
+                    this.alunoAlteracao.setSexo(2);
                 }
                 if (!txtAlturaAluno.getText().replace(".", "").equals("")) {
                     this.alunoAlteracao.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
@@ -429,7 +468,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                     this.alunoAlteracao.setPeso(Double.parseDouble(txtPesoAluno.getText()));
                 }
                 this.alunoAlteracao.setDtDataNasc(jDateNasc.getDate());
-                
+
                 AlunoController.obterInstancia().alterar(this.alunoAlteracao);
                 JOptionPane.showMessageDialog(this, "Aluno alterado com sucesso");
                 this.dispose();
@@ -443,56 +482,108 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 aluno.setDscEndereco(txtEnderecoAluno.getText());
                 aluno.setDscObservacao(txAreaObs.getText());
                 aluno.setDscCPF(txtCPFAluno.getText());
+                aluno.setTelefone(txtTelefoneAluno.getText());
                 if (!txtNumAluno.getText().equals("")) {
                     aluno.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
                 }
                 aluno.setStatus(1); //Ativo
                 aluno.setSexo(1);
                 if (rbSexoFemAluno.isSelected()) {
-                    aluno.setSexo(2);                    
+                    aluno.setSexo(2);
                 }
                 if (!txtAlturaAluno.getText().replace(".", "").equalsIgnoreCase("   ")) {
                     System.out.println(txtAlturaAluno.getText().replace(".", ""));
                     aluno.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
                 }
-                if (!txtPesoAluno.getText().replace(".", "").equals("")) {
+                if (!txtPesoAluno.getText().replace(".", "").equals("    ")) {
                     aluno.setPeso(Double.parseDouble(txtPesoAluno.getText()));
                 }
                 aluno.setDtDataNasc(jDateNasc.getDate());
-                
+
                 AlunoController.obterInstancia().inserir(aluno);
-                JOptionPane.showMessageDialog(this, "Aluno cadastrado com sucesso");
-                this.dispose();
+                JOptionPane.showMessageDialog(this, "Aluno cadastrado com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
+                this.limpaCamposTelas();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage());
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
-    private void txtNumAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumAlunoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNumAlunoActionPerformed
-    
+    private void txtCPFAlunoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCPFAlunoFocusLost
+        try {
+            Icon i = null;
+            //CPF:
+            String cpf = txtCPFAluno.getText().replace("-", "").replace(".", "").replace("_", "").toString();
+            //Valida se CPF informado é Valido e verifica se realmente foi informado algum CPF.
+            if (Utils.validarCPF(cpf)) {
+                i = new ImageIcon("src/imagens/Check_16x16.png");
+                lbValidado.setIcon(i);
+                txtCPFAluno.setBackground(Color.WHITE);
+
+                //Entra no else caso CPF invalido.
+            } else {
+                i = new ImageIcon("src/imagens/Delete_16x16.png");
+                lbValidado.setIcon(i);
+                //   txtCPFCNPJ.setBackground(Color.red);
+                txtCPFAluno.selectAll();
+                txtCPFAluno.setBackground(Color.LIGHT_GRAY);
+            }
+
+        } catch (StringIndexOutOfBoundsException e) {
+            lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
+            txtCPFAluno.setBackground(Color.getHSBColor(359, 53, 99));
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
+            txtCPFAluno.setBackground(Color.getHSBColor(359, 53, 99));
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_txtCPFAlunoFocusLost
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.limpaCamposTelas();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     private String CalcularIMC(Double altura, Double peso) {
+        DecimalFormat deci = new DecimalFormat("00.00");
         double imc = (peso / (altura * altura));
+        String bla = deci.format(imc);
         if (imc < 16) {
-            return "Muito abaixo do peso";
-        } else if ((imc >= 17) && (imc < 18.49)) {
-            return "Abaixo do peso.";
+            return "IMC: " + bla + ".Muito abaixo do peso";
+        } else if ((imc >= 16) && (imc < 18.49)) {
+            return "IMC: " + bla + ".Abaixo do peso.";
         } else if ((imc >= 18.5) && (imc < 24.99)) {
-            return "Peso normal.";
+            return "IMC: " + bla + ".Peso normal.";
         } else if ((imc >= 25) && (imc < 29.99)) {
-            return "Acima do peso.";
+            return "IMC: " + bla + ".Acima do peso.";
         } else if ((imc >= 30) && (imc < 34.99)) {
-            return "Obesidade I.";
+            return "IMC: " + bla + ".Obesidade I.";
         } else if ((imc >= 35) && (imc < 39.99)) {
-            return "Obesidade II (severa).";
+            return "IMC: " + bla + ".Obesidade II (severa).";
         } else {
-            return "Obesidade III (mórbida).";
+            return "IMC: " + bla + ".Obesidade III (mórbida).";
         }
     }
 
-
+    private void limpaCamposTelas() {
+        txtNomeAluno.setText("");
+        txtCPFAluno.setText("");
+        rbSexoMascAluno.isSelected();
+        checkAtivoAluno.isSelected();
+        txtAlturaAluno.setText("");
+        txtPesoAluno.setText("");
+        txtEnderecoAluno.setText("");
+        txtNumAluno.setText("");
+        txtComplementoAluno.setText("");
+        txtBairroAluno.setText("");
+        txtEmailAluno.setText("");
+        txtTelefoneAluno.setText("");
+        txtCepAluno.setText("");
+        txAreaObs.setText("");
+        lbValidado.setIcon(null);
+        txtCPFAluno.setBackground(Color.WHITE);
+        jDateNasc.setDate(null);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnPesquisaAula;
@@ -520,6 +611,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lbValidado;
     private javax.swing.JLabel lblImcAluno;
     private javax.swing.ButtonGroup rbGroupSexAluno;
     private javax.swing.JRadioButton rbSexoFemAluno;
@@ -538,4 +630,5 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtPesoAluno;
     private javax.swing.JTextField txtTelefoneAluno;
     // End of variables declaration//GEN-END:variables
+
 }

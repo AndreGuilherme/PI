@@ -34,11 +34,11 @@ public class AlunoDAO {
             SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
             //Query para inserir Pessoa
             System.out.println(aluno.getDscCPF());
-            aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
-            aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
-            aluno.setDscCEP(aluno.getDscCEP().replace("-", ""));
+//            aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
+//            aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
+//            aluno.setDscCEP(aluno.getDscCEP().replace("-", ""));
             String queryPessoa = "INSERT INTO pessoa (dsc_CPF, dsc_Nome, dt_DataNasc, dsc_Endereco, nun_Numero, \n"
-                    + "dsc_Bairro, dsc_CEP, dsc_Complemento, Sexo, dsc_Email, dsc_Observacao, Status) VALUES \n"
+                    + "dsc_Bairro, dsc_CEP, dsc_Complemento, Sexo, dsc_Email, dsc_Observacao, Status, dsc_Telefone) VALUES \n"
                     + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             //Query para inserir Aluno
             String queryAluno = "INSERT INTO aluno (id_Pessoa, Peso, Altura) VALUES ( ?, ?, ?);";
@@ -57,6 +57,7 @@ public class AlunoDAO {
             pstPessoa.setString(10, aluno.getDscEmail());
             pstPessoa.setString(11, aluno.getDscObservacao());
             pstPessoa.setString(12, aluno.getStatus().toString());
+            pstPessoa.setString(13, aluno.getTelefone().toString());
             pstPessoa.execute();
             //Inserindo o Id da Pessoa para o Aluno
             aluno.setNumIdPessoa(codigoUltimoPessoa());
@@ -77,7 +78,7 @@ public class AlunoDAO {
     public int codigoUltimoPessoa() {
         try {
             Statement executorSQL = con.getConnection().createStatement();
-            String sql = "SELECT * FROM pessoa where id_pessoa in (select Max(id_pessoa) from pessoa);";
+            String sql = "SELECT MAX(Id_Pessoa) FROM pessoa;";
             ResultSet resultado = executorSQL.executeQuery(sql);
             int id_pessoa = 0;
             while (resultado.next()) {
@@ -95,10 +96,10 @@ public class AlunoDAO {
     public Aluno obtemAluno(int id) {
         try {
             Statement executorSQL = con.getConnection().createStatement();
-            String sql = "SELECT p.*, a.id_Aluno, a.Peso, a.Altura FROM pessoa p"
-                    + "JOIN aluno a ON"
-                    + "a.id_Pessoa = p.id_Pessoa"
-                    + "WHERE a.id_aluno = " + id + ";";
+            String sql = "SELECT * FROM pessoa p \n"
+                    + " JOIN aluno a ON \n"
+                    + " a.id_Pessoa = p.id_Pessoa\n"
+                    + " WHERE a.id_aluno = " + id + ";";
             ResultSet rs = executorSQL.executeQuery(sql);
             while (rs.next()) {
                 Aluno a = new Aluno();
@@ -117,6 +118,8 @@ public class AlunoDAO {
                 a.setPeso(rs.getDouble("Peso"));
                 a.setAltura(rs.getDouble("Altura"));
                 a.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                a.setTelefone(rs.getString("dsc_Telefone"));
+                a.setDscObservacao(rs.getString("dsc_Observacao"));
                 return a;
             }
             executorSQL.close();

@@ -4,6 +4,10 @@
  */
 package br.senai.view;
 
+import br.senai.controller.AlunoController;
+import br.senai.model.Aluno;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author bruno_andrade
@@ -13,6 +17,8 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
     /**
      * Creates new form PesquisarAluno
      */
+    AlunoController contAluno;
+
     public ConsultaAlunoUI() {
         initComponents();
     }
@@ -48,6 +54,11 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
         jLabel1.setText("Pesquisa de Alunos");
 
         btnNovoAluno.setText("Novo");
+        btnNovoAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoAlunoActionPerformed(evt);
+            }
+        });
 
         btnAlterarAluno.setText("Alterar");
 
@@ -170,6 +181,20 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNovoAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoAlunoActionPerformed
+        try {
+            contAluno = new AlunoController();
+            Aluno bla = contAluno.obterAluno(1);
+            CadastroAlunoUI cadasAluno = new CadastroAlunoUI(bla);
+            cadasAluno.setVisible(true);
+            FormPrincipal.getPainelPrincipal().add(cadasAluno);
+        }catch(Exception e ){
+            JOptionPane.showMessageDialog(rootPane, "bla");
+        }
+
+    }//GEN-LAST:event_btnNovoAlunoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterarAluno;
     private javax.swing.JButton btnBuscarAlunos;

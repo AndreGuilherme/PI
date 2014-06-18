@@ -274,9 +274,6 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
 
     private void btnBuscarProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProfessorActionPerformed
         ProfessorController.obterInstancia().buscaProfessor(this);
-        ConsultaProfessorUI consultaProf = new ConsultaProfessorUI(true);
-        consultaProf.setVisible(true);
-        FormPrincipal.getPainelPrincipal().add(consultaProf);
     }//GEN-LAST:event_btnBuscarProfessorActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
