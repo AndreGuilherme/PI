@@ -2,6 +2,8 @@ package br.senai.controller;
 
 import br.senai.DAO.AlunoDAO;
 import br.senai.model.Aluno;
+import br.senai.util.Utils;
+import java.util.ArrayList;
 
 public class AlunoController {
 
@@ -22,7 +24,7 @@ public class AlunoController {
         aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
         aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
         aluno.setDscCPF(aluno.getDscCPF().replace("_", ""));
-        if (aluno.getDscCPF().isEmpty() || aluno.getDscCPF().equals("")) {
+        if (aluno.getDscCPF().isEmpty() || aluno.getDscCPF().equals("") || !Utils.validarCPF(aluno.getDscCPF())) {
             throw new Exception("CPF inválido");
         }
 
@@ -47,7 +49,7 @@ public class AlunoController {
 //        } catch (Exception e) {
 //            throw new Exception("Número invalido");
 //        }
-        aluno.setTelefone(aluno.getTelefone().replace("(", "").replace(")", "").replace("-", "").replace("_", "")); 
+        aluno.setTelefone(aluno.getTelefone().replace("(", "").replace(")", "").replace("-", "").replace("_", "").replace(" ", ""));
 
         if (aluno.getTelefone().isEmpty() || aluno.getTelefone().equals("")) {
             throw new Exception("Telefone inválido");
@@ -90,4 +92,7 @@ public class AlunoController {
         return AlunoDAO.obterInstancia().obtemAluno(id);
     }
 
+    public ArrayList<Aluno> listarTodos() {
+        return AlunoDAO.obterInstancia().listarTodos();
+    }
 }

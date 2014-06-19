@@ -6,7 +6,10 @@ package br.senai.view;
 
 import br.senai.controller.AlunoController;
 import br.senai.model.Aluno;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,9 +21,17 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
      * Creates new form PesquisarAluno
      */
     AlunoController contAluno;
+    private ArrayList<Aluno> listaAluno;
+    private boolean controleAluno;
 
-    public ConsultaAlunoUI() {
+    public ConsultaAlunoUI(boolean controle) {
         initComponents();
+        this.controleAluno = controle;
+        if (this.controleAluno) {
+            btnAlterarAluno.setText("Selecionar");
+            btnNovoAluno.setVisible(false);
+        }
+        atualizarTabelaAluno();
     }
 
     /**
@@ -61,6 +72,11 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
         });
 
         btnAlterarAluno.setText("Alterar");
+        btnAlterarAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarAlunoActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
 
@@ -185,16 +201,74 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
     private void btnNovoAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoAlunoActionPerformed
         try {
             contAluno = new AlunoController();
-            Aluno bla = contAluno.obterAluno(1);
+            Aluno bla = contAluno.obterAluno(2);
             CadastroAlunoUI cadasAluno = new CadastroAlunoUI(bla);
             cadasAluno.setVisible(true);
             FormPrincipal.getPainelPrincipal().add(cadasAluno);
-        }catch(Exception e ){
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "bla");
         }
 
     }//GEN-LAST:event_btnNovoAlunoActionPerformed
 
+    private void btnAlterarAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarAlunoActionPerformed
+        int linhaSelecionada = tableBuscaAlunos.getSelectedRow();
+        if (linhaSelecionada == -1) {
+            JOptionPane.showMessageDialog(null, "Selecione um Aluno");
+        } else {
+            Aluno aluno = new Aluno();
+            try {
+                for (int i = 0; i < listaAluno.size(); i++) {
+                    if (tableBuscaAlunos.getSelectedRow() == i) {
+                        aluno = this.listaAluno.get(i);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+
+//            if (this.controleAluno) {
+//                AlunoController.obterInstancia().preencheFormAula(aluno);
+//                this.dispose();
+//            } else {
+                CadastroAlunoUI cadastroAluno = new CadastroAlunoUI(aluno);
+                cadastroAluno.setVisible(true);
+                FormPrincipal.getPainelPrincipal().add(cadastroAluno);
+                this.dispose();
+                //Função de alteração do professor        
+            //}
+            tableBuscaAlunos.getSelectedRow();
+            atualizarTabelaAluno();
+        }
+    }//GEN-LAST:event_btnAlterarAlunoActionPerformed
+
+    private void atualizarTabelaAluno() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        SimpleDateFormat formatador = new SimpleDateFormat("dd-MM-yyyy");
+        modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
+        this.listaAluno = AlunoController.obterInstancia().listarTodos();
+        for (int i = 0; i < this.listaAluno.size(); i++) {
+            String sexo = "";
+            String status = "";
+            if (this.listaAluno.get(i).getSexo() == 0) {
+                sexo = "Masculino";
+            } else {
+                sexo = "Feminino";
+            }
+            if (this.listaAluno.get(i).getStatus() == 1) {
+                status = "Ativo";
+            } else {
+                status = "Inativo";
+            }
+            modelo.addRow(new Object[]{this.listaAluno.get(i).getDscNome(),
+                        this.listaAluno.get(i).getDscCPF(),
+                        formatador.format(this.listaAluno.get(i).getDtDataNasc()),
+                        sexo,
+                        status});
+        }
+        tableBuscaAlunos.setModel(modelo);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterarAluno;
     private javax.swing.JButton btnBuscarAlunos;

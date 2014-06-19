@@ -39,7 +39,7 @@ public class AlunoDAO {
 //            aluno.setDscCEP(aluno.getDscCEP().replace("-", ""));
             String queryPessoa = "INSERT INTO pessoa (dsc_CPF, dsc_Nome, dt_DataNasc, dsc_Endereco, nun_Numero, \n"
                     + "dsc_Bairro, dsc_CEP, dsc_Complemento, Sexo, dsc_Email, dsc_Observacao, Status, dsc_Telefone) VALUES \n"
-                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             //Query para inserir Aluno
             String queryAluno = "INSERT INTO aluno (id_Pessoa, Peso, Altura) VALUES ( ?, ?, ?);";
 
@@ -78,7 +78,7 @@ public class AlunoDAO {
     public int codigoUltimoPessoa() {
         try {
             Statement executorSQL = con.getConnection().createStatement();
-            String sql = "SELECT MAX(Id_Pessoa) FROM pessoa;";
+            String sql = "SELECT MAX(Id_Pessoa) as Id_Pessoa  FROM pessoa;";
             ResultSet resultado = executorSQL.executeQuery(sql);
             int id_pessoa = 0;
             while (resultado.next()) {

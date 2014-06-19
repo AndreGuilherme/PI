@@ -202,7 +202,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuCadProfessorActionPerformed
 
     private void jMenuPesAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesAlunoActionPerformed
-        ConsultaAlunoUI pesqAluno = new ConsultaAlunoUI();
+        ConsultaAlunoUI pesqAluno = new ConsultaAlunoUI(false);
         pesqAluno.setVisible(true);
         jdpPainelPrincipal.add(pesqAluno);
     }//GEN-LAST:event_jMenuPesAlunoActionPerformed
@@ -243,7 +243,7 @@ public class FormPrincipal extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows Classic".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

@@ -4,6 +4,7 @@ import br.senai.controller.AlunoController;
 import br.senai.model.Aluno;
 import br.senai.util.Utils;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.text.DecimalFormat;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -19,11 +20,14 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
      */
     public CadastroAlunoUI(Aluno aluno) {
         initComponents();
+        //centralizar();
         checkAtivoAluno.setSelected(true);
+        checkAtivoAluno.setEnabled(false);
         rbSexoMascAluno.setSelected(true);
         if (aluno != null) {
             this.alunoAlteracao = aluno;
             preencheAluno(aluno);
+            checkAtivoAluno.setEnabled(true);
         }
     }
 
@@ -45,12 +49,12 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
 
         txtAlturaAluno.setText(aluno.getAltura().toString());
         txtPesoAluno.setText(aluno.getPeso().toString());
-        txtEnderecoAluno.setText(aluno.getDscEndereco().toString());
+        txtEnderecoAluno.setText(aluno.getDscEndereco().toString().isEmpty() ? aluno.getDscEndereco().toString() : "");
         txtNumAluno.setText(aluno.getNunNumero().toString());
         txtComplementoAluno.setText(aluno.getDscComplemento().toString());
         txtBairroAluno.setText(aluno.getDscBairro().toString());
         txtEmailAluno.setText(aluno.getDscEmail().toString());
-        txtTelefoneAluno.setText(aluno.getTelefone().toString());
+        txtTelefoneAluno.setText(aluno.getTelefone().toString().isEmpty() ? aluno.getTelefone().toString() : "");
         txtCepAluno.setText(aluno.getDscCEP().toString());
         txAreaObs.setText(aluno.getDscObservacao().toString());
         jDateNasc.setDate(aluno.getDtDataNasc());
@@ -457,9 +461,9 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                     this.alunoAlteracao.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
                 }
                 this.alunoAlteracao.setStatus(1); //Ativo
-                this.alunoAlteracao.setSexo(1);
+                this.alunoAlteracao.setSexo(0);
                 if (rbSexoFemAluno.isSelected()) {
-                    this.alunoAlteracao.setSexo(2);
+                    this.alunoAlteracao.setSexo(1);
                 }
                 if (!txtAlturaAluno.getText().replace(".", "").equals("")) {
                     this.alunoAlteracao.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
@@ -531,11 +535,11 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
 
         } catch (StringIndexOutOfBoundsException e) {
             lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
-            txtCPFAluno.setBackground(Color.getHSBColor(359, 53, 99));
+            txtCPFAluno.setBackground(Color.LIGHT_GRAY);
             System.out.println(e.getMessage());
         } catch (Exception e) {
             lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
-            txtCPFAluno.setBackground(Color.getHSBColor(359, 53, 99));
+            txtCPFAluno.setBackground(Color.LIGHT_GRAY);
             System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_txtCPFAlunoFocusLost
@@ -631,4 +635,8 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtTelefoneAluno;
     // End of variables declaration//GEN-END:variables
 
+    private void centralizar() {
+        Dimension d = FormPrincipal.getPainelPrincipal().getSize();
+        this.setLocation((d.height - this.getHeight() / 2), (d.width - this.getWidth() / 2));
+    }
 }
