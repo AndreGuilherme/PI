@@ -26,6 +26,8 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
 
     public ConsultaAlunoUI(boolean controle) {
         initComponents();
+        rbPesquisaNome.setSelected(true);
+        checkAtivo.setSelected(true);
         this.controleAluno = controle;
         if (this.controleAluno) {
             btnAlterarAluno.setText("Selecionar");
@@ -43,6 +45,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        rbGroupPesquisa = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         btnNovoAluno = new javax.swing.JButton();
         btnAlterarAluno = new javax.swing.JButton();
@@ -98,15 +101,27 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Pesquisar:");
 
+        rbGroupPesquisa.add(rbPesquisaNome);
         rbPesquisaNome.setText("Nome");
 
+        rbGroupPesquisa.add(rbPesquisaCPF);
         rbPesquisaCPF.setText("CPF");
 
         btnBuscarAlunos.setText("Buscar");
+        btnBuscarAlunos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarAlunosActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Somente Ativos: ");
 
         btnLimparAlunos.setText("Limpar");
+        btnLimparAlunos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparAlunosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -201,9 +216,9 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
     private void btnNovoAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoAlunoActionPerformed
         try {
             contAluno = new AlunoController();
-            Aluno bla = contAluno.obterAluno(2);
-            CadastroAlunoUI cadasAluno = new CadastroAlunoUI(bla);
-            cadasAluno.setVisible(true);
+            CadastroAlunoUI cadasAluno = new CadastroAlunoUI(null);
+            this.hide();
+            cadasAluno.show();
             FormPrincipal.getPainelPrincipal().add(cadasAluno);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, "bla");
@@ -232,16 +247,42 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
 //                AlunoController.obterInstancia().preencheFormAula(aluno);
 //                this.dispose();
 //            } else {
-                CadastroAlunoUI cadastroAluno = new CadastroAlunoUI(aluno);
-                cadastroAluno.setVisible(true);
-                FormPrincipal.getPainelPrincipal().add(cadastroAluno);
-                this.dispose();
-                //Função de alteração do professor        
+            CadastroAlunoUI cadastroAluno = new CadastroAlunoUI(aluno);
+            cadastroAluno.show();
+            this.hide();
+            //cadastroAluno.setVisible(true);
+            FormPrincipal.getPainelPrincipal().add(cadastroAluno);
+            //this.dispose();
+            //Função de alteração do professor        
             //}
             tableBuscaAlunos.getSelectedRow();
             atualizarTabelaAluno();
         }
     }//GEN-LAST:event_btnAlterarAlunoActionPerformed
+
+    private void btnBuscarAlunosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAlunosActionPerformed
+        contAluno = new AlunoController();
+        String coluna = "";
+        Integer status = 0;
+        if (rbPesquisaCPF.isSelected()) {
+            coluna = "dsc_CPF";
+        } else if (rbPesquisaNome.isSelected()) {
+            coluna = "dsc_Nome";
+        }
+        if (checkAtivo.isSelected()) {
+            status = 1;
+        } else {
+            status = 0;
+        }
+        atualizarTabelaAluno(contAluno.getAlunoPesquisa(coluna.toString(), txtPesquisaAlunos.getText().toString(), status));
+    }//GEN-LAST:event_btnBuscarAlunosActionPerformed
+
+    private void btnLimparAlunosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparAlunosActionPerformed
+       rbPesquisaNome.setSelected(true);
+       checkAtivo.setSelected(true);
+       txtPesquisaAlunos.setText("");
+       atualizarTabelaAluno();
+    }//GEN-LAST:event_btnLimparAlunosActionPerformed
 
     private void atualizarTabelaAluno() {
         DefaultTableModel modelo = new DefaultTableModel();
@@ -262,10 +303,36 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
                 status = "Inativo";
             }
             modelo.addRow(new Object[]{this.listaAluno.get(i).getDscNome(),
-                        this.listaAluno.get(i).getDscCPF(),
-                        formatador.format(this.listaAluno.get(i).getDtDataNasc()),
-                        sexo,
-                        status});
+                this.listaAluno.get(i).getDscCPF(),
+                formatador.format(this.listaAluno.get(i).getDtDataNasc()),
+                sexo,
+                status});
+        }
+        tableBuscaAlunos.setModel(modelo);
+    }
+
+    private void atualizarTabelaAluno(ArrayList<Aluno> alunoPesquisa) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        SimpleDateFormat formatador = new SimpleDateFormat("dd-MM-yyyy");
+        modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
+        for (int i = 0; i < alunoPesquisa.size(); i++) {
+            String sexo = "";
+            String status = "";
+            if (alunoPesquisa.get(i).getSexo() == 0) {
+                sexo = "Masculino";
+            } else {
+                sexo = "Feminino";
+            }
+            if (alunoPesquisa.get(i).getStatus() == 1) {
+                status = "Ativo";
+            } else {
+                status = "Inativo";
+            }
+            modelo.addRow(new Object[]{alunoPesquisa.get(i).getDscNome(),
+                alunoPesquisa.get(i).getDscCPF(),
+                formatador.format(alunoPesquisa.get(i).getDtDataNasc()),
+                sexo,
+                status});
         }
         tableBuscaAlunos.setModel(modelo);
     }
@@ -281,9 +348,11 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.ButtonGroup rbGroupPesquisa;
     private javax.swing.JRadioButton rbPesquisaCPF;
     private javax.swing.JRadioButton rbPesquisaNome;
     private javax.swing.JTable tableBuscaAlunos;
     private javax.swing.JTextField txtPesquisaAlunos;
     // End of variables declaration//GEN-END:variables
+
 }

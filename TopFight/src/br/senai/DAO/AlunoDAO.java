@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -64,8 +65,8 @@ public class AlunoDAO {
             //Execução Query Pessoa
             PreparedStatement pstAluno = con.getConnection().prepareStatement(queryAluno);
             pstAluno.setString(1, aluno.getNumIdPessoa().toString());
-            pstAluno.setString(2, aluno.getAltura().toString());
-            pstAluno.setString(3, aluno.getPeso().toString());
+            pstAluno.setString(2, aluno.getPeso().toString());
+            pstAluno.setString(3, aluno.getAltura().toString());
             pstAluno.execute();
             con.closeConnection();
             pstAluno.close();
@@ -148,6 +149,8 @@ public class AlunoDAO {
                 a.setDscBairro(rs.getString("dsc_Bairro"));
                 a.setDscCEP(rs.getString("dsc_CEP"));
                 a.setDscComplemento(rs.getString("dsc_Complemento"));
+                a.setDscObservacao(rs.getString("dsc_Observacao"));
+                a.setTelefone(rs.getString("dsc_Telefone"));
                 a.setSexo(rs.getInt("Sexo"));
                 a.setDscEmail(rs.getString("dsc_Email"));
                 a.setStatus(rs.getInt("Status"));
@@ -163,21 +166,133 @@ public class AlunoDAO {
         }
         return this.listaAluno;
     }
-//
-//    public void alterar(Cliente cliente) {
-//        try {
-//            String query = "update cliente set nome = ?, cpf = ? where id = ?";
-//            PreparedStatement st = con.getConnection().prepareStatement(query);
-//            st.setString(1, cliente.getNome());
-//            st.setString(2, cliente.getCpf());
-//            st.setInt(3, cliente.getId());
-//            st.executeUpdate();
-//
-//            con.closeConnection();
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//    }
+
+    public void alterar(Aluno aluno) {
+        SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            String query = "update Pessoa AS p\n"
+                    + " JOIN aluno AS a  \n"
+                    + " ON p.id_Pessoa = a.id_Pessoa  \n"
+                    + "SET  \n"
+                    + "p.dsc_CPF = ?, \n"
+                    + "p.dsc_Nome = ?, \n"
+                    + "p.dt_DataNasc = ?, \n"
+                    + "p.dsc_Endereco = ?, \n"
+                    + "p.nun_Numero = ?,  \n"
+                    + "p.dsc_Bairro = ?, \n"
+                    + "p.dsc_CEP = ?, \n"
+                    + "p.dsc_Complemento = ?, \n"
+                    + "p.sexo = ?, \n"
+                    + "p.dsc_Email = ?, \n"
+                    + "p.dsc_Observacao = ?,  \n"
+                    + "p.Status = ?,\n"
+                    + "p.dsc_Telefone = ?, \n"
+                    + "a.Peso = ?, "
+                    + "a.Altura = ? \n"
+                    + "WHERE p.id_Pessoa = ?; ";
+            PreparedStatement st = con.getConnection().prepareStatement(query);
+            st.setString(1, aluno.getDscCPF());
+            st.setString(2, aluno.getDscNome());
+            st.setString(3, formatador.format(aluno.getDtDataNasc()));
+            st.setString(4, aluno.getDscEndereco());
+            st.setString(5, aluno.getNunNumero().toString());
+            st.setString(6, aluno.getDscBairro());
+            st.setString(7, aluno.getDscCEP());
+            st.setString(8, aluno.getDscComplemento());
+            st.setString(9, aluno.getSexo().toString());
+            st.setString(10, aluno.getDscEmail());
+            st.setString(11, aluno.getDscObservacao());
+            st.setString(12, aluno.getStatus().toString());
+            st.setString(13, aluno.getTelefone());
+            st.setString(14, aluno.getPeso().toString());
+            st.setString(15, aluno.getAltura().toString());
+            st.setString(16, aluno.getNumIdPessoa().toString());
+            //st.setInt(3, aluno.getId());
+            st.executeUpdate();
+            st.close();
+            con.closeConnection();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public ArrayList<Aluno> listarPesquisaAtivos(String coluna, String paramentro, Integer status) {
+        try {
+            this.listaAluno = new ArrayList<>();
+            Statement execSql = con.getConnection().createStatement();
+            String sql = "select * from Pessoa AS p \n"
+                    + " JOIN Aluno AS a \n"
+                    + " ON p.Id_Pessoa = a.Id_pessoa \n"
+                    + " where " + coluna + " like '%" + paramentro + "%' \n"
+                    + " AND Status = " + status + ";";
+            ResultSet rs = execSql.executeQuery(sql);
+            while (rs.next()) {
+                Aluno a = new Aluno();
+                a.setNumId(rs.getInt("id_Aluno"));
+                a.setDscNome(rs.getString("dsc_Nome"));
+                a.setDscCPF(rs.getString("dsc_CPF"));
+                a.setDtDataNasc(rs.getDate("dt_DataNasc"));
+                a.setDscEndereco(rs.getString("dsc_Endereco"));
+                a.setNunNumero(rs.getInt("nun_Numero"));
+                a.setDscBairro(rs.getString("dsc_Bairro"));
+                a.setDscCEP(rs.getString("dsc_CEP"));
+                a.setDscComplemento(rs.getString("dsc_Complemento"));
+                a.setDscObservacao(rs.getString("dsc_Observacao"));
+                a.setTelefone(rs.getString("dsc_Telefone"));
+                a.setSexo(rs.getInt("Sexo"));
+                a.setDscEmail(rs.getString("dsc_Email"));
+                a.setStatus(rs.getInt("Status"));
+                a.setPeso(rs.getDouble("Peso"));
+                a.setAltura(rs.getDouble("Altura"));
+                a.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                this.listaAluno.add(a);
+            }
+            rs.close();
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaAluno;
+    }
+
+    public ArrayList<Aluno> listarPesquisa(String coluna, String paramentro) {
+        try {
+            this.listaAluno = new ArrayList<>();
+            Statement execSql = con.getConnection().createStatement();
+            String sql = "select * from Pessoa AS p \n"
+                    + " JOIN Aluno AS a \n"
+                    + " ON p.Id_Pessoa = a.Id_pessoa \n"
+                    + " where " + coluna + " like '%" + paramentro + "%';";
+            ResultSet rs = execSql.executeQuery(sql);
+            while (rs.next()) {
+                Aluno a = new Aluno();
+                a.setNumId(rs.getInt("id_Aluno"));
+                a.setDscNome(rs.getString("dsc_Nome"));
+                a.setDscCPF(rs.getString("dsc_CPF"));
+                a.setDtDataNasc(rs.getDate("dt_DataNasc"));
+                a.setDscEndereco(rs.getString("dsc_Endereco"));
+                a.setNunNumero(rs.getInt("nun_Numero"));
+                a.setDscBairro(rs.getString("dsc_Bairro"));
+                a.setDscCEP(rs.getString("dsc_CEP"));
+                a.setDscComplemento(rs.getString("dsc_Complemento"));
+                a.setDscObservacao(rs.getString("dsc_Observacao"));
+                a.setTelefone(rs.getString("dsc_Telefone"));
+                a.setSexo(rs.getInt("Sexo"));
+                a.setDscEmail(rs.getString("dsc_Email"));
+                a.setStatus(rs.getInt("Status"));
+                a.setPeso(rs.getDouble("Peso"));
+                a.setAltura(rs.getDouble("Altura"));
+                a.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                this.listaAluno.add(a);
+            }
+            rs.close();
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaAluno;
+    }
+}
 //
 //    public void remover(Cliente cliente) throws Exception {
 //        try {
@@ -200,4 +315,4 @@ public class AlunoDAO {
 //        }
 //        return null;
 //    }
-}
+

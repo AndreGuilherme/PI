@@ -3,6 +3,8 @@ package br.senai.controller;
 import br.senai.DAO.AlunoDAO;
 import br.senai.model.Aluno;
 import br.senai.util.Utils;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class AlunoController {
@@ -28,8 +30,15 @@ public class AlunoController {
             throw new Exception("CPF inválido");
         }
 
+        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
         if (aluno.getDtDataNasc() == null) {
             throw new Exception("Data inválida");
+        } else {
+            try {
+                formatador.parse(aluno.getDtDataNasc().toString());
+            } catch (ParseException e) {
+                throw new Exception("Data inválida");
+            }
         }
 
         try {
@@ -44,11 +53,6 @@ public class AlunoController {
             throw new Exception("Altura inválida");
         }
 
-//        try {
-//            aluno.setNunNumero(Integer.parseInt(aluno.getNunNumero().toString()));
-//        } catch (Exception e) {
-//            throw new Exception("Número invalido");
-//        }
         aluno.setTelefone(aluno.getTelefone().replace("(", "").replace(")", "").replace("-", "").replace("_", "").replace(" ", ""));
 
         if (aluno.getTelefone().isEmpty() || aluno.getTelefone().equals("")) {
@@ -59,33 +63,41 @@ public class AlunoController {
     }
 
     public void alterar(Aluno aluno) throws Exception {
-        if (aluno.getDscNome().isEmpty()) {
+        if (aluno.getDscNome().isEmpty() || aluno.getDscNome() == null) {
             throw new Exception("Nome do Aluno inválido");
         }
-
         aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
         aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
-        if (aluno.getDscCPF().isEmpty() || aluno.getDscCPF().equals("")) {
+        aluno.setDscCPF(aluno.getDscCPF().replace("_", ""));
+        if (aluno.getDscCPF().isEmpty() || aluno.getDscCPF().equals("") || !Utils.validarCPF(aluno.getDscCPF())) {
             throw new Exception("CPF inválido");
         }
 
-        if (aluno.getNunNumero() == null || aluno.getNunNumero() == 0) {
-            throw new Exception("Número invalido");
-        }
-        if (aluno.getSexo() != 1 && aluno.getSexo() != 2) {
-            throw new Exception("Sexo inválido");
-        }
+        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
         if (aluno.getDtDataNasc() == null) {
             throw new Exception("Data inválida");
+        } else {
+            try {
+                formatador.parse(aluno.getDtDataNasc().toString());
+            } catch (ParseException e) {
+                throw new Exception("Data inválida");
+            }
         }
-        if (aluno.getPeso() == null) {
+
+        try {
+            aluno.setPeso(Double.parseDouble(aluno.getPeso().toString()));
+        } catch (Exception e) {
             throw new Exception("Peso inválido");
         }
-        if (aluno.getAltura() == null) {
+
+        try {
+            aluno.setAltura(Double.parseDouble(aluno.getAltura().toString()));
+        } catch (Exception e) {
             throw new Exception("Altura inválida");
         }
 
-        //AlunoDAO.obterInstancia().alterar(aluno);
+        AlunoDAO.obterInstancia()
+                .alterar(aluno);
     }
 
     public Aluno obterAluno(int id) throws Exception {
@@ -94,5 +106,15 @@ public class AlunoController {
 
     public ArrayList<Aluno> listarTodos() {
         return AlunoDAO.obterInstancia().listarTodos();
+    }
+
+    public ArrayList<Aluno> getAlunoPesquisa(String coluna, String paramentro, Integer status) {
+        alunoDAO = new AlunoDAO();
+        if (status == 1) {
+            return alunoDAO.listarPesquisaAtivos(coluna, paramentro, status);
+        } else {
+            return alunoDAO.listarPesquisa(coluna, paramentro);
+        }
+
     }
 }
