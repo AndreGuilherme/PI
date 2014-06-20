@@ -256,8 +256,24 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
         modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
         this.listaProf = ProfessorController.obterInstancia().listarTodos();
         for (int i = 0; i < this.listaProf.size(); i++) {
-            modelo.addRow(new Object[]{this.listaProf.get(i).getDscNome(), this.listaProf.get(i).getDscCPF(), this.listaProf.get(i).getDtDataNasc(),
-                this.listaProf.get(i).getSexo(), this.listaProf.get(i).getStatus()});
+            String sexo = "";
+            String status = "";
+            if(this.listaProf.get(i).getSexo() == 0){
+                sexo = "Masculino";
+            }else{
+                sexo = "Feminino";
+            }
+            if(this.listaProf.get(i).getStatus()== 0){
+                status = "Inativo";
+            }else{
+                status = "Ativo";
+            }
+            
+            modelo.addRow(new Object[]{this.listaProf.get(i).getDscNome(), 
+                this.listaProf.get(i).getDscCPF(), 
+                this.listaProf.get(i).getDtDataNasc(),
+                sexo, 
+                status});
         }
         tableProfessor.setModel(modelo);
     }

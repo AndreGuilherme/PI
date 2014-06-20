@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.senai.view;
 
 import br.senai.DAO.ProfessorDAO;
@@ -10,7 +6,6 @@ import br.senai.controller.ProfessorController;
 import br.senai.model.Aula;
 import br.senai.model.Professor;
 import java.sql.Time;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -18,17 +13,22 @@ import javax.swing.SpinnerNumberModel;
 
 public class CadastroAulaUI extends javax.swing.JInternalFrame {
 
-    AulaController aulaController;
-    Aula aula;
+    Aula aulaAlteracao;
     ProfessorDAO profDAO;
     Professor prof;
+
     /**
      * Creates new form Aula
+     *
+     * @param aula
      */
-    public CadastroAulaUI() {
+    public CadastroAulaUI(Aula aula) {
         initComponents();
         ajustQntAlunos();
         checkAtivoAula.setSelected(true);
+        if (aula != null) {
+            this.aulaAlteracao = aula;
+        }
     }
 
     private void ajustQntAlunos() {
@@ -39,17 +39,12 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         SpinnerNumberModel model = new SpinnerNumberModel(value, min, max, step);
         jQntAlunos.setModel(model);
     }
-    
-    public void recebeProfessor(Professor professor){
+
+    public void recebeProfessor(Professor professor) {
         txtProfessorAula.setText(professor.getDscNome());
         this.prof = professor;
     }
 
-    /**
-     * Dias da Semana 1- Segunda 2- terca 3- quarta 4- quinta 5- sexta 6- sabado
-     * 7- domingo
-     */
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -141,20 +136,22 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
                                         .addComponent(checkAtivoAula)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnBuscarProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtHrFinalAula))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtHrInicioAula, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jQntAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtHrFinalAula))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtHrInicioAula, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,7 +177,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jQntAlunos, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(checkAtivoAula, javax.swing.GroupLayout.Alignment.TRAILING))
@@ -230,44 +227,59 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-        aula = new Aula();
-        profDAO = new ProfessorDAO();
-        aulaController = new AulaController();
-
-        if (!txtHrFinalAula.getText().equals("__:__")) {
-            if (!txtHrInicioAula.getText().equals("__:__")) {
-                if (cbxDiaSemanaAula.getSelectedIndex() != 0) {
-                    if (isHour(txtHrInicioAula.getText())) {
-                        if (isHour(txtHrFinalAula.getText())) {
-                            aula.setDiaSemana(cbxDiaSemanaAula.getSelectedIndex());
-                            aula.sethFim(getHoraFinal());
-                            aula.sethInicio(getHoraInicio());
-                            aula.setNumeroAlunos(getQntAlunos());
-                            aula.setStatus(getIsActive());
-                            Professor bla = profDAO.obtemProfessor(1);
-                            aula.setProfessor(bla);
-                            if (aulaController.ValidaInsert(aula)) {
-                                if (aulaController.Salvar(aula)) {
-                                    this.limparCampos();
-                                    JOptionPane.showMessageDialog(rootPane, "Cadastrado com sucesso!");
-                                } else {
-                                    JOptionPane.showMessageDialog(rootPane, "Erro no Cadastro");
-                                }
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(rootPane, "Hora Final Invalido!");
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(rootPane, "Hora Inicio Invalido!");
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Dia da semana invalido!");
-                }
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Campo hora vazio");
+//        aula = new Aula();
+//        profDAO = new ProfessorDAO();
+//        aulaController = new AulaController();
+//
+//        if (!txtHrFinalAula.getText().equals("__:__")) {
+//            if (!txtHrInicioAula.getText().equals("__:__")) {
+//                if (cbxDiaSemanaAula.getSelectedIndex() != 0) {
+//                    if (isHour(txtHrInicioAula.getText())) {
+//                        if (isHour(txtHrFinalAula.getText())) {
+//                            aula.setDiaSemana(cbxDiaSemanaAula.getSelectedIndex());
+//                            aula.sethFim(getHoraFinal());
+//                            aula.sethInicio(getHoraInicio());
+//                            aula.setNumeroAlunos(getQntAlunos());
+//                            aula.setStatus(getIsActive());
+//                            Professor bla = profDAO.obtemProfessor(1);
+//                            aula.setProfessor(bla);
+//                            if (aulaController.ValidaInsert(aula)) {
+//                                if (aulaController.Salvar(aula)) {
+//                                    this.limparCampos();
+//                                    JOptionPane.showMessageDialog(rootPane, "Cadastrado com sucesso!");
+//                                } else {
+//                                    JOptionPane.showMessageDialog(rootPane, "Erro no Cadastro");
+//                                }
+//                            }
+//                        } else {
+//                            JOptionPane.showMessageDialog(rootPane, "Hora Final Invalido!");
+//                        }
+//                    } else {
+//                        JOptionPane.showMessageDialog(rootPane, "Hora Inicio Invalido!");
+//                    }
+//                } else {
+//                    JOptionPane.showMessageDialog(rootPane, "Dia da semana invalido!");
+//                }
+//            } else {
+//                JOptionPane.showMessageDialog(rootPane, "Campo hora vazio");
+//            }
+//        } else {
+//            JOptionPane.showMessageDialog(rootPane, "Campo hora vazio");
+//        }
+        try {
+            if (this.aulaAlteracao == null) {
+                Aula novaAula = new Aula();
+                novaAula.setDiaSemana(cbxDiaSemanaAula.getSelectedIndex());
+                novaAula.sethInicio(getHora(txtHrInicioAula.getText().toString()));
+                novaAula.sethFim(getHora(txtHrFinalAula.getText().toString()));
+                novaAula.setNumeroAlunos(getQntAlunos());
+                novaAula.setStatus(1);
+                novaAula.setProfessor(this.prof);
+                AulaController.obterInstancia().inserir(novaAula);
+                limparCampos();
             }
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Campo hora vazio");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
 
     }//GEN-LAST:event_btnSalvarActionPerformed
@@ -300,62 +312,46 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         return cbxDiaSemanaAula.getSelectedIndex();
     }
 
-    public Time getHoraInicio() {
-        String hrInicio = txtHrInicioAula.getText().toString();
-        if (isHour(hrInicio)) {
-            String str = hrInicio;
+    public Time getHora(String hora) {
+        String hr = hora;
+        try {
+            int horas = Integer.parseInt(hora.substring(0, 2));
+            int minutos = Integer.parseInt(hora.substring(3, 5));
+            if (horas > 24 || minutos > 59) {
+                return null;
+            }
             SimpleDateFormat formatador = new SimpleDateFormat("HH:mm");
             Date data = null;
-            try {
-                data = formatador.parse(str);
-            } catch (ParseException ex) {
-                JOptionPane.showMessageDialog(null, "Erro ao converter horas!");
-            }
+            data = formatador.parse(hr);
             Time time = new Time(data.getTime());
-            System.out.println(time);
             return time;
-            //return (Timestamp)formattedDate;
+        } catch (Exception e) {
+            return null;
         }
-        return null;
     }
 
-    public Boolean isHour(String hour) {
-        String hora = hour;
-        if (hora.equals("  :  ")) {
-            JOptionPane.showMessageDialog(null, "Digite a hora", "ERROR", JOptionPane.ERROR_MESSAGE);
-            return false;
+//    public Boolean isHour(String hour) {
+//        String hora = hour;
+//        if (hora.equals("  :  ")) {
+//            JOptionPane.showMessageDialog(null, "Digite a hora", "ERROR", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        }
+//        String horas = hora.substring(0, 2);
+//        String minutos = hora.substring(3, 5);
+//        int conta_horas = Integer.parseInt(horas);
+//        int conta_minutos = Integer.parseInt(minutos);
+//        if (conta_horas > 23 || conta_minutos > 59) {
+//            JOptionPane.showMessageDialog(null, "Hora digitada inválida", "ERROR", JOptionPane.ERROR_MESSAGE);
+//            return false;
+//        }
+//        return true;
+//    }
+    public int getQntAlunos() throws Exception {
+        try {
+            return (Integer) jQntAlunos.getValue();
+        } catch (Exception e) {
+            return 0;
         }
-        String horas = hora.substring(0, 2);
-        String minutos = hora.substring(3, 5);
-        int conta_horas = Integer.parseInt(horas);
-        int conta_minutos = Integer.parseInt(minutos);
-        if (conta_horas > 23 || conta_minutos > 59) {
-            JOptionPane.showMessageDialog(null, "Hora digitada inválida", "ERROR", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        return true;
-    }
-
-    public Time getHoraFinal() {
-        String hrFinal = txtHrFinalAula.getText().toString();
-        if (isHour(hrFinal)) {
-            String str = hrFinal;
-            SimpleDateFormat formatador = new SimpleDateFormat("HH:mm");
-            Date data = null;
-            try {
-                data = formatador.parse(str);
-            } catch (ParseException ex) {
-                JOptionPane.showMessageDialog(null, "Erro ao converter horas!");
-            }
-            Time time = new Time(data.getTime());
-            System.out.println(time);
-            return time;
-        }
-        return null;
-    }
-
-    public int getQntAlunos() {
-        return (Integer) jQntAlunos.getValue();
     }
 
     public int getIsActive() {

@@ -7,16 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Time;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 public class AulaDAO {
 
-    private ArrayList<Aula> listaAluno;
     private static AulaDAO instanciaRep;
     private ConexaoSingleton con;
-    private Professor professor;
 
     public static AulaDAO obterInstancia() {
         if (instanciaRep == null) {
@@ -26,7 +22,6 @@ public class AulaDAO {
     }
 
     public AulaDAO() {
-        this.listaAluno = new ArrayList<>();
         con = new ConexaoSingleton();
     }
 
@@ -47,46 +42,65 @@ public class AulaDAO {
             stmt.close();
             return true;
         } catch (SQLException e) {
-            System.out.println("Erro no insere Pessoa: " + e.toString());
-            JOptionPane.showMessageDialog(null, "CPF ou CNPJ ja existe na base, consulte o cliente!", "Erro", JOptionPane.INFORMATION_MESSAGE);
             return false;
 
         }
     }
 
-    public boolean ValidaHorarioAulas(Time hInicio, Time hFim, Integer numIdProfessor, int diaSemana) {
+//    public boolean ValidaHorarioAulas(Time hInicio, Time hFim, Integer numIdProfessor, int diaSemana) {
+//        try {
+//            Statement st = ConexaoSingleton.getConnection().createStatement();
+//            String sql = "select * from Aula AS a \n"
+//                    + " JOIN Professor p "
+//                    + "ON a.Id_Professor = p.Id_Professor \n"
+//                    + "where ((" + "'" + hInicio + "'" + " BETWEEN inicio AND fim) OR (" + "'" + hFim + "'" + " BETWEEN inicio AND fim))\n"
+//                    + "AND a.id_Professor = " + numIdProfessor + " \n"
+//                    + "AND DiaSemana = " + diaSemana + ";";
+//            ResultSet rs = st.executeQuery(sql);
+//            while (rs.next()) {
+//                Aula aula = new Aula();
+//                Professor prof = new Professor();
+//                Statement execProf = con.getConnection().createStatement();
+//                String sqlProf = "select * from Professor where id_Professor = " + rs.getInt("id_Professor") + ";";
+//                ResultSet resultProf = execProf.executeQuery(sqlProf);
+//                while (resultProf.next()) {
+//                    prof.setNumIdProfessor(rs.getInt("id_Professor"));
+//                    prof.setNumIdPessoa(rs.getInt("id_Pessoa"));
+//                }
+//                aula.setProfessor(prof);
+//                aula.sethInicio(rs.getTime("inicio"));
+//                aula.sethFim(rs.getTime("fim"));
+//                aula.setDiaSemana(rs.getInt("DiaSemana"));
+//                aula.setStatus(rs.getInt("status"));
+//                aula.setNumeroAlunos(rs.getInt("numAlunos"));
+//
+//                return false;
+//            }
+//            st.close();
+//            return true;
+//        } catch (SQLException e) {
+//            System.out.println("Erro ao validar horas: " + e.toString());
+//            return false;
+//        }
+//    }
+    
+    public boolean ValidaHorarioAulas(Aula aula) {
         try {
             Statement st = ConexaoSingleton.getConnection().createStatement();
             String sql = "select * from Aula AS a \n"
                     + " JOIN Professor p "
                     + "ON a.Id_Professor = p.Id_Professor \n"
-                    + "where ((" + "'" + hInicio + "'" + " BETWEEN inicio AND fim) OR (" + "'" + hFim + "'" + " BETWEEN inicio AND fim))\n"
-                    + "AND a.id_Professor = " + numIdProfessor + " \n"
-                    + "AND DiaSemana = " + diaSemana + ";";
+                    + "where ((" + "'" + aula.gethInicio() + "'" + " BETWEEN inicio AND fim) OR (" + "'" + aula.gethFim() + "'" + " BETWEEN inicio AND fim))\n"
+                    + "AND a.id_Professor = " + aula.getProfessor().getNumIdProfessor() + " \n"
+                    + "AND DiaSemana = " + aula.getDiaSemana() + ";";
             ResultSet rs = st.executeQuery(sql);
-            while (rs.next()) {
-                Aula aula = new Aula();
-                Professor prof = new Professor();
-                Statement execProf = con.getConnection().createStatement();
-                String sqlProf = "select * from Professor where id_Professor = " + rs.getInt("id_Professor") + ";";
-                ResultSet resultProf = execProf.executeQuery(sqlProf);
-                while (resultProf.next()) {
-                    prof.setNumIdProfessor(rs.getInt("id_Professor"));
-                    prof.setNumIdPessoa(rs.getInt("id_Pessoa"));
-                }
-                aula.setProfessor(prof);
-                aula.sethInicio(rs.getTime("inicio"));
-                aula.sethFim(rs.getTime("fim"));
-                aula.setDiaSemana(rs.getInt("DiaSemana"));
-                aula.setStatus(rs.getInt("status"));
-                aula.setNumeroAlunos(rs.getInt("numAlunos"));
-
+            if(rs.next()){
+                st.close();
                 return false;
             }
             st.close();
             return true;
         } catch (SQLException e) {
-            System.out.println("Erro ao validar horas: " + e.toString());
             return false;
         }
     }
