@@ -5,7 +5,6 @@
 package br.senai.view;
 
 import br.senai.controller.ProfessorController;
-import br.senai.model.Aluno;
 import br.senai.model.Professor;
 import br.senai.util.Utils;
 import java.awt.Color;
@@ -23,14 +22,18 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Professor
+     *
+     * @param professor
      */
     public CadastraProfessorUI(Professor professor) {
         initComponents();
         checkAtivoProfessor.setSelected(true);
+        checkAtivoProfessor.setEnabled(false);
         rbSexoMasc.setSelected(true);
         if (professor != null) {
             this.professorAlteracao = professor;
             preencheProfessor(professor);
+            checkAtivoProfessor.setEnabled(true);
         }
 
     }
@@ -51,112 +54,22 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
             checkAtivoProfessor.setSelected(false);
         }
 
-        txtEndereco.setText(professor.getDscEndereco().toString());
-        txtNum.setText(professor.getNunNumero().toString());
-        txtComplemento.setText(professor.getDscComplemento().toString());
-        txtBairro.setText(professor.getDscBairro().toString());
-        txtEmail.setText(professor.getDscEmail().toString());
-        txtTelefone.setText(professor.getTelefone().toString());
-        txtCEP.setText(professor.getDscCEP().toString());
-        txAreaObs.setText(professor.getDscObservacao().toString());
-        //txtDtNasc.setDate(professor.getDtDataNasc());
-    }
-
-    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {
-        try {
-            if (this.professorAlteracao != null) {
-                this.professorAlteracao.setDscNome(txtNomeProfessor.getText());
-                this.professorAlteracao.setDscCEP(txtCEP.getText());
-                this.professorAlteracao.setDscBairro(txtBairro.getText());
-                this.professorAlteracao.setDscComplemento(txtComplemento.getText());
-                this.professorAlteracao.setDscEmail(txtEmail.getText());
-                this.professorAlteracao.setDscEndereco(txtEndereco.getText());
-                this.professorAlteracao.setDscObservacao(txAreaObs.getText());
-                this.professorAlteracao.setDscCPF(txtCPF.getText());
-                if (!txtNum.getText().equals("")) {
-                    this.professorAlteracao.setNunNumero(Integer.parseInt(txtNum.getText()));
-                }
-                this.professorAlteracao.setStatus(1); //Ativo
-                this.professorAlteracao.setSexo(1);
-                if (rbSexoFem.isSelected()) {
-                    this.professorAlteracao.setSexo(2);
-                }
-
-                //this.professorAlteracao.setDtDataNasc(txtDtNasc.getDate());
-
-                ProfessorController.obterInstancia().alterar(this.professorAlteracao);
-                JOptionPane.showMessageDialog(this, "Professor alterado com sucesso");
-                this.dispose();
-            } else {
-                Professor professor = new Professor();
-                professor.setDscNome(txtNomeProfessor.getText());
-                professor.setDscCEP(txtCEP.getText());
-                professor.setDscBairro(txtBairro.getText());
-                professor.setDscComplemento(txtComplemento.getText());
-                professor.setDscEmail(txtEmail.getText());
-                professor.setDscEndereco(txtEndereco.getText());
-                professor.setDscObservacao(txAreaObs.getText());
-                professor.setDscCPF(txtCPF.getText());
-                professor.setTelefone(txtTelefone.getText());
-                if (!txtNum.getText().equals("")) {
-                    professor.setNunNumero(Integer.parseInt(txtNum.getText()));
-                }
-                professor.setStatus(1); //Ativo
-                professor.setSexo(1);
-                if (rbSexoFem.isSelected()) {
-                    professor.setSexo(2);
-                }
-                //professor.setDtDataNasc(txtDtNasc.getDate());
-
-                ProfessorController.obterInstancia().inserir(professor);
-                JOptionPane.showMessageDialog(this, "Professor cadastrado com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
-                this.limpaCamposTelas();
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void txtCPFAlunoFocusLost(java.awt.event.FocusEvent evt) {
-        try {
-            Icon i = null;
-            //CPF:
-            String cpf = txtCPF.getText().replace("-", "").replace(".", "").replace("_", "").toString();
-            //Valida se CPF informado é Valido e verifica se realmente foi informado algum CPF.
-            if (Utils.validarCPF(cpf)) {
-                i = new ImageIcon("src/imagens/Check_16x16.png");
-                lbValidado.setIcon(i);
-                txtCPF.setBackground(Color.WHITE);
-
-                //Entra no else caso CPF invalido.
-            } else {
-                i = new ImageIcon("src/imagens/Delete_16x16.png");
-                lbValidado.setIcon(i);
-                //   txtCPFCNPJ.setBackground(Color.red);
-                txtCPF.selectAll();
-                txtCPF.setBackground(Color.LIGHT_GRAY);
-            }
-
-        } catch (StringIndexOutOfBoundsException e) {
-            lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
-            txtCPF.setBackground(Color.LIGHT_GRAY);
-            System.out.println(e.getMessage());
-        } catch (Exception e) {
-            lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
-            txtCPF.setBackground(Color.LIGHT_GRAY);
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {
-        this.limpaCamposTelas();
+        txtEndereco.setText(professor.getDscEndereco() == null ? "" : professor.getDscEndereco().toString());
+        txtNum.setText(professor.getNunNumero() == null ? "" : professor.getNunNumero().toString());
+        txtComplemento.setText(professor.getDscComplemento() == null ? "" : professor.getDscComplemento().toString());
+        txtBairro.setText(professor.getDscBairro() == null ? "" : professor.getDscBairro().toString());
+        txtEmail.setText(professor.getDscEmail() == null ? "" : professor.getDscEmail().toString());
+        txtTelefone.setText(professor.getTelefone() == null ? "" : professor.getTelefone().toString());
+        txtCEP.setText(professor.getDscCEP() == null ? "" : professor.getDscCEP().toString());
+        txAreaObs.setText(professor.getDscObservacao() == null ? "" : professor.getDscObservacao().toString());
+        jDateNasc.setDate(professor.getDtDataNasc());
     }
 
     private void limpaCamposTelas() {
         txtNomeProfessor.setText("");
         txtCPF.setText("");
-        rbSexoMasc.isSelected();
-        checkAtivoProfessor.isSelected();
+        rbSexoMasc.setSelected(true);
+        checkAtivoProfessor.setSelected(true);
         txtEndereco.setText("");
         txtNum.setText("");
         txtComplemento.setText("");
@@ -167,7 +80,7 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         txAreaObs.setText("");
         lbValidado.setIcon(null);
         txtCPF.setBackground(Color.WHITE);
-        //txtDtNasc.setDate(null);
+        jDateNasc.setDate(null);
     }
 
     /**
@@ -179,6 +92,7 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         btnSalvar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -186,14 +100,6 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         jLabel2 = new javax.swing.JLabel();
         txtNomeProfessor = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        javax.swing.text.MaskFormatter maskDtNascProf = null;
-        try{
-            maskDtNascProf = new javax.swing.text.MaskFormatter("##/##/####");
-            maskDtNascProf.setPlaceholderCharacter('_');
-
-        }
-        catch (java.text.ParseException exc) {}
-        txtDtNasc = new javax.swing.JFormattedTextField(maskDtNascProf);
         jLabel4 = new javax.swing.JLabel();
         javax.swing.text.MaskFormatter maskCPFProf = null;
         try{
@@ -240,6 +146,7 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         txtCEP = new javax.swing.JFormattedTextField(maskCEPProf);
         jLabel13 = new javax.swing.JLabel();
         lbValidado = new javax.swing.JLabel();
+        jDateNasc = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
 
@@ -247,22 +154,32 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         jLabel1.setText("Cadastro de Professor");
 
         btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalvarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel2.setText("Nome:");
 
-        txtNomeProfessor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNomeProfessorActionPerformed(evt);
-            }
-        });
-
         jLabel3.setText("Data de Nasc.:");
 
         jLabel4.setText("CPF:");
+
+        txtCPF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCPFFocusLost(evt);
+            }
+        });
 
         jLabel10.setText("Endereço:");
 
@@ -272,18 +189,14 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
 
         jLabel14.setText("Complemento:");
 
-        txtComplemento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtComplementoActionPerformed(evt);
-            }
-        });
-
         jLabel17.setText("Obs:");
 
         jLabel19.setText("Sexo:");
 
+        buttonGroup1.add(rbSexoMasc);
         rbSexoMasc.setText("Masculino");
 
+        buttonGroup1.add(rbSexoFem);
         rbSexoFem.setText("Feminino");
 
         txAreaObs.setColumns(20);
@@ -297,6 +210,9 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         jLabel8.setText("Telefone:");
 
         jLabel13.setText("CEP:");
+
+        jDateNasc.setMaxSelectableDate(new java.util.Date(1420081275000L));
+        jDateNasc.setMinSelectableDate(new java.util.Date(-2208973937000L));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -367,8 +283,8 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
                                             .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jDateNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(2, 2, 2)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
@@ -376,21 +292,22 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel19)
-                    .addComponent(rbSexoMasc)
-                    .addComponent(rbSexoFem))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(lbValidado, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtDtNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtNomeProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19)
+                            .addComponent(rbSexoMasc)
+                            .addComponent(rbSexoFem))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(lbValidado, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3))
+                    .addComponent(jDateNasc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -423,7 +340,7 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -459,17 +376,105 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNomeProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomeProfessorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNomeProfessorActionPerformed
+    private void txtCPFFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCPFFocusLost
+        try {
+            Icon i = null;
+            //CPF:
+            String cpf = txtCPF.getText().replace("-", "").replace(".", "").replace("_", "").toString();
+            //Valida se CPF informado é Valido e verifica se realmente foi informado algum CPF.
+            if (Utils.validarCPF(cpf)) {
+                i = new ImageIcon("src/imagens/Check_16x16.png");
+                lbValidado.setIcon(i);
+                txtCPF.setBackground(Color.WHITE);
 
-    private void txtComplementoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtComplementoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtComplementoActionPerformed
+                //Entra no else caso CPF invalido.
+            } else {
+                i = new ImageIcon("src/imagens/Delete_16x16.png");
+                lbValidado.setIcon(i);
+                //   txtCPFCNPJ.setBackground(Color.red);
+                txtCPF.selectAll();
+                txtCPF.setBackground(Color.LIGHT_GRAY);
+            }
+
+        } catch (StringIndexOutOfBoundsException e) {
+            lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
+            txtCPF.setBackground(Color.LIGHT_GRAY);
+            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            lbValidado.setIcon(new ImageIcon("src/imagens/Delete_16x16.png"));
+            txtCPF.setBackground(Color.LIGHT_GRAY);
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_txtCPFFocusLost
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.limpaCamposTelas();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        try {
+            if (this.professorAlteracao != null) {
+                this.professorAlteracao.setDscNome(txtNomeProfessor.getText());
+                this.professorAlteracao.setDscCEP(txtCEP.getText());
+                this.professorAlteracao.setDscBairro(txtBairro.getText());
+                this.professorAlteracao.setDscComplemento(txtComplemento.getText());
+                this.professorAlteracao.setDscEmail(txtEmail.getText());
+                this.professorAlteracao.setDscEndereco(txtEndereco.getText());
+                this.professorAlteracao.setDscObservacao(txAreaObs.getText());
+                this.professorAlteracao.setDscCPF(txtCPF.getText());
+                if (!txtNum.getText().equals("")) {
+                    this.professorAlteracao.setNunNumero(Integer.parseInt(txtNum.getText()));
+                }
+                //Ativo
+                this.professorAlteracao.setStatus(1);
+                if (!checkAtivoProfessor.isSelected()) {
+                    this.professorAlteracao.setStatus(0);
+                }
+                this.professorAlteracao.setSexo(0);
+                if (rbSexoFem.isSelected()) {
+                    this.professorAlteracao.setSexo(1);
+                }
+                this.professorAlteracao.setDtDataNasc(jDateNasc.getDate());
+
+                ProfessorController.obterInstancia().alterar(this.professorAlteracao);
+                JOptionPane.showMessageDialog(this, "Professor alterado com sucesso");
+                this.dispose();
+            } else {
+                Professor professor = new Professor();
+                professor.setDscNome(txtNomeProfessor.getText());
+                professor.setDscCPF(txtCPF.getText());
+                professor.setDscCEP(txtCEP.getText());
+                professor.setDscBairro(txtBairro.getText());
+                professor.setDscComplemento(txtComplemento.getText());
+                professor.setDscEmail(txtEmail.getText());
+                professor.setDscEndereco(txtEndereco.getText());
+                professor.setDscObservacao(txAreaObs.getText());
+                professor.setTelefone(txtTelefone.getText());
+                if (!txtNum.getText().equals("")) {
+                    professor.setNunNumero(Integer.parseInt(txtNum.getText()));
+                }
+                professor.setStatus(1); //Ativo
+                professor.setSexo(0);
+                if (rbSexoFem.isSelected()) {
+                    professor.setSexo(1);
+                }
+                professor.setDtDataNasc(jDateNasc.getDate());
+
+                ProfessorController.obterInstancia().inserir(professor);
+                JOptionPane.showMessageDialog(this, "Professor cadastrado com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
+                this.limpaCamposTelas();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "ERRO", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox checkAtivoProfessor;
+    private com.toedter.calendar.JDateChooser jDateNasc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -494,7 +499,6 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtCEP;
     private javax.swing.JTextField txtCPF;
     private javax.swing.JTextField txtComplemento;
-    private javax.swing.JTextField txtDtNasc;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtNomeProfessor;

@@ -1,10 +1,16 @@
 package br.senai.util;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Andrade
  */
 public class Utils {
+
+    private ConexaoSingleton con;
 
     public static boolean validarCPF(String cpf) {
 
@@ -56,4 +62,23 @@ public class Utils {
         }
         return ret;
     }
+
+    public int codigoUltimoPessoa() {
+        try {
+            Statement executorSQL = con.getConnection().createStatement();
+            String sql = "SELECT MAX(Id_Pessoa) as Id_Pessoa  FROM pessoa;";
+            ResultSet resultado = executorSQL.executeQuery(sql);
+            int id_pessoa = 0;
+            while (resultado.next()) {
+                id_pessoa = resultado.getInt("id_pessoa");
+            }
+            executorSQL.close();
+            return id_pessoa;
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao Localizar ultima pessoa");
+            return 0;
+        }
+    }
+
 }

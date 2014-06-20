@@ -2,19 +2,20 @@ package br.senai.DAO;
 
 import br.senai.util.ConexaoSingleton;
 import br.senai.model.Professor;
+import br.senai.util.Utils;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 public class ProfessorDAO {
 
     private ArrayList<Professor> listaProfessor;
     private static ProfessorDAO instanciaRep;
     private ConexaoSingleton con;
+    private Utils utils;
 
     public static ProfessorDAO obterInstancia() {
         if (instanciaRep == null) {
@@ -23,18 +24,19 @@ public class ProfessorDAO {
         return instanciaRep;
     }
 
-    
     public ProfessorDAO() {
         this.listaProfessor = new ArrayList<>();
         con = new ConexaoSingleton();
     }
+
     public void inserir(Professor professor) {
         try {
+            utils = new Utils();
             SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
             //Query para inserir Pessoa
             String queryPessoa = "INSERT INTO pessoa (dsc_CPF, dsc_Nome, dt_DataNasc, dsc_Endereco, nun_Numero, \n"
-                    + "dsc_Bairro, dsc_CEP, dsc_Complemento, Sexo, dsc_Email, dsc_Observacao, Status) VALUES \n"
-                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                    + "dsc_Bairro, dsc_CEP, dsc_Complemento, Sexo, dsc_Email, dsc_Observacao, Status, dsc_Telefone) VALUES \n"
+                    + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             //Query para inserir Aluno
             String queryProfessor = "INSERT INTO professor (id_Pessoa) VALUES ( ? );";
 
@@ -52,9 +54,10 @@ public class ProfessorDAO {
             pstPessoa.setString(10, professor.getDscEmail());
             pstPessoa.setString(11, professor.getDscObservacao());
             pstPessoa.setString(12, professor.getStatus().toString());
+            pstPessoa.setString(13, professor.getTelefone());
             pstPessoa.execute();
             //Inserindo o Id da Pessoa para o Aluno
-            professor.setNumIdPessoa(codigoUltimoPessoa());
+            professor.setNumIdPessoa(utils.codigoUltimoPessoa());
             //Execução Query Pessoa
             PreparedStatement pstProfessor = con.getConnection().prepareStatement(queryProfessor);
             pstProfessor.setString(1, professor.getNumIdPessoa().toString());
@@ -65,24 +68,6 @@ public class ProfessorDAO {
             pstPessoa.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
-        }
-    }
-
-    public int codigoUltimoPessoa() {
-        try {
-            Statement executorSQL = con.getConnection().createStatement();
-            String sql = "SELECT * FROM pessoa where id_pessoa in (select Max(id_pessoa) from pessoa);";
-            ResultSet resultado = executorSQL.executeQuery(sql);
-            int id_pessoa = 0;
-            while (resultado.next()) {
-                id_pessoa = resultado.getInt("id_pessoa");
-            }
-            executorSQL.close();
-            return id_pessoa;
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao Localizar ultima pessoa");
-            return 0;
         }
     }
 
@@ -108,7 +93,9 @@ public class ProfessorDAO {
                 f.setDscComplemento(rs.getString("dsc_Complemento"));
                 f.setSexo(rs.getInt("Sexo"));
                 f.setDscEmail(rs.getString("dsc_Email"));
+                f.setDscObservacao(rs.getString("dsc_Observacao"));
                 f.setStatus(rs.getInt("Status"));
+                f.setTelefone(rs.getString("dsc_Telefone"));
 
                 f.setNumIdPessoa(rs.getInt("id_Pessoa"));
                 this.listaProfessor.add(f);
@@ -134,7 +121,7 @@ public class ProfessorDAO {
             }
             st.close();
             return null;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return null;
         }
     }
@@ -143,9 +130,22 @@ public class ProfessorDAO {
         try {
             SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
             //Query para update pessoa;
-            String queryPessoa = "update pessoa set dsc_CPF = ?, dsc_Nome = ?, dt_DataNasc = ?, dsc_Endereco = ?, num_Numero = ?,"
-                    + "dsc_Bairro = ?, dsc_CEP = ?, dsc_Complemento = ?, Sexo = ?, dsc_Email = ?, dsc_Obsrevacao = ?, Status = ? ";
-            String queryProfessor = "update professor set id_Pessoa = ? ";
+            String queryPessoa = "UPDATE Pessoa AS p "
+                    + "SET  \n"
+                    + "p.dsc_CPF = ?, \n"
+                    + "p.dsc_Nome = ?, \n"
+                    + "p.dt_DataNasc = ?, \n"
+                    + "p.dsc_Endereco = ?, \n"
+                    + "p.nun_Numero = ?,  \n"
+                    + "p.dsc_Bairro = ?, \n"
+                    + "p.dsc_CEP = ?, \n"
+                    + "p.dsc_Complemento = ?, \n"
+                    + "p.sexo = ?, \n"
+                    + "p.dsc_Email = ?, \n"
+                    + "p.dsc_Observacao = ?,  \n"
+                    + "p.Status = ?,\n"
+                    + "p.dsc_Telefone = ?, \n"
+                    + "WHERE p.id_Pessoa = ?; ";
 
             //Execução Query Pessoa 
             PreparedStatement pstPessoa = con.getConnection().prepareStatement(queryPessoa);
@@ -161,26 +161,20 @@ public class ProfessorDAO {
             pstPessoa.setString(10, professor.getDscEmail());
             pstPessoa.setString(11, professor.getDscObservacao());
             pstPessoa.setString(12, professor.getStatus().toString());
+            pstPessoa.setString(13, professor.getTelefone().toString());
+            pstPessoa.setString(14, professor.getNumIdPessoa().toString());
+
             pstPessoa.executeUpdate();
 
-            //Inserindo o Id da Pessoa para o Professor
-            professor.setNumIdPessoa(codigoUltimoPessoa());
-
-            //Execução Query Professor
-            PreparedStatement pstProfessor = con.getConnection().prepareStatement(queryProfessor);
-            pstProfessor.setString(1, professor.getNumIdPessoa().toString());
-            pstProfessor.executeUpdate();
             con.closeConnection();
-            pstProfessor.close();
             pstPessoa.close();
-
             con.closeConnection();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
     }
-    
+
     public ArrayList<Professor> listarPesquisaAtivos(String coluna, String paramentro, Integer status) {
         try {
             this.listaProfessor = new ArrayList<>();
@@ -205,6 +199,8 @@ public class ProfessorDAO {
                 f.setSexo(resultado.getInt("Sexo"));
                 f.setDscEmail(resultado.getString("dsc_Email"));
                 f.setStatus(resultado.getInt("Status"));
+                f.setDscObservacao(resultado.getString("dsc_Observacao"));
+                f.setTelefone(resultado.getString("dsc_Telefone"));
 
                 f.setNumIdPessoa(resultado.getInt("id_Pessoa"));
                 this.listaProfessor.add(f);
@@ -240,6 +236,7 @@ public class ProfessorDAO {
                 f.setSexo(resultado.getInt("Sexo"));
                 f.setDscEmail(resultado.getString("dsc_Email"));
                 f.setStatus(resultado.getInt("Status"));
+                f.setTelefone(resultado.getString("dsc_Telefone"));
 
                 f.setNumIdPessoa(resultado.getInt("id_Pessoa"));
                 this.listaProfessor.add(f);

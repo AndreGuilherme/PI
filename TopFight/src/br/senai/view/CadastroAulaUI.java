@@ -26,8 +26,10 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         initComponents();
         ajustQntAlunos();
         checkAtivoAula.setSelected(true);
+        checkAtivoAula.setEnabled(false);
         if (aula != null) {
             this.aulaAlteracao = aula;
+            checkAtivoAula.setEnabled(true);
         }
     }
 
@@ -41,6 +43,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
     }
 
     public void recebeProfessor(Professor professor) {
+        this.show();
         txtProfessorAula.setText(professor.getDscNome());
         this.prof = professor;
     }
@@ -101,7 +104,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
             }
         });
 
-        cbxDiaSemanaAula.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione um dia da semana", "Segunda-Feira", "Terca-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sabado", "Domingo" }));
+        cbxDiaSemanaAula.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione um dia da semana", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" }));
 
         jLabel2.setText("Hora inicial:");
 
@@ -227,45 +230,6 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
-//        aula = new Aula();
-//        profDAO = new ProfessorDAO();
-//        aulaController = new AulaController();
-//
-//        if (!txtHrFinalAula.getText().equals("__:__")) {
-//            if (!txtHrInicioAula.getText().equals("__:__")) {
-//                if (cbxDiaSemanaAula.getSelectedIndex() != 0) {
-//                    if (isHour(txtHrInicioAula.getText())) {
-//                        if (isHour(txtHrFinalAula.getText())) {
-//                            aula.setDiaSemana(cbxDiaSemanaAula.getSelectedIndex());
-//                            aula.sethFim(getHoraFinal());
-//                            aula.sethInicio(getHoraInicio());
-//                            aula.setNumeroAlunos(getQntAlunos());
-//                            aula.setStatus(getIsActive());
-//                            Professor bla = profDAO.obtemProfessor(1);
-//                            aula.setProfessor(bla);
-//                            if (aulaController.ValidaInsert(aula)) {
-//                                if (aulaController.Salvar(aula)) {
-//                                    this.limparCampos();
-//                                    JOptionPane.showMessageDialog(rootPane, "Cadastrado com sucesso!");
-//                                } else {
-//                                    JOptionPane.showMessageDialog(rootPane, "Erro no Cadastro");
-//                                }
-//                            }
-//                        } else {
-//                            JOptionPane.showMessageDialog(rootPane, "Hora Final Invalido!");
-//                        }
-//                    } else {
-//                        JOptionPane.showMessageDialog(rootPane, "Hora Inicio Invalido!");
-//                    }
-//                } else {
-//                    JOptionPane.showMessageDialog(rootPane, "Dia da semana invalido!");
-//                }
-//            } else {
-//                JOptionPane.showMessageDialog(rootPane, "Campo hora vazio");
-//            }
-//        } else {
-//            JOptionPane.showMessageDialog(rootPane, "Campo hora vazio");
-//        }
         try {
             if (this.aulaAlteracao == null) {
                 Aula novaAula = new Aula();
@@ -275,7 +239,9 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
                 novaAula.setNumeroAlunos(getQntAlunos());
                 novaAula.setStatus(1);
                 novaAula.setProfessor(this.prof);
+
                 AulaController.obterInstancia().inserir(novaAula);
+                JOptionPane.showMessageDialog(rootPane, "Aula cadastrada com Sucesso!", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
                 limparCampos();
             }
         } catch (Exception e) {
@@ -285,6 +251,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void btnBuscarProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarProfessorActionPerformed
+        this.hide();
         ProfessorController.obterInstancia().buscaProfessor(this);
     }//GEN-LAST:event_btnBuscarProfessorActionPerformed
 
@@ -330,22 +297,6 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         }
     }
 
-//    public Boolean isHour(String hour) {
-//        String hora = hour;
-//        if (hora.equals("  :  ")) {
-//            JOptionPane.showMessageDialog(null, "Digite a hora", "ERROR", JOptionPane.ERROR_MESSAGE);
-//            return false;
-//        }
-//        String horas = hora.substring(0, 2);
-//        String minutos = hora.substring(3, 5);
-//        int conta_horas = Integer.parseInt(horas);
-//        int conta_minutos = Integer.parseInt(minutos);
-//        if (conta_horas > 23 || conta_minutos > 59) {
-//            JOptionPane.showMessageDialog(null, "Hora digitada inválida", "ERROR", JOptionPane.ERROR_MESSAGE);
-//            return false;
-//        }
-//        return true;
-//    }
     public int getQntAlunos() throws Exception {
         try {
             return (Integer) jQntAlunos.getValue();

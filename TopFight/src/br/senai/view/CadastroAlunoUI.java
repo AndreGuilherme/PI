@@ -1,7 +1,6 @@
 package br.senai.view;
 
 import br.senai.controller.AlunoController;
-import br.senai.controller.AulaController;
 import br.senai.model.Aluno;
 import br.senai.util.Utils;
 import java.awt.Color;
@@ -51,10 +50,10 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         txtAlturaAluno.setText(aluno.getAltura().toString());
         txtPesoAluno.setText(aluno.getPeso().toString());
         txtEnderecoAluno.setText(aluno.getDscEndereco() == null ? "" : aluno.getDscEndereco().toString());
-        txtNumAluno.setText(aluno.getNunNumero().toString());
-        txtComplementoAluno.setText(aluno.getDscComplemento().toString());
-        txtBairroAluno.setText(aluno.getDscBairro().toString());
-        txtEmailAluno.setText(aluno.getDscEmail().toString());
+        txtNumAluno.setText(aluno.getNunNumero() == null ? "" : aluno.getNunNumero().toString());
+        txtComplementoAluno.setText(aluno.getDscComplemento() == null ? "" : aluno.getDscComplemento().toString());
+        txtBairroAluno.setText(aluno.getDscBairro() == null ? "" : aluno.getDscBairro().toString());
+        txtEmailAluno.setText(aluno.getDscEmail() == null ? "" : aluno.getDscEmail().toString());
         txtTelefoneAluno.setText(aluno.getTelefone() == null ? "" : aluno.getTelefone().toString());
         txtCepAluno.setText(aluno.getDscCEP() == null ? "" : aluno.getDscCEP().toString());
         txAreaObs.setText(aluno.getDscObservacao() == null ? "" : aluno.getDscObservacao().toString());
@@ -253,6 +252,9 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         jLabel16.setText("E-mail: ");
 
         jLabel8.setText("Telefone:");
+
+        jDateNasc.setMaxSelectableDate(new java.util.Date(1420081262000L));
+        jDateNasc.setMinSelectableDate(new java.util.Date(-2208973950000L));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -559,7 +561,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnPesquisaAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaAulaActionPerformed
-         //AulaController.obterInstancia().buscaAulas(this);
+        //AulaController.obterInstancia().buscaAulas(this);
     }//GEN-LAST:event_btnPesquisaAulaActionPerformed
 
     private String CalcularIMC(Double altura, Double peso) {
@@ -586,8 +588,8 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     private void limpaCamposTelas() {
         txtNomeAluno.setText("");
         txtCPFAluno.setText("");
-        rbSexoMascAluno.isSelected();
-        checkAtivoAluno.isSelected();
+        rbSexoMascAluno.setSelected(true);
+        checkAtivoAluno.setSelected(true);
         txtAlturaAluno.setText("");
         txtPesoAluno.setText("");
         txtEnderecoAluno.setText("");

@@ -17,30 +17,7 @@ public class AulaController {
         }
         return instanciaRep;
     }
-
-//    public boolean Salvar(Aula aula) {
-//        aulaDAO = new AulaDAO();
-//        return aulaDAO.insertAula(aula);
-//    }
-
-//    public boolean ValidaInsert(Aula aula) {
-//        aulaDAO = new AulaDAO();
-//        Time hrInicio = aula.gethInicio();
-//        Time hrFinal = aula.gethFim();
-//        int idProfessor = aula.getProfessor().getNumIdProfessor();
-//        int diaSemana = aula.getDiaSemana();
-//
-//        if (aulaDAO.ValidaHorarioAulas(hrInicio, hrFinal, idProfessor, diaSemana)) {
-//            System.out.println("Pode ser inserido");
-//            return true;
-//        } else {
-//            JOptionPane.showMessageDialog(null, "ERRO!\n"
-//                    + "Professor já tem aula nesse dia e hora.", "Informação", JOptionPane.INFORMATION_MESSAGE);
-//            return false;
-//        }
-//
-//    }
-
+    
     public void inserir(Aula aula) throws Exception {
         if (aula.getDiaSemana() == 0) {
             throw new Exception("Dia da semana invalido!");
@@ -57,14 +34,14 @@ public class AulaController {
         if (aula.getNumeroAlunos() < 10) {
             throw new Exception("Precisa de no mínimo 10 alunos");
         }
-        
+
         long diferencaTempo = ((aula.gethFim().getTime() - aula.gethInicio().getTime()) / (Tempo.MINUTE_IN_MILLIS.getValue()));
         if (diferencaTempo < 30) {
-            throw new Exception("A aula precisa ter pelo menos 30 minutos");
+            throw new Exception("Tempo minimo de aula é de 30 minutos. \n Favor ajustar.");
         }
-        
-        if(!AulaDAO.obterInstancia().ValidaHorarioAulas(aula)){
-            throw new Exception("Ja existe aula com esse professor cadastrada nesse horario");
+
+        if (!AulaDAO.obterInstancia().ValidaHorarioAulas(aula)) {
+            throw new Exception("Professor " + aula.getProfessor().getDscNome() + ", já possiu uma aula cadastrada nesse dia e horário.");
         }
         AulaDAO.obterInstancia().insertAula(aula);
     }

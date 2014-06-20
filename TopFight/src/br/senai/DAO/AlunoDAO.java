@@ -2,20 +2,20 @@ package br.senai.DAO;
 
 import br.senai.model.Aluno;
 import br.senai.util.ConexaoSingleton;
+import br.senai.util.Utils;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 
 public class AlunoDAO {
 
     private ArrayList<Aluno> listaAluno;
     private static AlunoDAO instanciaRep;
     private ConexaoSingleton con;
+    private Utils utils;
 
     /*SINGLETON*/
     public static AlunoDAO obterInstancia() {
@@ -32,12 +32,9 @@ public class AlunoDAO {
 
     public void inserir(Aluno aluno) {
         try {
+            utils = new Utils();
             SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
-            //Query para inserir Pessoa
-            System.out.println(aluno.getDscCPF());
-//            aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
-//            aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
-//            aluno.setDscCEP(aluno.getDscCEP().replace("-", ""));
+            //Query para inserir Pessoa            
             String queryPessoa = "INSERT INTO pessoa (dsc_CPF, dsc_Nome, dt_DataNasc, dsc_Endereco, nun_Numero, \n"
                     + "dsc_Bairro, dsc_CEP, dsc_Complemento, Sexo, dsc_Email, dsc_Observacao, Status, dsc_Telefone) VALUES \n"
                     + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -61,7 +58,7 @@ public class AlunoDAO {
             pstPessoa.setString(13, aluno.getTelefone().toString());
             pstPessoa.execute();
             //Inserindo o Id da Pessoa para o Aluno
-            aluno.setNumIdPessoa(codigoUltimoPessoa());
+            aluno.setNumIdPessoa(utils.codigoUltimoPessoa());
             //Execução Query Pessoa
             PreparedStatement pstAluno = con.getConnection().prepareStatement(queryAluno);
             pstAluno.setString(1, aluno.getNumIdPessoa().toString());
@@ -73,24 +70,6 @@ public class AlunoDAO {
             pstPessoa.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
-        }
-    }
-
-    public int codigoUltimoPessoa() {
-        try {
-            Statement executorSQL = con.getConnection().createStatement();
-            String sql = "SELECT MAX(Id_Pessoa) as Id_Pessoa  FROM pessoa;";
-            ResultSet resultado = executorSQL.executeQuery(sql);
-            int id_pessoa = 0;
-            while (resultado.next()) {
-                id_pessoa = resultado.getInt("id_pessoa");
-            }
-            executorSQL.close();
-            return id_pessoa;
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Erro ao Localizar ultima pessoa");
-            return 0;
         }
     }
 

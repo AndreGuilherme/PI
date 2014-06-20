@@ -1,5 +1,4 @@
 package br.senai.view;
-
 import br.senai.controller.ProfessorController;
 import br.senai.model.Professor;
 import java.util.ArrayList;
@@ -12,6 +11,8 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
 
     public ConsultaProfessorUI(boolean controle) {
         initComponents();
+        rbNome.setSelected(true);
+        checkAtivo.setSelected(true);
         this.controleProfessor = controle;
         if (this.controleProfessor) {
             btnAlterar.setText("Selecionar");
@@ -245,8 +246,24 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
         for (int i = 0; i < profPesquisa.size(); i++) {
-            modelo.addRow(new Object[]{profPesquisa.get(i).getDscNome(), profPesquisa.get(i).getDscCPF(), profPesquisa.get(i).getDtDataNasc(),
-                profPesquisa.get(i).getSexo(), profPesquisa.get(i).getStatus()});
+            String sexo = "";
+            String status = "";
+            if (profPesquisa.get(i).getSexo() == 0) {
+                sexo = "Masculino";
+            } else {
+                sexo = "Feminino";
+            }
+            if (profPesquisa.get(i).getStatus() == 0) {
+                status = "Inativo";
+            } else {
+                status = "Ativo";
+            }
+
+            modelo.addRow(new Object[]{profPesquisa.get(i).getDscNome(),
+                profPesquisa.get(i).getDscCPF(),
+                profPesquisa.get(i).getDtDataNasc(),
+                sexo,
+                status});
         }
         tableProfessor.setModel(modelo);
     }
@@ -258,21 +275,21 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
         for (int i = 0; i < this.listaProf.size(); i++) {
             String sexo = "";
             String status = "";
-            if(this.listaProf.get(i).getSexo() == 0){
+            if (this.listaProf.get(i).getSexo() == 0) {
                 sexo = "Masculino";
-            }else{
+            } else {
                 sexo = "Feminino";
             }
-            if(this.listaProf.get(i).getStatus()== 0){
+            if (this.listaProf.get(i).getStatus() == 0) {
                 status = "Inativo";
-            }else{
+            } else {
                 status = "Ativo";
             }
-            
-            modelo.addRow(new Object[]{this.listaProf.get(i).getDscNome(), 
-                this.listaProf.get(i).getDscCPF(), 
+
+            modelo.addRow(new Object[]{this.listaProf.get(i).getDscNome(),
+                this.listaProf.get(i).getDscCPF(),
                 this.listaProf.get(i).getDtDataNasc(),
-                sexo, 
+                sexo,
                 status});
         }
         tableProfessor.setModel(modelo);

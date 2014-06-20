@@ -3,8 +3,6 @@ package br.senai.controller;
 import br.senai.DAO.AlunoDAO;
 import br.senai.model.Aluno;
 import br.senai.util.Utils;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class AlunoController {
@@ -23,22 +21,13 @@ public class AlunoController {
         if (aluno.getDscNome().isEmpty() || aluno.getDscNome() == null) {
             throw new Exception("Nome do Aluno inválido");
         }
-        aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
-        aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
-        aluno.setDscCPF(aluno.getDscCPF().replace("_", ""));
+        aluno.setDscCPF(aluno.getDscCPF().replace("-", "").replace(".", "").replace("_", ""));
         if (aluno.getDscCPF().isEmpty() || aluno.getDscCPF().equals("") || !Utils.validarCPF(aluno.getDscCPF())) {
             throw new Exception("CPF inválido");
         }
 
-        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
         if (aluno.getDtDataNasc() == null) {
             throw new Exception("Data inválida");
-        } else {
-            try {
-                formatador.parse(aluno.getDtDataNasc().toString());
-            } catch (ParseException e) {
-                throw new Exception("Data inválida");
-            }
         }
 
         try {
@@ -66,22 +55,13 @@ public class AlunoController {
         if (aluno.getDscNome().isEmpty() || aluno.getDscNome() == null) {
             throw new Exception("Nome do Aluno inválido");
         }
-        aluno.setDscCPF(aluno.getDscCPF().replace("-", ""));
-        aluno.setDscCPF(aluno.getDscCPF().replace(".", ""));
-        aluno.setDscCPF(aluno.getDscCPF().replace("_", ""));
+        aluno.setDscCPF(aluno.getDscCPF().replace("-", "").replace(".", "").replace("_", ""));
         if (aluno.getDscCPF().isEmpty() || aluno.getDscCPF().equals("") || !Utils.validarCPF(aluno.getDscCPF())) {
             throw new Exception("CPF inválido");
         }
 
-        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
         if (aluno.getDtDataNasc() == null) {
             throw new Exception("Data inválida");
-        } else {
-            try {
-                formatador.parse(aluno.getDtDataNasc().toString());
-            } catch (ParseException e) {
-                throw new Exception("Data inválida");
-            }
         }
 
         try {
@@ -95,9 +75,12 @@ public class AlunoController {
         } catch (Exception e) {
             throw new Exception("Altura inválida");
         }
+        aluno.setTelefone(aluno.getTelefone().replace("(", "").replace(")", "").replace("-", "").replace("_", "").replace(" ", ""));
 
-        AlunoDAO.obterInstancia()
-                .alterar(aluno);
+        if (aluno.getTelefone().isEmpty() || aluno.getTelefone().equals("")) {
+            throw new Exception("Telefone inválido");
+        }
+        AlunoDAO.obterInstancia().alterar(aluno);
     }
 
     public Aluno obterAluno(int id) throws Exception {
