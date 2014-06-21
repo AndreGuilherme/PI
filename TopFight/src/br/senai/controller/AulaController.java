@@ -2,11 +2,16 @@ package br.senai.controller;
 
 import br.senai.DAO.AulaDAO;
 import br.senai.model.Aula;
+import br.senai.view.CadastroAlunoUI;
+import br.senai.view.ConsultaAulaUI;
+import br.senai.view.FormPrincipal;
+import java.util.ArrayList;
 
 public class AulaController {
 
     private static AulaController instanciaRep;
-//    CadastroAulaUI aulaView;
+    CadastroAlunoUI alunoView;
+    ConsultaAulaUI consultaAula;
 //    AulaDAO aulaDAO;
 //    Aula aulaInsert;
 //    Professor prof;
@@ -17,7 +22,7 @@ public class AulaController {
         }
         return instanciaRep;
     }
-    
+
     public void inserir(Aula aula) throws Exception {
         if (aula.getDiaSemana() == 0) {
             throw new Exception("Dia da semana invalido!");
@@ -44,6 +49,21 @@ public class AulaController {
             throw new Exception("Professor " + aula.getProfessor().getDscNome() + ", já possiu uma aula cadastrada nesse dia e horário.");
         }
         AulaDAO.obterInstancia().insertAula(aula);
+    }
+
+    public void buscaAulas(CadastroAlunoUI cadAluno) {
+        alunoView = cadAluno;
+        consultaAula = new ConsultaAulaUI(true);
+        consultaAula.setVisible(true);
+        FormPrincipal.getPainelPrincipal().add(consultaAula);
+    }
+
+    public void preencheFormAluno(Aula aula) {
+        alunoView.recebeAula(aula);
+    }
+
+    public ArrayList<Aula> listarTodos() {
+       return AulaDAO.obterInstancia().listarTodos();
     }
 
     public enum Tempo {

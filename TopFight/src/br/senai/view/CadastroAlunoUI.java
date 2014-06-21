@@ -1,18 +1,25 @@
 package br.senai.view;
 
 import br.senai.controller.AlunoController;
+import br.senai.controller.AulaController;
 import br.senai.model.Aluno;
+import br.senai.model.Aula;
 import br.senai.util.Utils;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class CadastroAlunoUI extends javax.swing.JInternalFrame {
 
     private Aluno alunoAlteracao;
+    Aula aula;
+    ArrayList<Aula> listAlunoAula = new ArrayList<>();
+    DefaultTableModel modelo = new DefaultTableModel();
 
     /**
      *
@@ -197,13 +204,13 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
 
         tableAulasAluno.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Horários", "Dias da Semana"
+                "Professor", "Dias da Semana", "Horários", "Status"
             }
         ));
         jScrollPane2.setViewportView(tableAulasAluno);
@@ -216,6 +223,11 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         });
 
         btnRemoverAulas.setText("Remover");
+        btnRemoverAulas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverAulasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -561,8 +573,23 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnPesquisaAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaAulaActionPerformed
-        //AulaController.obterInstancia().buscaAulas(this);
+        this.hide();
+        AulaController.obterInstancia().buscaAulas(this);
     }//GEN-LAST:event_btnPesquisaAulaActionPerformed
+
+    private void btnRemoverAulasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverAulasActionPerformed
+        int linhaSelecionada = tableAulasAluno.getSelectedRow();
+        if (linhaSelecionada == -1) {
+            JOptionPane.showMessageDialog(null, "Selecione uma aula!", "Informação!", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            if (JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir a Aula?", "Confirmaçao!", JOptionPane.WARNING_MESSAGE) == 0) {
+                ((DefaultTableModel) tableAulasAluno.getModel()).removeRow(tableAulasAluno.getSelectedRow());
+                listAlunoAula.remove(tableAulasAluno.getSelectedRow());
+            } else {
+                JOptionPane.showMessageDialog(null, "Aula não excluída!", "Informação!", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnRemoverAulasActionPerformed
 
     private String CalcularIMC(Double altura, Double peso) {
         DecimalFormat deci = new DecimalFormat("00.00");
@@ -654,5 +681,50 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     private void centralizar() {
         Dimension d = FormPrincipal.getPainelPrincipal().getSize();
         this.setLocation((d.height - this.getHeight() / 2), (d.width - this.getWidth() / 2));
+    }
+
+    public void recebeAula(Aula aula) {
+        this.show();
+        atualizaTabelaAulaAluno(aula);
+        this.aula = aula;
+    }
+
+    private void atualizaTabelaAulaAluno(Aula aula) {
+        if (modelo.getRowCount() == 0) {
+            modelo.setColumnIdentifiers(new String[]{"Professor", "Dias da Semana", "Horários", "Status"});
+        }
+
+        //for (int i = 0; i < aula.size(); i++) {
+        String dia = "";
+        String status = "";
+        if (aula.getDiaSemana() == 1) {
+            dia = "Seg.";
+        } else if (aula.getDiaSemana() == 2) {
+            dia = "Ter.";
+        } else if (aula.getDiaSemana() == 3) {
+            dia = "Qua.";
+        } else if (aula.getDiaSemana() == 4) {
+            dia = "Qui.";
+        } else if (aula.getDiaSemana() == 5) {
+            dia = "Sex";
+        } else if (aula.getDiaSemana() == 6) {
+            dia = "Sáb.";
+        } else if (aula.getDiaSemana() == 7) {
+            dia = "Dom.";
+        }
+        if (aula.getStatus() == 0) {
+            status = "Inativo";
+        } else {
+            status = "Ativo";
+        }
+        modelo.addRow(new Object[]{aula.getProfessor().getDscNome(),
+            dia,
+            aula.gethInicio() + " - " + aula.gethFim(),
+            status
+        });
+        listAlunoAula.add(aula);
+
+        //}
+        tableAulasAluno.setModel(modelo);
     }
 }

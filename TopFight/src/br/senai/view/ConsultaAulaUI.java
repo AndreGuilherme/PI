@@ -4,17 +4,36 @@
  */
 package br.senai.view;
 
+import br.senai.controller.AulaController;
+import br.senai.model.Aula;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author bruno_andrade
  */
 public class ConsultaAulaUI extends javax.swing.JInternalFrame {
 
+    boolean controleAula;
+    AulaController aulaController;
+    private ArrayList<Aula> listaAula;
+
     /**
      * Creates new form PesquisarAula
+     *
+     * @param controle
      */
-    public ConsultaAulaUI() {
+    public ConsultaAulaUI(boolean controle) {
         initComponents();
+        checkAtivo.setSelected(true);
+        this.controleAula = controle;
+        if (this.controleAula) {
+            btnAlterar.setText("Selecionar");
+            btnNovo.setVisible(false);
+        }
+        atualizarTabelaAula();
     }
 
     /**
@@ -52,13 +71,13 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
 
         tableAulas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Nome do Professor", "Dia da Semana", "Hora Inicial", "Hora Final", "Qtd. Alunos"
+                "Nome do Professor", "Dia da Semana", "Hora Inicial", "Hora Final", "Qtd. Alunos", "Status"
             }
         ));
         jScrollPane1.setViewportView(tableAulas);
@@ -135,6 +154,11 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
         );
 
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnNovo.setText("Novo");
 
@@ -177,6 +201,39 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        int linhaSelecionada = tableAulas.getSelectedRow();
+        if (linhaSelecionada == -1) {
+            JOptionPane.showMessageDialog(null, "Selecione uma Aula");
+        } else {
+            Aula aula = new Aula();
+            try {
+                for (int i = 0; i < listaAula.size(); i++) {
+                    if (tableAulas.getSelectedRow() == i) {
+                        aula = this.listaAula.get(i);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+
+            if (this.controleAula) {
+                AulaController.obterInstancia().preencheFormAluno(aula);
+                this.dispose();
+            } else {
+                CadastroAulaUI cadatroAula = new CadastroAulaUI(aula);
+                cadatroAula.setVisible(true);
+                FormPrincipal.getPainelPrincipal().add(cadatroAula);
+                this.dispose();
+                //Função de alteração do professor        
+            }
+            tableAulas.getSelectedRow();
+            atualizarTabelaAula();
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnBuscar;
@@ -195,4 +252,42 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
     private javax.swing.JTable tableAulas;
     private javax.swing.JTextField txtNomeProfessor;
     // End of variables declaration//GEN-END:variables
+
+    private void atualizarTabelaAula() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"Nome do Professor", "Dia da Semana", "Hora Inicial", "Hora Final", "Qnd. Alunos", "Status"});
+        this.listaAula = AulaController.obterInstancia().listarTodos();
+        for (int i = 0; i < this.listaAula.size(); i++) {
+            String dia = "";
+            String status = "";
+            if (this.listaAula.get(i).getDiaSemana() == 1) {
+                dia = "Seg.";
+            } else if (this.listaAula.get(i).getDiaSemana() == 2) {
+                dia = "Ter.";
+            } else if (this.listaAula.get(i).getDiaSemana() == 3) {
+                dia = "Qua.";
+            } else if (this.listaAula.get(i).getDiaSemana() == 4) {
+                dia = "Qui.";
+            } else if (this.listaAula.get(i).getDiaSemana() == 5) {
+                dia = "Sex";
+            } else if (this.listaAula.get(i).getDiaSemana() == 6) {
+                dia = "Sáb.";
+            } else if (this.listaAula.get(i).getDiaSemana() == 7) {
+                dia = "Dom.";
+            }
+            if (this.listaAula.get(i).getStatus() == 0) {
+                status = "Inativo";
+            } else {
+                status = "Ativo";
+            }
+
+            modelo.addRow(new Object[]{this.listaAula.get(i).getProfessor().getDscNome(),
+                dia,
+                this.listaAula.get(i).gethInicio(), 
+                this.listaAula.get(i).gethFim(),
+                this.listaAula.get(i).getNumeroAlunos(),
+                status});
+        }
+        tableAulas.setModel(modelo);
+    }
 }

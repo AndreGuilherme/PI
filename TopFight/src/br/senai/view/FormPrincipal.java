@@ -180,7 +180,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuPesAlunoActionPerformed
 
     private void jMenuPesAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPesAulaActionPerformed
-        ConsultaAulaUI pesqAula = new ConsultaAulaUI();
+        ConsultaAulaUI pesqAula = new ConsultaAulaUI(false);
         pesqAula.setVisible(true);
         jdpPainelPrincipal.add(pesqAula);
     }//GEN-LAST:event_jMenuPesAulaActionPerformed
