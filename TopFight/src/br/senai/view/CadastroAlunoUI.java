@@ -17,7 +17,6 @@ import javax.swing.table.DefaultTableModel;
 public class CadastroAlunoUI extends javax.swing.JInternalFrame {
 
     private Aluno alunoAlteracao;
-    Aula aula;
     ArrayList<Aula> listAlunoAula = new ArrayList<>();
     DefaultTableModel modelo = new DefaultTableModel();
 
@@ -520,7 +519,6 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                     aluno.setSexo(1);
                 }
                 if (!txtAlturaAluno.getText().replace(".", "").equalsIgnoreCase("   ")) {
-                    System.out.println(txtAlturaAluno.getText().replace(".", ""));
                     aluno.setAltura(Double.parseDouble(txtAlturaAluno.getText()));
                 }
                 if (!txtPesoAluno.getText().replace(".", "").equals("   ")) {
@@ -583,8 +581,8 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Selecione uma aula!", "Informação!", JOptionPane.INFORMATION_MESSAGE);
         } else {
             if (JOptionPane.showConfirmDialog(null, "Tem certeza que deseja excluir a Aula?", "Confirmaçao!", JOptionPane.WARNING_MESSAGE) == 0) {
-                ((DefaultTableModel) tableAulasAluno.getModel()).removeRow(tableAulasAluno.getSelectedRow());
-                listAlunoAula.remove(tableAulasAluno.getSelectedRow());
+                listAlunoAula.remove(linhaSelecionada);
+                ((DefaultTableModel) tableAulasAluno.getModel()).removeRow(linhaSelecionada);
             } else {
                 JOptionPane.showMessageDialog(null, "Aula não excluída!", "Informação!", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -684,17 +682,39 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     }
 
     public void recebeAula(Aula aula) {
-        this.show();
-        atualizaTabelaAulaAluno(aula);
-        this.aula = aula;
+        int flag = 0;
+        for (Aula al : listAlunoAula) {
+            if (al.getIdAula() == aula.getIdAula()) {
+                flag = 1;
+                break;
+            }
+            if ((al.gethInicio().before(aula.gethInicio()) && al.gethFim().after(aula.gethInicio()))
+                    || (al.gethInicio().before(aula.gethFim()) && al.gethFim().after(aula.gethFim()))
+                    || (al.gethInicio().getTime() > aula.gethInicio().getTime()) 
+                    && (al.gethFim().getTime() < aula.gethFim().getTime())) {
+                if (aula.getDiaSemana() == al.getDiaSemana()) {
+                    flag = 2;
+                    break;
+                }
+            }
+        }
+        if (flag == 1) {
+            JOptionPane.showMessageDialog(rootPane, "Aula ja cadastrada para o aluno");
+            this.show();
+        } else if (flag == 2) {
+            JOptionPane.showMessageDialog(rootPane, "Já existe aula nesse horario e nesse mesmo dia");
+            this.show();
+        } else {
+            listAlunoAula.add(aula);
+            this.show();
+            atualizaTabelaAulaAluno(aula);
+        }
     }
 
     private void atualizaTabelaAulaAluno(Aula aula) {
         if (modelo.getRowCount() == 0) {
             modelo.setColumnIdentifiers(new String[]{"Professor", "Dias da Semana", "Horários", "Status"});
         }
-
-        //for (int i = 0; i < aula.size(); i++) {
         String dia = "";
         String status = "";
         if (aula.getDiaSemana() == 1) {
@@ -722,9 +742,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
             aula.gethInicio() + " - " + aula.gethFim(),
             status
         });
-        listAlunoAula.add(aula);
 
-        //}
         tableAulasAluno.setModel(modelo);
     }
 }

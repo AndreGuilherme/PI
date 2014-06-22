@@ -4,6 +4,7 @@ package br.senai.model;
 import java.sql.Time;
 
 public class Aula {
+    private int idAula;
     private Professor professor;
     private Time hInicio;
     private Time hFim;
@@ -11,6 +12,14 @@ public class Aula {
     private int numeroAlunos;
     private int diaSemana;
 
+    public int getIdAula() {
+        return idAula;
+    }
+
+    public void setIdAula(int idAula) {
+        this.idAula = idAula;
+    }
+    
     public Professor getProfessor() {
         return professor;
     }

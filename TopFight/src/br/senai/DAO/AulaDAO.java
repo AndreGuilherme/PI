@@ -81,6 +81,7 @@ public class AulaDAO {
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 Aula a = new Aula();
+                a.setIdAula(rs.getInt("id_Aula"));
                 a.sethInicio(rs.getTime("inicio"));
                 a.sethFim(rs.getTime("fim"));
                 a.setDiaSemana(rs.getInt("DiaSemana"));
