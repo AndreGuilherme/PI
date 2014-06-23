@@ -2,6 +2,7 @@ package br.senai.DAO;
 
 import br.senai.util.ConexaoSingleton;
 import br.senai.model.Professor;
+import br.senai.model.RelatorioProfAula;
 import br.senai.util.Utils;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 public class ProfessorDAO {
 
     private ArrayList<Professor> listaProfessor;
+    private ArrayList<RelatorioProfAula> listaRel;
     private static ProfessorDAO instanciaRep;
     private ConexaoSingleton con;
     private Utils utils;
@@ -247,5 +249,98 @@ public class ProfessorDAO {
             System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
         }
         return this.listaProfessor;
+    }
+
+    public ArrayList<RelatorioProfAula> listarRelatorioAula() {
+        this.listaRel = new ArrayList<>();
+        try {
+            Statement st = con.getConnection().createStatement();
+            String query = "select \n"
+                    + "pp.dsc_Nome AS 'NomeProf',\n"
+                    + "a.inicio AS 'HrInicio',\n"
+                    + "a.fim AS 'HrFinal',\n"
+                    + "a.DiaSemana AS 'DiaSemana',\n"
+                    + "a.numAlunos AS 'QntNumAluno',\n"
+                    + "Count(al.id_Aluno) AS 'NumAlunoAula',\n"
+                    + "a.status AS 'Status'\n"
+                    + " from professor as p\n"
+                    + "	JOIN Pessoa as pp\n"
+                    + "		ON p.id_Pessoa = pp.id_Pessoa\n"
+                    + "	JOIN Aula AS a\n"
+                    + "		ON a.id_Professor = p.id_Professor\n"
+                    + "	JOIN aulaaluno as aa\n"
+                    + "		ON aa.id_Aula = a.id_Aula\n"
+                    + "	JOIN Aluno as al\n"
+                    + "		ON al.id_Aluno = aa.id_Aluno\n"
+                    + "	JOIN Pessoa as ps \n"
+                    + "		ON ps.id_Pessoa = al.id_Pessoa\n"
+                    + "Where ps.Status = 1\n"
+                    + "Group by pp.dsc_Nome,a.inicio,a.fim,a.DiaSemana,a.numAlunos";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                RelatorioProfAula profAula = new RelatorioProfAula();
+                profAula.setNomeProf(rs.getString("NomeProf"));
+                profAula.setHrInicio(rs.getTime("HrInicio"));
+                profAula.setHrFinal(rs.getTime("HrFinal"));
+                profAula.setDiaSemana(rs.getInt("DiaSemana"));
+                profAula.setStatus(rs.getInt("Status"));
+                profAula.setQntNumAluno(rs.getInt("QntNumAluno"));
+                profAula.setNumAlunoAula(rs.getInt("NumAlunoAula"));
+
+                this.listaRel.add(profAula);
+            }
+            rs.close();
+            con.closeConnection();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return this.listaRel;
+    }
+
+    public ArrayList<RelatorioProfAula> listarRelatorioAula(String profName) {
+        this.listaRel = new ArrayList<>();
+        try {
+            Statement st = con.getConnection().createStatement();
+            String query = "select \n"
+                    + "pp.dsc_Nome AS 'NomeProf',\n"
+                    + "a.inicio AS 'HrInicio',\n"
+                    + "a.fim AS 'HrFinal',\n"
+                    + "a.DiaSemana AS 'DiaSemana',\n"
+                    + "a.numAlunos AS 'QntNumAluno',\n"
+                    + "Count(al.id_Aluno) AS 'NumAlunoAula',\n"
+                    + "a.status AS 'Status'\n"
+                    + " from professor as p\n"
+                    + "	LEFT JOIN Pessoa as pp\n"
+                    + "		ON p.id_Pessoa = pp.id_Pessoa\n"
+                    + "	LEFT JOIN Aula AS a\n"
+                    + "		ON a.id_Professor = p.id_Professor\n"
+                    + "	LEFT JOIN aulaaluno as aa\n"
+                    + "		ON aa.id_Aula = a.id_Aula\n"
+                    + "	LEFT JOIN Aluno as al\n"
+                    + "		ON al.id_Aluno = aa.id_Aluno\n"
+                    + "	LEFT JOIN Pessoa as ps \n"
+                    + "		ON ps.id_Pessoa = al.id_Pessoa\n"
+                    //+ "Where ps.Status = 1\n"
+                    + "Where pp.dsc_Nome = '" + profName + "'\n"
+                    + "Group by pp.dsc_Nome,a.inicio,a.fim,a.DiaSemana,a.numAlunos";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                RelatorioProfAula profAula = new RelatorioProfAula();
+                profAula.setNomeProf(rs.getString("NomeProf"));
+                profAula.setHrInicio(rs.getTime("HrInicio"));
+                profAula.setHrFinal(rs.getTime("HrFinal"));
+                profAula.setDiaSemana(rs.getInt("DiaSemana"));
+                profAula.setStatus(rs.getInt("Status"));
+                profAula.setQntNumAluno(rs.getInt("QntNumAluno"));
+                profAula.setNumAlunoAula(rs.getInt("NumAlunoAula"));
+
+                this.listaRel.add(profAula);
+            }
+            rs.close();
+            con.closeConnection();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return this.listaRel;
     }
 }

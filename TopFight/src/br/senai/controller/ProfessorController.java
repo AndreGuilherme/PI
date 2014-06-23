@@ -2,6 +2,7 @@ package br.senai.controller;
 
 import br.senai.DAO.ProfessorDAO;
 import br.senai.model.Professor;
+import br.senai.model.RelatorioProfAula;
 import br.senai.util.Utils;
 import br.senai.view.CadastroAulaUI;
 import br.senai.view.ConsultaProfessorUI;
@@ -87,5 +88,8 @@ public class ProfessorController {
             return profDAO.listarPesquisa(coluna, paramentro);
         }
 
+    }
+    public ArrayList<RelatorioProfAula> listarRelatorioAula(String profName) {
+        return ProfessorDAO.obterInstancia().listarRelatorioAula(profName);
     }
 }

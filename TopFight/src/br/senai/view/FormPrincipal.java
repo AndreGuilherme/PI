@@ -4,7 +4,6 @@
  */
 package br.senai.view;
 
-import br.senai.DAO.TesteDAO;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 
@@ -56,11 +55,15 @@ public class FormPrincipal extends javax.swing.JFrame {
         jMenuPesAluno = new javax.swing.JMenuItem();
         jMenuPesAula = new javax.swing.JMenuItem();
         jMenuPesProfessor = new javax.swing.JMenuItem();
+        jMenuRelatorios = new javax.swing.JMenu();
+        jGerarRelatorios = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
 
         jMenuItem7.setText("jMenuItem7");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Academia TopFight");
+        setIconImages(null);
 
         jdpPainelPrincipal.setBackground(new java.awt.Color(0, 102, 153));
 
@@ -131,6 +134,18 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuPesquisa);
 
+        jMenuRelatorios.setText("Relatórios");
+
+        jGerarRelatorios.setText("Relatórios");
+        jGerarRelatorios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jGerarRelatoriosActionPerformed(evt);
+            }
+        });
+        jMenuRelatorios.add(jGerarRelatorios);
+
+        jMenuBar1.add(jMenuRelatorios);
+
         jMenu3.setText("Sair");
         jMenu3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,6 +209,12 @@ public class FormPrincipal extends javax.swing.JFrame {
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
     }//GEN-LAST:event_jMenu3ActionPerformed
 
+    private void jGerarRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGerarRelatoriosActionPerformed
+        Relatorios rel = new Relatorios();
+        rel.setVisible(true);
+        jdpPainelPrincipal.add(rel);
+    }//GEN-LAST:event_jGerarRelatoriosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -229,6 +250,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem jGerarRelatorios;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuCadAluno;
@@ -240,6 +262,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuPesAula;
     private javax.swing.JMenuItem jMenuPesProfessor;
     private javax.swing.JMenu jMenuPesquisa;
+    private javax.swing.JMenu jMenuRelatorios;
     private javax.swing.JDesktopPane jdpPainelPrincipal;
     // End of variables declaration//GEN-END:variables
 }

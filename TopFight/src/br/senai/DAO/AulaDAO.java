@@ -134,7 +134,9 @@ public class AulaDAO {
             String query = "select * from Aula AS a \n"
                     + "LEFT JOIN Professor p \n"
                     + "ON a.Id_Professor = p.Id_Professor \n"
-                    + "where p.Id_Professor = (SELECT Id_Professor FROM Pessoa pp JOIN Professor f ON pp.Id_Pessoa = f.Id_Pessoa WHERE pp.dsc_Nome like '%" + nomeProf + "%' ) \n"
+                    + "LEFT JOIN Pessoa pp\n"
+                    + "ON pp.id_Pessoa = p.id_Pessoa\n"
+                    + "where pp.dsc_Nome like '%" + nomeProf + "%'  \n"
                     + " AND DiaSemana = " + day + "\n"
                     + " AND a.Status = " + status + ";";
 
@@ -194,8 +196,9 @@ public class AulaDAO {
             String query = "select * from Aula AS a \n"
                     + "LEFT JOIN Professor p \n"
                     + "ON a.Id_Professor = p.Id_Professor \n"
-                    + "where p.Id_Professor = "
-                    + "(SELECT Id_Professor FROM Pessoa pp JOIN Professor f ON pp.Id_Pessoa = f.Id_Pessoa WHERE pp.dsc_Nome like '%" + nomeProf + "%' ) \n"
+                    + "LEFT JOIN Pessoa pp\n"
+                    + "ON pp.id_Pessoa = p.id_Pessoa\n"
+                    + "where pp.dsc_Nome like '%" + nomeProf + "%'  \n"
                     + " AND DiaSemana = " + day + "\n";
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
@@ -253,8 +256,9 @@ public class AulaDAO {
             String query = "select * from Aula AS a \n"
                     + "LEFT JOIN Professor p \n"
                     + "ON a.Id_Professor = p.Id_Professor \n"
-                    + "where p.Id_Professor = "
-                    + "(SELECT Id_Professor FROM Pessoa pp JOIN Professor f ON pp.Id_Pessoa = f.Id_Pessoa WHERE pp.dsc_Nome like '%" + nomeProf + "%' ) \n"
+                    + "LEFT JOIN Pessoa pp\n"
+                    + "ON pp.id_Pessoa = p.id_Pessoa\n"
+                    + "where  pp.dsc_Nome like '%" + nomeProf + "%' \n"
                     + " AND a.Status = " + status + ";";
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
@@ -312,8 +316,9 @@ public class AulaDAO {
             String query = "select * from Aula AS a \n"
                     + "LEFT JOIN Professor p \n"
                     + "ON a.Id_Professor = p.Id_Professor \n"
-                    + "where p.Id_Professor = "
-                    + "(SELECT Id_Professor FROM Pessoa pp JOIN Professor f ON pp.Id_Pessoa = f.Id_Pessoa WHERE pp.dsc_Nome like '%" + nomeProf + "%' ) \n";
+                    + "LEFT JOIN Pessoa pp\n"
+                    + "ON pp.id_Pessoa = p.id_Pessoa\n"
+                    + "where pp.dsc_Nome like '%" + nomeProf + "%'  \n";
             ResultSet rs = st.executeQuery(query);
             while (rs.next()) {
                 Aula a = new Aula();
@@ -370,6 +375,8 @@ public class AulaDAO {
             String query = "select * from Aula AS a \n"
                     + "LEFT JOIN Professor p \n"
                     + "ON a.Id_Professor = p.Id_Professor \n"
+                    + "LEFT JOIN Pessoa pp\n"
+                    + "ON pp.id_Pessoa = p.id_Pessoa\n"
                     + "where "
                     + "DiaSemana = " + day + "\n"
                     + " AND a.Status = " + status + ";";
@@ -429,6 +436,8 @@ public class AulaDAO {
             String query = "select * from Aula AS a \n"
                     + "LEFT JOIN Professor p \n"
                     + "ON a.Id_Professor = p.Id_Professor \n"
+                    + "LEFT JOIN Pessoa pp\n"
+                    + "ON pp.id_Pessoa = p.id_Pessoa\n"
                     + "where "
                     + "DiaSemana = " + day + "\n";
             ResultSet rs = st.executeQuery(query);

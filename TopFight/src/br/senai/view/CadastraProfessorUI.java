@@ -42,10 +42,10 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         txtNomeProfessor.setText(professor.getDscNome().toString());
         txtCPF.setText(professor.getDscCPF().toString());
 
-        if (professor.getSexo() == 1) {
-            rbSexoMasc.isSelected();
+        if (professor.getSexo() == 0) {
+            rbSexoMasc.setSelected(true);
         } else {
-            rbSexoFem.isSelected();
+            rbSexoFem.setSelected(true);
         }
 
         if (professor.getStatus() == 1) {
