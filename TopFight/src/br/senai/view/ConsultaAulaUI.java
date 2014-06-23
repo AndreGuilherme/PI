@@ -84,13 +84,18 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Pesquisar:");
 
-        cbxDiaSemana.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione um dia", "Segunda-Feira", "Terca-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sabado", "Domingo" }));
+        cbxDiaSemana.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione um dia", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado", "Domingo" }));
 
         jLabel3.setText("Nome do Professor: ");
 
         jLabel4.setText("Selecione dia da Semana: ");
 
         btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         btnLimpar.setText("Limpar");
 
@@ -234,6 +239,18 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        aulaController = new AulaController();
+        Integer status = 0;
+        Integer day = cbxDiaSemana.getSelectedIndex();
+        if (checkAtivo.isSelected()) {
+            status = 1;
+        } else {
+            status = 0;
+        }
+        atualizarTabelaAula(aulaController.getAulaPesquisa(txtNomeProfessor.getText().toString(), day, status));
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnBuscar;
@@ -283,9 +300,46 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
 
             modelo.addRow(new Object[]{this.listaAula.get(i).getProfessor().getDscNome(),
                 dia,
-                this.listaAula.get(i).gethInicio(), 
+                this.listaAula.get(i).gethInicio(),
                 this.listaAula.get(i).gethFim(),
                 this.listaAula.get(i).getNumeroAlunos(),
+                status});
+        }
+        tableAulas.setModel(modelo);
+    }
+
+    private void atualizarTabelaAula(ArrayList<Aula> aulaPesquisa) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"Nome do Professor", "Dia da Semana", "Hora Inicial", "Hora Final", "Qnd. Alunos", "Status"});
+        for (int i = 0; i < aulaPesquisa.size(); i++) {
+            String dia = "";
+            String status = "";
+            if (aulaPesquisa.get(i).getDiaSemana() == 1) {
+                dia = "Seg.";
+            } else if (aulaPesquisa.get(i).getDiaSemana() == 2) {
+                dia = "Ter.";
+            } else if (aulaPesquisa.get(i).getDiaSemana() == 3) {
+                dia = "Qua.";
+            } else if (aulaPesquisa.get(i).getDiaSemana() == 4) {
+                dia = "Qui.";
+            } else if (aulaPesquisa.get(i).getDiaSemana() == 5) {
+                dia = "Sex";
+            } else if (aulaPesquisa.get(i).getDiaSemana() == 6) {
+                dia = "Sáb.";
+            } else if (aulaPesquisa.get(i).getDiaSemana() == 7) {
+                dia = "Dom.";
+            }
+            if (aulaPesquisa.get(i).getStatus() == 0) {
+                status = "Inativo";
+            } else {
+                status = "Ativo";
+            }
+
+            modelo.addRow(new Object[]{aulaPesquisa.get(i).getProfessor().getDscNome(),
+                dia,
+                aulaPesquisa.get(i).gethInicio(),
+                aulaPesquisa.get(i).gethFim(),
+                aulaPesquisa.get(i).getNumeroAlunos(),
                 status});
         }
         tableAulas.setModel(modelo);

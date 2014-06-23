@@ -12,7 +12,7 @@ public class AulaController {
     private static AulaController instanciaRep;
     CadastroAlunoUI alunoView;
     ConsultaAulaUI consultaAula;
-//    AulaDAO aulaDAO;
+    AulaDAO aulaDAO;
 //    Aula aulaInsert;
 //    Professor prof;
 
@@ -63,7 +63,28 @@ public class AulaController {
     }
 
     public ArrayList<Aula> listarTodos() {
-       return AulaDAO.obterInstancia().listarTodos();
+        return AulaDAO.obterInstancia().listarTodos();
+    }
+
+    public ArrayList<Aula> getAulaPesquisa(String nomeProf, Integer day, Integer status) {
+        aulaDAO = new AulaDAO();
+
+        if (!nomeProf.isEmpty() && day != 0 && status == 1) {
+            return aulaDAO.listarPesquisaProfDiaAtivos(nomeProf, day, status);
+        } else if (!nomeProf.isEmpty() && day != 0 && status == 0) {
+            return aulaDAO.listarPesquisaProfDia(nomeProf, day);
+        } else if (!nomeProf.isEmpty() && day == 0 && status == 1) {
+            return aulaDAO.listarPesquisaProfAtivos(nomeProf, day, status);
+        } else if (!nomeProf.isEmpty() && day == 0 && status == 0) {
+            return aulaDAO.listarPesquisaProfInativos(nomeProf, day);
+        } else if (nomeProf.isEmpty() && day != 0 && status == 1) {
+            return aulaDAO.listarPesquisaDiaAtivos(day, status);
+        } else if (nomeProf.isEmpty() && day != 0 && status == 0) {
+            return aulaDAO.listarPesquisaDiaInativos(day, status);
+        } else {
+            return aulaDAO.listarTodos();
+        }
+
     }
 
     public enum Tempo {

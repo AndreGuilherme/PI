@@ -144,7 +144,7 @@ public class ProfessorDAO {
                     + "p.dsc_Email = ?, \n"
                     + "p.dsc_Observacao = ?,  \n"
                     + "p.Status = ?,\n"
-                    + "p.dsc_Telefone = ?, \n"
+                    + "p.dsc_Telefone = ? \n"
                     + "WHERE p.id_Pessoa = ?; ";
 
             //Execução Query Pessoa 

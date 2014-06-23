@@ -126,4 +126,358 @@ public class AulaDAO {
         }
         return this.listaAula;
     }
+
+    public ArrayList<Aula> listarPesquisaProfDiaAtivos(String nomeProf, Integer day, Integer status) {
+        this.listaAula = new ArrayList<>();
+        try {
+            Statement st = con.getConnection().createStatement();
+            String query = "select * from Aula AS a \n"
+                    + "LEFT JOIN Professor p \n"
+                    + "ON a.Id_Professor = p.Id_Professor \n"
+                    + "where p.Id_Professor = (SELECT Id_Professor FROM Pessoa pp JOIN Professor f ON pp.Id_Pessoa = f.Id_Pessoa WHERE pp.dsc_Nome like '%" + nomeProf + "%' ) \n"
+                    + " AND DiaSemana = " + day + "\n"
+                    + " AND a.Status = " + status + ";";
+
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                Aula a = new Aula();
+                a.setIdAula(rs.getInt("id_Aula"));
+                a.sethInicio(rs.getTime("inicio"));
+                a.sethFim(rs.getTime("fim"));
+                a.setDiaSemana(rs.getInt("DiaSemana"));
+                a.setStatus(rs.getInt("Status"));
+                a.setNumeroAlunos(rs.getInt("numAlunos"));
+
+                Professor prof = new Professor();
+                Statement stm = con.getConnection().createStatement();
+                String queryProf = "SELECT p.* , f.id_Professor "
+                        + "FROM pessoa p \n"
+                        + "JOIN professor f ON \n"
+                        + "f.id_Pessoa = p.id_Pessoa "
+                        + "WHERE f.Id_Professor =" + rs.getInt("Id_Professor") + ";";
+                ResultSet rss = stm.executeQuery(queryProf);
+                while (rss.next()) {
+                    prof.setNumIdProfessor(rss.getInt("id_Professor"));
+                    prof.setDscNome(rss.getString("dsc_Nome"));
+                    prof.setDscCPF(rss.getString("dsc_CPF"));
+                    prof.setDtDataNasc(rss.getDate("dt_DataNasc"));
+                    prof.setDscEndereco(rss.getString("dsc_Endereco"));
+                    prof.setNunNumero(rss.getInt("nun_Numero"));
+                    prof.setDscBairro(rss.getString("dsc_Bairro"));
+                    prof.setDscCEP(rss.getString("dsc_CEP"));
+                    prof.setDscComplemento(rss.getString("dsc_Complemento"));
+                    prof.setSexo(rss.getInt("Sexo"));
+                    prof.setDscEmail(rss.getString("dsc_Email"));
+                    prof.setDscObservacao(rss.getString("dsc_Observacao"));
+                    prof.setStatus(rss.getInt("Status"));
+                    prof.setTelefone(rss.getString("dsc_Telefone"));
+
+                    prof.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                }
+                a.setProfessor(prof);
+                rss.close();
+                this.listaAula.add(a);
+            }
+            rs.close();
+
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaAula;
+    }
+
+    public ArrayList<Aula> listarPesquisaProfDia(String nomeProf, Integer day) {
+        this.listaAula = new ArrayList<>();
+        try {
+            Statement st = con.getConnection().createStatement();
+            String query = "select * from Aula AS a \n"
+                    + "LEFT JOIN Professor p \n"
+                    + "ON a.Id_Professor = p.Id_Professor \n"
+                    + "where p.Id_Professor = "
+                    + "(SELECT Id_Professor FROM Pessoa pp JOIN Professor f ON pp.Id_Pessoa = f.Id_Pessoa WHERE pp.dsc_Nome like '%" + nomeProf + "%' ) \n"
+                    + " AND DiaSemana = " + day + "\n";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                Aula a = new Aula();
+                a.setIdAula(rs.getInt("id_Aula"));
+                a.sethInicio(rs.getTime("inicio"));
+                a.sethFim(rs.getTime("fim"));
+                a.setDiaSemana(rs.getInt("DiaSemana"));
+                a.setStatus(rs.getInt("Status"));
+                a.setNumeroAlunos(rs.getInt("numAlunos"));
+
+                Professor prof = new Professor();
+                Statement stm = con.getConnection().createStatement();
+                String queryProf = "SELECT p.* , f.id_Professor "
+                        + "FROM pessoa p \n"
+                        + "JOIN professor f ON \n"
+                        + "f.id_Pessoa = p.id_Pessoa "
+                        + "WHERE f.Id_Professor =" + rs.getInt("Id_Professor") + ";";
+                ResultSet rss = stm.executeQuery(queryProf);
+                while (rss.next()) {
+                    prof.setNumIdProfessor(rss.getInt("id_Professor"));
+                    prof.setDscNome(rss.getString("dsc_Nome"));
+                    prof.setDscCPF(rss.getString("dsc_CPF"));
+                    prof.setDtDataNasc(rss.getDate("dt_DataNasc"));
+                    prof.setDscEndereco(rss.getString("dsc_Endereco"));
+                    prof.setNunNumero(rss.getInt("nun_Numero"));
+                    prof.setDscBairro(rss.getString("dsc_Bairro"));
+                    prof.setDscCEP(rss.getString("dsc_CEP"));
+                    prof.setDscComplemento(rss.getString("dsc_Complemento"));
+                    prof.setSexo(rss.getInt("Sexo"));
+                    prof.setDscEmail(rss.getString("dsc_Email"));
+                    prof.setDscObservacao(rss.getString("dsc_Observacao"));
+                    prof.setStatus(rss.getInt("Status"));
+                    prof.setTelefone(rss.getString("dsc_Telefone"));
+
+                    prof.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                }
+                a.setProfessor(prof);
+                rss.close();
+                this.listaAula.add(a);
+            }
+            rs.close();
+
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaAula;
+    }
+
+    public ArrayList<Aula> listarPesquisaProfAtivos(String nomeProf, Integer day, Integer status) {
+        this.listaAula = new ArrayList<>();
+        try {
+            Statement st = con.getConnection().createStatement();
+            String query = "select * from Aula AS a \n"
+                    + "LEFT JOIN Professor p \n"
+                    + "ON a.Id_Professor = p.Id_Professor \n"
+                    + "where p.Id_Professor = "
+                    + "(SELECT Id_Professor FROM Pessoa pp JOIN Professor f ON pp.Id_Pessoa = f.Id_Pessoa WHERE pp.dsc_Nome like '%" + nomeProf + "%' ) \n"
+                    + " AND a.Status = " + status + ";";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                Aula a = new Aula();
+                a.setIdAula(rs.getInt("id_Aula"));
+                a.sethInicio(rs.getTime("inicio"));
+                a.sethFim(rs.getTime("fim"));
+                a.setDiaSemana(rs.getInt("DiaSemana"));
+                a.setStatus(rs.getInt("Status"));
+                a.setNumeroAlunos(rs.getInt("numAlunos"));
+
+                Professor prof = new Professor();
+                Statement stm = con.getConnection().createStatement();
+                String queryProf = "SELECT p.* , f.id_Professor "
+                        + "FROM pessoa p \n"
+                        + "JOIN professor f ON \n"
+                        + "f.id_Pessoa = p.id_Pessoa "
+                        + "WHERE f.Id_Professor =" + rs.getInt("Id_Professor") + ";";
+                ResultSet rss = stm.executeQuery(queryProf);
+                while (rss.next()) {
+                    prof.setNumIdProfessor(rss.getInt("id_Professor"));
+                    prof.setDscNome(rss.getString("dsc_Nome"));
+                    prof.setDscCPF(rss.getString("dsc_CPF"));
+                    prof.setDtDataNasc(rss.getDate("dt_DataNasc"));
+                    prof.setDscEndereco(rss.getString("dsc_Endereco"));
+                    prof.setNunNumero(rss.getInt("nun_Numero"));
+                    prof.setDscBairro(rss.getString("dsc_Bairro"));
+                    prof.setDscCEP(rss.getString("dsc_CEP"));
+                    prof.setDscComplemento(rss.getString("dsc_Complemento"));
+                    prof.setSexo(rss.getInt("Sexo"));
+                    prof.setDscEmail(rss.getString("dsc_Email"));
+                    prof.setDscObservacao(rss.getString("dsc_Observacao"));
+                    prof.setStatus(rss.getInt("Status"));
+                    prof.setTelefone(rss.getString("dsc_Telefone"));
+
+                    prof.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                }
+                a.setProfessor(prof);
+                rss.close();
+                this.listaAula.add(a);
+            }
+            rs.close();
+
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaAula;
+    }
+
+    public ArrayList<Aula> listarPesquisaProfInativos(String nomeProf, Integer day) {
+        this.listaAula = new ArrayList<>();
+        try {
+            Statement st = con.getConnection().createStatement();
+            String query = "select * from Aula AS a \n"
+                    + "LEFT JOIN Professor p \n"
+                    + "ON a.Id_Professor = p.Id_Professor \n"
+                    + "where p.Id_Professor = "
+                    + "(SELECT Id_Professor FROM Pessoa pp JOIN Professor f ON pp.Id_Pessoa = f.Id_Pessoa WHERE pp.dsc_Nome like '%" + nomeProf + "%' ) \n";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                Aula a = new Aula();
+                a.setIdAula(rs.getInt("id_Aula"));
+                a.sethInicio(rs.getTime("inicio"));
+                a.sethFim(rs.getTime("fim"));
+                a.setDiaSemana(rs.getInt("DiaSemana"));
+                a.setStatus(rs.getInt("Status"));
+                a.setNumeroAlunos(rs.getInt("numAlunos"));
+
+                Professor prof = new Professor();
+                Statement stm = con.getConnection().createStatement();
+                String queryProf = "SELECT p.* , f.id_Professor "
+                        + "FROM pessoa p \n"
+                        + "JOIN professor f ON \n"
+                        + "f.id_Pessoa = p.id_Pessoa "
+                        + "WHERE f.Id_Professor =" + rs.getInt("Id_Professor") + ";";
+                ResultSet rss = stm.executeQuery(queryProf);
+                while (rss.next()) {
+                    prof.setNumIdProfessor(rss.getInt("id_Professor"));
+                    prof.setDscNome(rss.getString("dsc_Nome"));
+                    prof.setDscCPF(rss.getString("dsc_CPF"));
+                    prof.setDtDataNasc(rss.getDate("dt_DataNasc"));
+                    prof.setDscEndereco(rss.getString("dsc_Endereco"));
+                    prof.setNunNumero(rss.getInt("nun_Numero"));
+                    prof.setDscBairro(rss.getString("dsc_Bairro"));
+                    prof.setDscCEP(rss.getString("dsc_CEP"));
+                    prof.setDscComplemento(rss.getString("dsc_Complemento"));
+                    prof.setSexo(rss.getInt("Sexo"));
+                    prof.setDscEmail(rss.getString("dsc_Email"));
+                    prof.setDscObservacao(rss.getString("dsc_Observacao"));
+                    prof.setStatus(rss.getInt("Status"));
+                    prof.setTelefone(rss.getString("dsc_Telefone"));
+
+                    prof.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                }
+                a.setProfessor(prof);
+                rss.close();
+                this.listaAula.add(a);
+            }
+            rs.close();
+
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaAula;
+    }
+
+    public ArrayList<Aula> listarPesquisaDiaAtivos(Integer day, Integer status) {
+        this.listaAula = new ArrayList<>();
+        try {
+            Statement st = con.getConnection().createStatement();
+            String query = "select * from Aula AS a \n"
+                    + "LEFT JOIN Professor p \n"
+                    + "ON a.Id_Professor = p.Id_Professor \n"
+                    + "where "
+                    + "DiaSemana = " + day + "\n"
+                    + " AND a.Status = " + status + ";";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                Aula a = new Aula();
+                a.setIdAula(rs.getInt("id_Aula"));
+                a.sethInicio(rs.getTime("inicio"));
+                a.sethFim(rs.getTime("fim"));
+                a.setDiaSemana(rs.getInt("DiaSemana"));
+                a.setStatus(rs.getInt("Status"));
+                a.setNumeroAlunos(rs.getInt("numAlunos"));
+
+                Professor prof = new Professor();
+                Statement stm = con.getConnection().createStatement();
+                String queryProf = "SELECT p.* , f.id_Professor "
+                        + "FROM pessoa p \n"
+                        + "JOIN professor f ON \n"
+                        + "f.id_Pessoa = p.id_Pessoa "
+                        + "WHERE f.Id_Professor =" + rs.getInt("Id_Professor") + ";";
+                ResultSet rss = stm.executeQuery(queryProf);
+                while (rss.next()) {
+                    prof.setNumIdProfessor(rss.getInt("id_Professor"));
+                    prof.setDscNome(rss.getString("dsc_Nome"));
+                    prof.setDscCPF(rss.getString("dsc_CPF"));
+                    prof.setDtDataNasc(rss.getDate("dt_DataNasc"));
+                    prof.setDscEndereco(rss.getString("dsc_Endereco"));
+                    prof.setNunNumero(rss.getInt("nun_Numero"));
+                    prof.setDscBairro(rss.getString("dsc_Bairro"));
+                    prof.setDscCEP(rss.getString("dsc_CEP"));
+                    prof.setDscComplemento(rss.getString("dsc_Complemento"));
+                    prof.setSexo(rss.getInt("Sexo"));
+                    prof.setDscEmail(rss.getString("dsc_Email"));
+                    prof.setDscObservacao(rss.getString("dsc_Observacao"));
+                    prof.setStatus(rss.getInt("Status"));
+                    prof.setTelefone(rss.getString("dsc_Telefone"));
+
+                    prof.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                }
+                a.setProfessor(prof);
+                rss.close();
+                this.listaAula.add(a);
+            }
+            rs.close();
+
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaAula;
+    }
+
+    public ArrayList<Aula> listarPesquisaDiaInativos(Integer day, Integer status) {
+        this.listaAula = new ArrayList<>();
+        try {
+            Statement st = con.getConnection().createStatement();
+            String query = "select * from Aula AS a \n"
+                    + "LEFT JOIN Professor p \n"
+                    + "ON a.Id_Professor = p.Id_Professor \n"
+                    + "where "
+                    + "DiaSemana = " + day + "\n";
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()) {
+                Aula a = new Aula();
+                a.setIdAula(rs.getInt("id_Aula"));
+                a.sethInicio(rs.getTime("inicio"));
+                a.sethFim(rs.getTime("fim"));
+                a.setDiaSemana(rs.getInt("DiaSemana"));
+                a.setStatus(rs.getInt("Status"));
+                a.setNumeroAlunos(rs.getInt("numAlunos"));
+
+                Professor prof = new Professor();
+                Statement stm = con.getConnection().createStatement();
+                String queryProf = "SELECT p.* , f.id_Professor "
+                        + "FROM pessoa p \n"
+                        + "JOIN professor f ON \n"
+                        + "f.id_Pessoa = p.id_Pessoa "
+                        + "WHERE f.Id_Professor =" + rs.getInt("Id_Professor") + ";";
+                ResultSet rss = stm.executeQuery(queryProf);
+                while (rss.next()) {
+                    prof.setNumIdProfessor(rss.getInt("id_Professor"));
+                    prof.setDscNome(rss.getString("dsc_Nome"));
+                    prof.setDscCPF(rss.getString("dsc_CPF"));
+                    prof.setDtDataNasc(rss.getDate("dt_DataNasc"));
+                    prof.setDscEndereco(rss.getString("dsc_Endereco"));
+                    prof.setNunNumero(rss.getInt("nun_Numero"));
+                    prof.setDscBairro(rss.getString("dsc_Bairro"));
+                    prof.setDscCEP(rss.getString("dsc_CEP"));
+                    prof.setDscComplemento(rss.getString("dsc_Complemento"));
+                    prof.setSexo(rss.getInt("Sexo"));
+                    prof.setDscEmail(rss.getString("dsc_Email"));
+                    prof.setDscObservacao(rss.getString("dsc_Observacao"));
+                    prof.setStatus(rss.getInt("Status"));
+                    prof.setTelefone(rss.getString("dsc_Telefone"));
+
+                    prof.setNumIdPessoa(rs.getInt("id_Pessoa"));
+                }
+                a.setProfessor(prof);
+                rss.close();
+                this.listaAula.add(a);
+            }
+            rs.close();
+
+            con.closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Erro na Pesquisa de Professores: " + e.getMessage());
+        }
+        return this.listaAula;
+    }
+
 }

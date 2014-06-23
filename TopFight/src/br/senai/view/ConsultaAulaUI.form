@@ -189,11 +189,11 @@
               <StringArray count="8">
                 <StringItem index="0" value="Selecione um dia"/>
                 <StringItem index="1" value="Segunda-Feira"/>
-                <StringItem index="2" value="Terca-Feira"/>
+                <StringItem index="2" value="Ter&#xe7;a-Feira"/>
                 <StringItem index="3" value="Quarta-Feira"/>
                 <StringItem index="4" value="Quinta-Feira"/>
                 <StringItem index="5" value="Sexta-Feira"/>
-                <StringItem index="6" value="Sabado"/>
+                <StringItem index="6" value="S&#xe1;bado"/>
                 <StringItem index="7" value="Domingo"/>
               </StringArray>
             </Property>
@@ -215,6 +215,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnLimpar">
           <Properties>

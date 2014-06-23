@@ -5,19 +5,18 @@ public class Aluno extends Pessoa {
     private Integer numId;
     private Double peso;
     private Double altura;
-    
+
     public Aluno() {
     }
-    
-    public Integer getId(){
+
+    public Integer getId() {
         return numId;
     }
 
     public void setNumId(Integer numId) {
         this.numId = numId;
     }
-    
-    
+
     public Double getPeso() {
         return peso;
     }

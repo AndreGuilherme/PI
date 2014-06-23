@@ -1,9 +1,9 @@
-
 package br.senai.model;
 
 import java.util.Date;
 
 public class Pessoa {
+
     private Integer numIdPessoa;
     private String dscCPF;
     private String dscNome;
@@ -18,7 +18,7 @@ public class Pessoa {
     private String dscObservacao;
     private Integer status;
     private String telefone;
-    
+
     public Integer getNumIdPessoa() {
         return numIdPessoa;
     }
@@ -26,7 +26,7 @@ public class Pessoa {
     public void setNumIdPessoa(int numIdPessoa) {
         this.numIdPessoa = numIdPessoa;
     }
-    
+
     public String getDscCPF() {
         return dscCPF;
     }
@@ -130,5 +130,5 @@ public class Pessoa {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
-    
+
 }

@@ -1,9 +1,9 @@
-
 package br.senai.model;
 
 import java.sql.Time;
 
 public class Aula {
+
     private int idAula;
     private Professor professor;
     private Time hInicio;
@@ -19,7 +19,7 @@ public class Aula {
     public void setIdAula(int idAula) {
         this.idAula = idAula;
     }
-    
+
     public Professor getProfessor() {
         return professor;
     }
