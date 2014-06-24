@@ -6,6 +6,7 @@ package br.senai.view;
 
 import br.senai.controller.AlunoController;
 import br.senai.model.Aluno;
+import br.senai.model.Aula;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -216,7 +217,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
     private void btnNovoAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoAlunoActionPerformed
         try {
             contAluno = new AlunoController();
-            CadastroAlunoUI cadasAluno = new CadastroAlunoUI(null);
+            CadastroAlunoUI cadasAluno = new CadastroAlunoUI(null, null);
             this.hide();
             cadasAluno.show();
             FormPrincipal.getPainelPrincipal().add(cadasAluno);
@@ -242,19 +243,12 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage());
             }
-
-//            if (this.controleAluno) {
-//                AlunoController.obterInstancia().preencheFormAula(aluno);
-//                this.dispose();
-//            } else {
-            CadastroAlunoUI cadastroAluno = new CadastroAlunoUI(aluno);
+            
+            ArrayList<Aula> listaAulas = AlunoController.obterInstancia().listarTodasAulasPorAluno(aluno.getId());
+            CadastroAlunoUI cadastroAluno = new CadastroAlunoUI(aluno, listaAulas);
             cadastroAluno.show();
             this.hide();
-            //cadastroAluno.setVisible(true);
             FormPrincipal.getPainelPrincipal().add(cadastroAluno);
-            //this.dispose();
-            //Função de alteração do professor        
-            //}
             tableBuscaAlunos.getSelectedRow();
             atualizarTabelaAluno();
         }

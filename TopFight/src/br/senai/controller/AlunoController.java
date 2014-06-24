@@ -2,13 +2,14 @@ package br.senai.controller;
 
 import br.senai.DAO.AlunoDAO;
 import br.senai.model.Aluno;
+import br.senai.model.AlunoAula;
+import br.senai.model.Aula;
 import br.senai.util.Utils;
 import java.util.ArrayList;
 
 public class AlunoController {
 
     private static AlunoController instanciaRep;
-    private AlunoDAO alunoDAO;
 
     public static AlunoController obterInstancia() {
         if (instanciaRep == null) {
@@ -17,7 +18,7 @@ public class AlunoController {
         return instanciaRep;
     }
 
-    public void inserir(Aluno aluno) throws Exception {
+    public void inserir(Aluno aluno, ArrayList<Aula> al) throws Exception {
         if (aluno.getDscNome().isEmpty() || aluno.getDscNome() == null) {
             throw new Exception("Nome do Aluno inválido");
         }
@@ -47,11 +48,20 @@ public class AlunoController {
         if (aluno.getTelefone().isEmpty() || aluno.getTelefone().equals("")) {
             throw new Exception("Telefone inválido");
         }
-        alunoDAO = new AlunoDAO();
-        alunoDAO.inserir(aluno);
+        if (al.isEmpty()) {
+            throw new Exception("Aluno precisa de pelo menos uma aula");
+        }
+
+        AlunoDAO.obterInstancia().inserir(aluno);
+        inserirAulas(al, codigoUltimoAluno(), false);
+
     }
 
-    public void alterar(Aluno aluno) throws Exception {
+    public int codigoUltimoAluno() {
+        return AlunoDAO.obterInstancia().codigoUltimoAluno();
+    }
+
+    public void alterar(Aluno aluno, ArrayList<Aula> al) throws Exception {
         if (aluno.getDscNome().isEmpty() || aluno.getDscNome() == null) {
             throw new Exception("Nome do Aluno inválido");
         }
@@ -80,11 +90,17 @@ public class AlunoController {
         if (aluno.getTelefone().isEmpty() || aluno.getTelefone().equals("")) {
             throw new Exception("Telefone inválido");
         }
+
+        if (al.isEmpty()) {
+            throw new Exception("Aluno precisa de pelo menos uma aula");
+        }
+
         AlunoDAO.obterInstancia().alterar(aluno);
+        inserirAulas(al, aluno.getId(), true);
     }
-
-    public Aluno obterAluno(int id) throws Exception {
-        return AlunoDAO.obterInstancia().obtemAluno(id);
+    
+    public ArrayList<Aula> listarTodasAulasPorAluno(int idAluno) {
+        return AlunoDAO.obterInstancia().listarTodasAulasPorAluno(idAluno);
     }
 
     public ArrayList<Aluno> listarTodos() {
@@ -92,12 +108,21 @@ public class AlunoController {
     }
 
     public ArrayList<Aluno> getAlunoPesquisa(String coluna, String paramentro, Integer status) {
-        alunoDAO = new AlunoDAO();
         if (status == 1) {
-            return alunoDAO.listarPesquisaAtivos(coluna, paramentro, status);
+            return AlunoDAO.obterInstancia().listarPesquisaAtivos(coluna, paramentro, status);
         } else {
-            return alunoDAO.listarPesquisa(coluna, paramentro);
+            return AlunoDAO.obterInstancia().listarPesquisa(coluna, paramentro);
         }
-
     }
+
+    public void inserirAulas(ArrayList<Aula> aulas, int idAluno, boolean alterar) throws Exception {
+        if (alterar) {
+            AlunoDAO.obterInstancia().deletarAula(idAluno);
+        }
+        for (Aula al : aulas) {
+            AlunoAula alunoAula = new AlunoAula(idAluno, al.getIdAula());
+            AlunoDAO.obterInstancia().inserirAula(alunoAula);
+        }
+    }
+
 }

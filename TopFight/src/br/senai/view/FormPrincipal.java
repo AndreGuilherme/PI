@@ -182,7 +182,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuCadAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCadAlunoActionPerformed
-        CadastroAlunoUI aluno = new CadastroAlunoUI(null);
+        CadastroAlunoUI aluno = new CadastroAlunoUI(null, null);
         aluno.setVisible(true);
         jdpPainelPrincipal.add(aluno);
     }//GEN-LAST:event_jMenuCadAlunoActionPerformed
@@ -218,6 +218,7 @@ public class FormPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuPesProfessorActionPerformed
 
     private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
+        
     }//GEN-LAST:event_jMenu3ActionPerformed
 
     private void jGerarRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGerarRelatoriosActionPerformed

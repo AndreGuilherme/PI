@@ -1,6 +1,9 @@
 package br.senai.DAO;
 
 import br.senai.model.Aluno;
+import br.senai.model.AlunoAula;
+import br.senai.model.Aula;
+import br.senai.model.Professor;
 import br.senai.util.ConexaoSingleton;
 import br.senai.util.Utils;
 import java.sql.PreparedStatement;
@@ -9,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 public class AlunoDAO {
 
@@ -28,6 +32,21 @@ public class AlunoDAO {
     public AlunoDAO() {
         this.listaAluno = new ArrayList<>();
         con = new ConexaoSingleton();
+    }
+
+    public void inserirAula(AlunoAula alunoAula) {
+        try {
+            String queryPessoa = "INSERT INTO aulaaluno (id_Aluno, id_Aula) VALUES (?, ?);";
+            PreparedStatement pst = con.getConnection().prepareStatement(queryPessoa);
+
+            pst.setInt(1, alunoAula.getNumIdAluno());
+            pst.setInt(2, alunoAula.getNumIdAula());
+            pst.execute();
+            con.closeConnection();
+            pst.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void inserir(Aluno aluno) {
@@ -65,6 +84,7 @@ public class AlunoDAO {
             pstAluno.setString(2, aluno.getPeso().toString());
             pstAluno.setString(3, aluno.getAltura().toString());
             pstAluno.execute();
+
             con.closeConnection();
             pstAluno.close();
             pstPessoa.close();
@@ -73,39 +93,21 @@ public class AlunoDAO {
         }
     }
 
-    public Aluno obtemAluno(int id) {
+    public int codigoUltimoAluno() {
         try {
             Statement executorSQL = con.getConnection().createStatement();
-            String sql = "SELECT * FROM pessoa p \n"
-                    + " JOIN aluno a ON \n"
-                    + " a.id_Pessoa = p.id_Pessoa\n"
-                    + " WHERE a.id_aluno = " + id + ";";
-            ResultSet rs = executorSQL.executeQuery(sql);
-            while (rs.next()) {
-                Aluno a = new Aluno();
-                a.setNumId(rs.getInt("id_Aluno"));
-                a.setDscNome(rs.getString("dsc_Nome"));
-                a.setDscCPF(rs.getString("dsc_CPF"));
-                a.setDtDataNasc(rs.getDate("dt_DataNasc"));
-                a.setDscEndereco(rs.getString("dsc_Endereco"));
-                a.setNunNumero(rs.getInt("nun_Numero"));
-                a.setDscBairro(rs.getString("dsc_Bairro"));
-                a.setDscCEP(rs.getString("dsc_CEP"));
-                a.setDscComplemento(rs.getString("dsc_Complemento"));
-                a.setSexo(rs.getInt("Sexo"));
-                a.setDscEmail(rs.getString("dsc_Email"));
-                a.setStatus(rs.getInt("Status"));
-                a.setPeso(rs.getDouble("Peso"));
-                a.setAltura(rs.getDouble("Altura"));
-                a.setNumIdPessoa(rs.getInt("id_Pessoa"));
-                a.setTelefone(rs.getString("dsc_Telefone"));
-                a.setDscObservacao(rs.getString("dsc_Observacao"));
-                return a;
+            String sql = "SELECT MAX(Id_Aluno) as Id_Aluno  FROM Aluno;";
+            ResultSet resultado = executorSQL.executeQuery(sql);
+            int id_pessoa = 0;
+            while (resultado.next()) {
+                id_pessoa = resultado.getInt("id_Aluno");
             }
             executorSQL.close();
-            return null;
+            return id_pessoa;
+
         } catch (Exception e) {
-            return null;
+            JOptionPane.showMessageDialog(null, "Erro ao Localizar ultimo aluno");
+            return 0;
         }
     }
 
@@ -144,6 +146,61 @@ public class AlunoDAO {
             ex.printStackTrace();
         }
         return this.listaAluno;
+    }
+
+    public ArrayList<Aula> listarTodasAulasPorAluno(int idAluno) {
+        ArrayList<Aula> listaAula = new ArrayList<Aula>();
+        try {
+            Statement st = con.getConnection().createStatement();
+            String query = "SELECT * FROM aulaaluno al\n"
+                    + "JOIN aula a ON\n"
+                    + "a.id_Aula = al.id_Aula\n"
+                    + "WHERE id_Aluno = "+ idAluno + ";";
+            ResultSet rs = st.executeQuery(query);
+              while (rs.next()) {
+                Aula a = new Aula();
+                a.setIdAula(rs.getInt("id_Aula"));
+                a.sethInicio(rs.getTime("inicio"));
+                a.sethFim(rs.getTime("fim"));
+                a.setDiaSemana(rs.getInt("DiaSemana"));
+                a.setStatus(rs.getInt("Status"));
+                a.setNumeroAlunos(rs.getInt("numAlunos"));
+
+                Professor prof = new Professor();
+                Statement stm = con.getConnection().createStatement();
+                String queryProf = "SELECT p.* , f.id_Professor "
+                        + "FROM pessoa p \n"
+                        + "JOIN professor f ON \n"
+                        + "f.id_Pessoa = p.id_Pessoa "
+                        + "WHERE f.Id_Professor =" + rs.getInt("Id_Professor") + ";";
+                ResultSet rss = stm.executeQuery(queryProf);
+                while (rss.next()) {
+                    prof.setNumIdProfessor(rss.getInt("id_Professor"));
+                    prof.setDscNome(rss.getString("dsc_Nome"));
+                    prof.setDscCPF(rss.getString("dsc_CPF"));
+                    prof.setDtDataNasc(rss.getDate("dt_DataNasc"));
+                    prof.setDscEndereco(rss.getString("dsc_Endereco"));
+                    prof.setNunNumero(rss.getInt("nun_Numero"));
+                    prof.setDscBairro(rss.getString("dsc_Bairro"));
+                    prof.setDscCEP(rss.getString("dsc_CEP"));
+                    prof.setDscComplemento(rss.getString("dsc_Complemento"));
+                    prof.setSexo(rss.getInt("Sexo"));
+                    prof.setDscEmail(rss.getString("dsc_Email"));
+                    prof.setDscObservacao(rss.getString("dsc_Observacao"));
+                    prof.setStatus(rss.getInt("Status"));
+                    prof.setTelefone(rss.getString("dsc_Telefone"));
+                    prof.setNumIdPessoa(rss.getInt("id_Pessoa"));
+                }
+                a.setProfessor(prof);
+                rss.close();
+                listaAula.add(a);
+            }
+            rs.close();
+            con.closeConnection();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return listaAula;
     }
 
     public void alterar(Aluno aluno) {
@@ -271,7 +328,21 @@ public class AlunoDAO {
         }
         return this.listaAluno;
     }
+
+    public void deletarAula(int aluno) {
+        try {
+            String queryPessoa = "DELETE FROM aulaaluno WHERE id_Aluno = ?;";
+            PreparedStatement pst = con.getConnection().prepareStatement(queryPessoa);
+            pst.setInt(1, aluno);
+            pst.executeUpdate();
+            con.closeConnection();
+            pst.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
+
 //
 //    public void remover(Cliente cliente) throws Exception {
 //        try {

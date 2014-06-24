@@ -24,16 +24,18 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
      *
      * @param aluno
      */
-    public CadastroAlunoUI(Aluno aluno) {
+    public CadastroAlunoUI(Aluno aluno, ArrayList<Aula> listaAulas) {
         initComponents();
         //centralizar();
         checkAtivoAluno.setSelected(true);
         checkAtivoAluno.setEnabled(false);
         rbSexoMascAluno.setSelected(true);
         if (aluno != null) {
+            this.listAlunoAula = listaAulas;
             this.alunoAlteracao = aluno;
             preencheAluno(aluno);
             checkAtivoAluno.setEnabled(true);
+            atualizaTabelaAulaAluno(this.listAlunoAula);
         }
     }
 
@@ -496,7 +498,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 }
                 this.alunoAlteracao.setDtDataNasc(jDateNasc.getDate());
 
-                AlunoController.obterInstancia().alterar(this.alunoAlteracao);
+                AlunoController.obterInstancia().alterar(this.alunoAlteracao, this.listAlunoAula);
                 JOptionPane.showMessageDialog(this, "Aluno alterado com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
             } else {
@@ -525,8 +527,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                     aluno.setPeso(Double.parseDouble(txtPesoAluno.getText()));
                 }
                 aluno.setDtDataNasc(jDateNasc.getDate());
-
-                AlunoController.obterInstancia().inserir(aluno);
+                AlunoController.obterInstancia().inserir(aluno, this.listAlunoAula);
                 JOptionPane.showMessageDialog(this, "Aluno cadastrado com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
                 this.limpaCamposTelas();
             }
@@ -567,7 +568,8 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCPFAlunoFocusLost
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        this.limpaCamposTelas();
+        //this.limpaCamposTelas();
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnPesquisaAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaAulaActionPerformed
@@ -628,6 +630,117 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         lbValidado.setIcon(null);
         txtCPFAluno.setBackground(Color.WHITE);
         jDateNasc.setDate(null);
+        modelo = new DefaultTableModel();
+        this.listAlunoAula.clear();
+        tableAulasAluno.setModel(new DefaultTableModel());
+    }
+    
+    
+    private void centralizar() {
+        Dimension d = FormPrincipal.getPainelPrincipal().getSize();
+        this.setLocation((d.height - this.getHeight() / 2), (d.width - this.getWidth() / 2));
+    }
+
+    public void recebeAula(Aula aula) {
+        int flag = 0;
+        for (Aula al : listAlunoAula) {
+            if (al.getIdAula() == aula.getIdAula()) {
+                flag = 1;
+                break;
+            }
+            if ((al.gethInicio().before(aula.gethInicio()) && al.gethFim().after(aula.gethInicio()))
+                    || (al.gethInicio().before(aula.gethFim()) && al.gethFim().after(aula.gethFim()))
+                    || (al.gethInicio().getTime() > aula.gethInicio().getTime())
+                    && (al.gethFim().getTime() < aula.gethFim().getTime())) {
+                if (aula.getDiaSemana() == al.getDiaSemana()) {
+                    flag = 2;
+                    break;
+                }
+            }
+        }
+        if (flag == 1) {
+            JOptionPane.showMessageDialog(rootPane, "Aula ja cadastrada para o aluno");
+            this.show();
+        } else if (flag == 2) {
+            JOptionPane.showMessageDialog(rootPane, "Já existe aula nesse horario e nesse mesmo dia");
+            this.show();
+        } else {
+            listAlunoAula.add(aula);
+            this.show();
+            atualizaTabelaAulaAluno(this.listAlunoAula);
+        }
+    }
+
+//    private void atualizaTabelaAulaAluno(Aula aula) {
+//        if (modelo.getRowCount() == 0) {
+//            modelo.setColumnIdentifiers(new String[]{"Professor", "Dias da Semana", "Horários", "Status"});
+//        }
+//        String dia = "";
+//        String status = "";
+//        if (aula.getDiaSemana() == 1) {
+//            dia = "Seg.";
+//        } else if (aula.getDiaSemana() == 2) {
+//            dia = "Ter.";
+//        } else if (aula.getDiaSemana() == 3) {
+//            dia = "Qua.";
+//        } else if (aula.getDiaSemana() == 4) {
+//            dia = "Qui.";
+//        } else if (aula.getDiaSemana() == 5) {
+//            dia = "Sex";
+//        } else if (aula.getDiaSemana() == 6) {
+//            dia = "Sáb.";
+//        } else if (aula.getDiaSemana() == 7) {
+//            dia = "Dom.";
+//        }
+//        if (aula.getStatus() == 0) {
+//            status = "Inativo";
+//        } else {
+//            status = "Ativo";
+//        }
+//        modelo.addRow(new Object[]{aula.getProfessor().getDscNome(),
+//            dia,
+//            aula.gethInicio() + " - " + aula.gethFim(),
+//            status
+//        });
+//
+//        tableAulasAluno.setModel(modelo);
+//    }
+    private void atualizaTabelaAulaAluno(ArrayList<Aula> listaAula) {
+        this.modelo = new DefaultTableModel();
+        if (modelo.getRowCount() == 0) {
+            modelo.setColumnIdentifiers(new String[]{"Professor", "Dias da Semana", "Horários", "Status"});
+        }
+        String dia = "";
+        String status = "";
+        for (Aula al : listaAula) {
+
+            if (al.getDiaSemana() == 1) {
+                dia = "Seg.";
+            } else if (al.getDiaSemana() == 2) {
+                dia = "Ter.";
+            } else if (al.getDiaSemana() == 3) {
+                dia = "Qua.";
+            } else if (al.getDiaSemana() == 4) {
+                dia = "Qui.";
+            } else if (al.getDiaSemana() == 5) {
+                dia = "Sex";
+            } else if (al.getDiaSemana() == 6) {
+                dia = "Sáb.";
+            } else if (al.getDiaSemana() == 7) {
+                dia = "Dom.";
+            }
+            if (al.getStatus() == 0) {
+                status = "Inativo";
+            } else {
+                status = "Ativo";
+            }
+            modelo.addRow(new Object[]{al.getProfessor().getDscNome(),
+                dia,
+                al.gethInicio() + " - " + al.gethFim(),
+                status
+            });
+        }
+        tableAulasAluno.setModel(modelo);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -675,74 +788,4 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtPesoAluno;
     private javax.swing.JTextField txtTelefoneAluno;
     // End of variables declaration//GEN-END:variables
-
-    private void centralizar() {
-        Dimension d = FormPrincipal.getPainelPrincipal().getSize();
-        this.setLocation((d.height - this.getHeight() / 2), (d.width - this.getWidth() / 2));
-    }
-
-    public void recebeAula(Aula aula) {
-        int flag = 0;
-        for (Aula al : listAlunoAula) {
-            if (al.getIdAula() == aula.getIdAula()) {
-                flag = 1;
-                break;
-            }
-            if ((al.gethInicio().before(aula.gethInicio()) && al.gethFim().after(aula.gethInicio()))
-                    || (al.gethInicio().before(aula.gethFim()) && al.gethFim().after(aula.gethFim()))
-                    || (al.gethInicio().getTime() > aula.gethInicio().getTime()) 
-                    && (al.gethFim().getTime() < aula.gethFim().getTime())) {
-                if (aula.getDiaSemana() == al.getDiaSemana()) {
-                    flag = 2;
-                    break;
-                }
-            }
-        }
-        if (flag == 1) {
-            JOptionPane.showMessageDialog(rootPane, "Aula ja cadastrada para o aluno");
-            this.show();
-        } else if (flag == 2) {
-            JOptionPane.showMessageDialog(rootPane, "Já existe aula nesse horario e nesse mesmo dia");
-            this.show();
-        } else {
-            listAlunoAula.add(aula);
-            this.show();
-            atualizaTabelaAulaAluno(aula);
-        }
-    }
-
-    private void atualizaTabelaAulaAluno(Aula aula) {
-        if (modelo.getRowCount() == 0) {
-            modelo.setColumnIdentifiers(new String[]{"Professor", "Dias da Semana", "Horários", "Status"});
-        }
-        String dia = "";
-        String status = "";
-        if (aula.getDiaSemana() == 1) {
-            dia = "Seg.";
-        } else if (aula.getDiaSemana() == 2) {
-            dia = "Ter.";
-        } else if (aula.getDiaSemana() == 3) {
-            dia = "Qua.";
-        } else if (aula.getDiaSemana() == 4) {
-            dia = "Qui.";
-        } else if (aula.getDiaSemana() == 5) {
-            dia = "Sex";
-        } else if (aula.getDiaSemana() == 6) {
-            dia = "Sáb.";
-        } else if (aula.getDiaSemana() == 7) {
-            dia = "Dom.";
-        }
-        if (aula.getStatus() == 0) {
-            status = "Inativo";
-        } else {
-            status = "Ativo";
-        }
-        modelo.addRow(new Object[]{aula.getProfessor().getDscNome(),
-            dia,
-            aula.gethInicio() + " - " + aula.gethFim(),
-            status
-        });
-
-        tableAulasAluno.setModel(modelo);
-    }
 }
