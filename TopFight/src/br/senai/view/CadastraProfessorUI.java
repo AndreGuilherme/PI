@@ -149,10 +149,12 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
         jDateNasc = new com.toedter.calendar.JDateChooser();
 
         setClosable(true);
+        setIconifiable(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Cadastro de Professor");
 
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/save.png"))); // NOI18N
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,6 +162,7 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -340,7 +343,7 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel17))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -439,6 +442,9 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
                 ProfessorController.obterInstancia().alterar(this.professorAlteracao);
                 JOptionPane.showMessageDialog(this, "Professor alterado com sucesso");
                 this.dispose();
+                ConsultaProfessorUI consProf = new ConsultaProfessorUI(false);
+                consProf.show();
+                FormPrincipal.getPainelPrincipal().add(consProf);
             } else {
                 Professor professor = new Professor();
                 professor.setDscNome(txtNomeProfessor.getText());

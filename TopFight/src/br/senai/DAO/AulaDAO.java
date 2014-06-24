@@ -489,4 +489,32 @@ public class AulaDAO {
         return this.listaAula;
     }
 
+    public void alterar(Aula aula) {
+        try {
+            String query = "update Aula AS a \n"
+                    + "SET \n"
+                    + "id_Professor= ?, \n"
+                    + "inicio = ?, \n"
+                    + "fim = ?, \n"
+                    + "DiaSemana = ?, \n"
+                    + "Status = ?, \n"
+                    + "numAlunos = ? \n"
+                    + "WHERE id_aula = ?; ";
+            PreparedStatement st = con.getConnection().prepareStatement(query);
+            st.setInt(1, aula.getProfessor().getNumIdProfessor());
+            st.setTime(2, aula.gethInicio());
+            st.setTime(3, aula.gethFim());
+            st.setInt(4, aula.getDiaSemana());
+            st.setInt(5, aula.getStatus());
+            st.setInt(6, aula.getNumeroAlunos());
+            st.setInt(7, aula.getIdAula());
+
+            st.executeUpdate();
+            st.close();
+            con.closeConnection();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 }

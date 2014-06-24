@@ -1,4 +1,5 @@
 package br.senai.view;
+
 import br.senai.controller.ProfessorController;
 import br.senai.model.Professor;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -44,6 +46,7 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
 
         setClosable(true);
+        setIconifiable(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Pesquisa de Professor");
@@ -64,8 +67,15 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tableProfessor);
 
+        btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/edit-clear.png"))); // NOI18N
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Find.png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -77,8 +87,10 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Pesquisar:");
 
+        buttonGroup1.add(rbNome);
         rbNome.setText("Nome");
 
+        buttonGroup1.add(rbCPf);
         rbCPf.setText("CPF");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -88,7 +100,7 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -109,7 +121,7 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
                                         .addComponent(btnBuscar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(btnLimpar)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 162, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -130,12 +142,19 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
                     .addComponent(btnBuscar)
                     .addComponent(btnLimpar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add.png"))); // NOI18N
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/gtk_edit.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,6 +162,7 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -242,6 +262,23 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        try {
+            profController = new ProfessorController();
+            CadastraProfessorUI cadProf = new CadastraProfessorUI(null);
+            this.hide();
+            cadProf.show();
+            FormPrincipal.getPainelPrincipal().add(cadProf);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Tente novamente!");
+        }
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        limparTela();
+        atualizarTabelaProfessor();
+    }//GEN-LAST:event_btnLimparActionPerformed
+
     private void atualizarTabelaProfessor(ArrayList<Professor> profPesquisa) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
@@ -295,12 +332,18 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
         tableProfessor.setModel(modelo);
     }
 
+    private void limparTela() {
+        txtBuscaProfessor.setText("");
+        rbNome.setSelected(true);
+        checkAtivo.setSelected(true);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnNovo;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JCheckBox checkAtivo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

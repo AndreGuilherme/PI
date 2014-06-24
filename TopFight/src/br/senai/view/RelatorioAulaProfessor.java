@@ -86,7 +86,13 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tableProfAula);
 
+        btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/edit-clear.png"))); // NOI18N
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -118,7 +124,13 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        btnFechar.setText("Fechar");
+        btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
+        btnFechar.setText("Cancelar");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -157,6 +169,18 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
             atualizarTabela(cbxProfessor.getSelectedItem().toString());
         }
     }//GEN-LAST:event_cbxProfessorItemStateChanged
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"Professor", "Hora Inicio", "Hora Final", "Dia da Semana", "Qnt. Alunos/Aula", "Qnt. Alunos Matr.", "Status Aula"});
+        modelo.addRow(new Object[]{"", "", "", "", "", ""});
+        tableProfAula.setModel(modelo);
+        cbxProfessor.setSelectedIndex(-1);
+    }//GEN-LAST:event_btnLimparActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

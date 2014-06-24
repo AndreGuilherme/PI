@@ -40,6 +40,7 @@ public class Relatorios extends javax.swing.JInternalFrame {
         buttonGroup1.add(jBtnRelAulProf);
         jBtnRelAulProf.setText("Relatório Aula por Professor");
 
+        btnGerarRels.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Sync.png"))); // NOI18N
         btnGerarRels.setText("Gerar Relatório");
         btnGerarRels.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,6 +84,7 @@ public class Relatorios extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("RELATÓRIOS");
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
         jButton1.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

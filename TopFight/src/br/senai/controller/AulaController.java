@@ -51,6 +51,37 @@ public class AulaController {
         AulaDAO.obterInstancia().insertAula(aula);
     }
 
+    public void alterar(Aula aula) throws Exception {
+        if (aula.getDiaSemana() == 0) {
+            throw new Exception("Dia da semana invalido!");
+        }
+        if (aula.gethInicio() == null) {
+            throw new Exception("Hora Inicio Invalido!");
+        }
+        if (aula.gethFim() == null) {
+            throw new Exception("Hora Fim Invalida!");
+        }
+        if (aula.getProfessor() == null) {
+            throw new Exception("Selecione um Professor");
+        }
+        if (aula.getNumeroAlunos() < 10) {
+            throw new Exception("Precisa de no mínimo 10 alunos");
+        }
+
+        long diferencaTempo = ((aula.gethFim().getTime() - aula.gethInicio().getTime()) / (Tempo.MINUTE_IN_MILLIS.getValue()));
+        if (diferencaTempo < 30) {
+            throw new Exception("Tempo minimo de aula é de 30 minutos. \n Favor ajustar.");
+        }
+
+        if (!AulaDAO.obterInstancia().ValidaHorarioAulas(aula)) {
+            throw new Exception("Professor " + aula.getProfessor().getDscNome() + ", já possiu uma aula cadastrada nesse dia e horário.");
+        }
+        aulaDAO = new AulaDAO();
+        aulaDAO.alterar(aula);
+                
+        
+    }
+
     public void buscaAulas(CadastroAlunoUI cadAluno) {
         alunoView = cadAluno;
         consultaAula = new ConsultaAulaUI(true);

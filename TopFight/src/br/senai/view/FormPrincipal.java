@@ -78,8 +78,10 @@ public class FormPrincipal extends javax.swing.JFrame {
             .addGap(0, 394, Short.MAX_VALUE)
         );
 
+        jMenuCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/save.png"))); // NOI18N
         jMenuCadastro.setText("Cadastro");
 
+        jMenuCadAluno.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.ALT_MASK));
         jMenuCadAluno.setText("Aluno");
         jMenuCadAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,6 +90,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         });
         jMenuCadastro.add(jMenuCadAluno);
 
+        jMenuCadAula.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.ALT_MASK));
         jMenuCadAula.setText("Aula");
         jMenuCadAula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,6 +99,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         });
         jMenuCadastro.add(jMenuCadAula);
 
+        jMenuCadProfessor.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, java.awt.event.InputEvent.ALT_MASK));
         jMenuCadProfessor.setText("Professor");
         jMenuCadProfessor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,8 +110,10 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuCadastro);
 
+        jMenuPesquisa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Find.png"))); // NOI18N
         jMenuPesquisa.setText("Pesquisa");
 
+        jMenuPesAluno.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.CTRL_MASK));
         jMenuPesAluno.setText("Aluno");
         jMenuPesAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,6 +122,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         });
         jMenuPesquisa.add(jMenuPesAluno);
 
+        jMenuPesAula.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_MASK));
         jMenuPesAula.setText("Aula");
         jMenuPesAula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,6 +131,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         });
         jMenuPesquisa.add(jMenuPesAula);
 
+        jMenuPesProfessor.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, java.awt.event.InputEvent.CTRL_MASK));
         jMenuPesProfessor.setText("Professor");
         jMenuPesProfessor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,8 +142,10 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuPesquisa);
 
+        jMenuRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Sync.png"))); // NOI18N
         jMenuRelatorios.setText("Relatórios");
 
+        jGerarRelatorios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.SHIFT_MASK));
         jGerarRelatorios.setText("Relatórios");
         jGerarRelatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,6 +156,7 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuRelatorios);
 
+        jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
         jMenu3.setText("Sair");
         jMenu3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -164,7 +175,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jdpPainelPrincipal)
+            .addComponent(jdpPainelPrincipal, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();

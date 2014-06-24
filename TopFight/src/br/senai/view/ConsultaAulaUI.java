@@ -63,6 +63,7 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
 
         setClosable(true);
+        setIconifiable(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Pesquisa de Aulas");
@@ -90,6 +91,7 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Selecione dia da Semana: ");
 
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Find.png"))); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,7 +99,13 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
             }
         });
 
+        btnLimpar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/edit-clear.png"))); // NOI18N
         btnLimpar.setText("Limpar");
+        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimparActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Somente Ativos: ");
 
@@ -158,6 +166,7 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
                 .addGap(25, 25, 25))
         );
 
+        btnAlterar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/gtk_edit.png"))); // NOI18N
         btnAlterar.setText("Alterar");
         btnAlterar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,8 +174,15 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
             }
         });
 
+        btnNovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add.png"))); // NOI18N
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -231,7 +247,8 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
                 CadastroAulaUI cadatroAula = new CadastroAulaUI(aula);
                 cadatroAula.setVisible(true);
                 FormPrincipal.getPainelPrincipal().add(cadatroAula);
-                this.dispose();
+                this.hide();
+                //this.dispose();
                 //Função de alteração do professor        
             }
             tableAulas.getSelectedRow();
@@ -250,6 +267,23 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
         }
         atualizarTabelaAula(aulaController.getAulaPesquisa(txtNomeProfessor.getText().toString(), day, status));
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        try {
+            aulaController = new AulaController();
+            CadastroAulaUI cadAula = new CadastroAulaUI(null);
+            this.hide();
+            cadAula.show();
+            FormPrincipal.getPainelPrincipal().add(cadAula);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, "Tente novamente.");
+        }
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
+        limparTela();
+        atualizarTabelaAula();
+    }//GEN-LAST:event_btnLimparActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlterar;
@@ -343,5 +377,11 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
                 status});
         }
         tableAulas.setModel(modelo);
+    }
+
+    private void limparTela() {
+        txtNomeProfessor.setText("");
+        cbxDiaSemana.setSelectedIndex(0);
+        checkAtivo.setSelected(true);
     }
 }

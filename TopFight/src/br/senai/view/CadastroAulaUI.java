@@ -30,6 +30,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         if (aula != null) {
             this.aulaAlteracao = aula;
             checkAtivoAula.setEnabled(true);
+            preencherAula(aula);
         }
     }
 
@@ -40,6 +41,20 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         Integer step = new Integer(1);
         SpinnerNumberModel model = new SpinnerNumberModel(value, min, max, step);
         jQntAlunos.setModel(model);
+    }
+
+    private void preencherAula(Aula aula) {
+        cbxDiaSemanaAula.setSelectedIndex(aula.getDiaSemana());
+        txtHrInicioAula.setText(aula.gethInicio().toString());
+        txtHrFinalAula.setText(aula.gethFim().toString());
+        this.prof = aula.getProfessor();
+        txtProfessorAula.setText(this.prof.getDscNome());
+        jQntAlunos.setValue(aula.getNumeroAlunos());
+        if (aula.getStatus() == 1) {
+            checkAtivoAula.setSelected(true);
+        } else {
+            checkAtivoAula.setSelected(false);
+        }
     }
 
     public void recebeProfessor(Professor professor) {
@@ -85,6 +100,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         btnCancelar = new javax.swing.JButton();
 
         setClosable(true);
+        setIconifiable(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Cadastro de Aulas");
@@ -97,7 +113,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
 
         txtProfessorAula.setEnabled(false);
 
-        btnBuscarProfessor.setText("...");
+        btnBuscarProfessor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Find.png"))); // NOI18N
         btnBuscarProfessor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBuscarProfessorActionPerformed(evt);
@@ -187,6 +203,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
                 .addGap(14, 14, 14))
         );
 
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/save.png"))); // NOI18N
         btnSalvar.setText("Salvar");
         btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -194,6 +211,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -231,7 +249,26 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         try {
-            if (this.aulaAlteracao == null) {
+            if (this.aulaAlteracao != null) {
+                this.aulaAlteracao.setDiaSemana(cbxDiaSemanaAula.getSelectedIndex());
+                this.aulaAlteracao.sethInicio(getHora(txtHrInicioAula.getText().toString()));
+                this.aulaAlteracao.sethFim(getHora(txtHrFinalAula.getText().toString()));
+                this.aulaAlteracao.setNumeroAlunos(getQntAlunos());
+                if (checkAtivoAula.isSelected()) {
+                    this.aulaAlteracao.setStatus(1);
+                } else {
+                    this.aulaAlteracao.setStatus(0);
+                }
+                this.aulaAlteracao.setProfessor(this.prof);
+
+                AulaController.obterInstancia().alterar(this.aulaAlteracao);
+                JOptionPane.showMessageDialog(rootPane, "Aula alterada com Sucesso!", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                ConsultaAulaUI consAula = new ConsultaAulaUI(false);
+                consAula.show();
+                FormPrincipal.getPainelPrincipal().add(consAula);
+
+            } else {
                 Aula novaAula = new Aula();
                 novaAula.setDiaSemana(cbxDiaSemanaAula.getSelectedIndex());
                 novaAula.sethInicio(getHora(txtHrInicioAula.getText().toString()));
