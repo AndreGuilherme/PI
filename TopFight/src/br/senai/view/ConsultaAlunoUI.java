@@ -68,6 +68,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Pesquisa de Alunos");
 
+        btnNovoAluno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/add.png"))); // NOI18N
         btnNovoAluno.setText("Novo");
         btnNovoAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -75,6 +76,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
             }
         });
 
+        btnAlterarAluno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/gtk_edit.png"))); // NOI18N
         btnAlterarAluno.setText("Alterar");
         btnAlterarAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,6 +84,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
             }
         });
 
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,6 +116,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
         rbGroupPesquisa.add(rbPesquisaCPF);
         rbPesquisaCPF.setText("CPF");
 
+        btnBuscarAlunos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Find.png"))); // NOI18N
         btnBuscarAlunos.setText("Buscar");
         btnBuscarAlunos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,6 +126,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Somente Ativos: ");
 
+        btnLimparAlunos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/edit-clear.png"))); // NOI18N
         btnLimparAlunos.setText("Limpar");
         btnLimparAlunos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -179,7 +184,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
                     .addComponent(btnLimparAlunos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
