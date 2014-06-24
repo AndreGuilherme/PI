@@ -411,7 +411,14 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCPFFocusLost
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        this.limpaCamposTelas();
+        if (professorAlteracao != null) {
+            this.dispose();
+            ConsultaProfessorUI consProfessor = new ConsultaProfessorUI(false);
+            consProfessor.show();
+            FormPrincipal.getPainelPrincipal().add(consProfessor);
+        } else {
+            this.dispose();
+        }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed

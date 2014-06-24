@@ -83,6 +83,11 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanel1.setPreferredSize(new java.awt.Dimension(478, 261));
@@ -277,6 +282,10 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
        txtPesquisaAlunos.setText("");
        atualizarTabelaAluno();
     }//GEN-LAST:event_btnLimparAlunosActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void atualizarTabelaAluno() {
         DefaultTableModel modelo = new DefaultTableModel();

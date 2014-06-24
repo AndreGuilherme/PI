@@ -501,6 +501,9 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 AlunoController.obterInstancia().alterar(this.alunoAlteracao, this.listAlunoAula);
                 JOptionPane.showMessageDialog(this, "Aluno alterado com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
+                ConsultaAulaUI consAula = new ConsultaAulaUI(false);
+                consAula.show();
+                FormPrincipal.getPainelPrincipal().add(consAula);
             } else {
                 Aluno aluno = new Aluno();
                 aluno.setDscNome(txtNomeAluno.getText());
@@ -568,8 +571,14 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCPFAlunoFocusLost
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        //this.limpaCamposTelas();
-        this.dispose();
+        if (alunoAlteracao != null) {
+            this.dispose();
+            ConsultaAlunoUI consAluno = new ConsultaAlunoUI(false);
+            consAluno.show();
+            FormPrincipal.getPainelPrincipal().add(consAluno);
+        } else {
+            this.dispose();
+        }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnPesquisaAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisaAulaActionPerformed
@@ -634,8 +643,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         this.listAlunoAula.clear();
         tableAulasAluno.setModel(new DefaultTableModel());
     }
-    
-    
+
     private void centralizar() {
         Dimension d = FormPrincipal.getPainelPrincipal().getSize();
         this.setLocation((d.height - this.getHeight() / 2), (d.width - this.getWidth() / 2));
