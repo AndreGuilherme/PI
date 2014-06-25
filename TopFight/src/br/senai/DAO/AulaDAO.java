@@ -31,8 +31,8 @@ public class AulaDAO {
         Aula aulaInsert = (Aula) aula;
 
         try {
-            String sql = "INSERT INTO aula (id_Professor, inicio, fim, DiaSemana, Status, numAlunos) VALUES "
-                    + "(?, ?, ?, ?, ?, ?);";
+            String sql = "INSERT INTO aula (id_Professor, inicio, fim, DiaSemana, Status, numAlunos, numMatricula) VALUES "
+                    + "(?, ?, ?, ?, ?, ?, 0);";
             PreparedStatement stmt = con.getConnection().prepareStatement(sql);
             stmt.setInt(1, aulaInsert.getProfessor().getNumIdProfessor());
             stmt.setTime(2, aulaInsert.gethInicio());
@@ -87,6 +87,7 @@ public class AulaDAO {
                 a.setDiaSemana(rs.getInt("DiaSemana"));
                 a.setStatus(rs.getInt("Status"));
                 a.setNumeroAlunos(rs.getInt("numAlunos"));
+                a.setNumMatricula(rs.getInt("numMatricula"));
 
                 Professor prof = new Professor();
                 Statement stm = con.getConnection().createStatement();
@@ -149,6 +150,7 @@ public class AulaDAO {
                 a.setDiaSemana(rs.getInt("DiaSemana"));
                 a.setStatus(rs.getInt("Status"));
                 a.setNumeroAlunos(rs.getInt("numAlunos"));
+                a.setNumMatricula(rs.getInt("numMatricula"));
 
                 Professor prof = new Professor();
                 Statement stm = con.getConnection().createStatement();
@@ -209,6 +211,7 @@ public class AulaDAO {
                 a.setDiaSemana(rs.getInt("DiaSemana"));
                 a.setStatus(rs.getInt("Status"));
                 a.setNumeroAlunos(rs.getInt("numAlunos"));
+                a.setNumMatricula(rs.getInt("numMatricula"));
 
                 Professor prof = new Professor();
                 Statement stm = con.getConnection().createStatement();
@@ -269,6 +272,7 @@ public class AulaDAO {
                 a.setDiaSemana(rs.getInt("DiaSemana"));
                 a.setStatus(rs.getInt("Status"));
                 a.setNumeroAlunos(rs.getInt("numAlunos"));
+                a.setNumMatricula(rs.getInt("numMatricula"));
 
                 Professor prof = new Professor();
                 Statement stm = con.getConnection().createStatement();
@@ -328,6 +332,7 @@ public class AulaDAO {
                 a.setDiaSemana(rs.getInt("DiaSemana"));
                 a.setStatus(rs.getInt("Status"));
                 a.setNumeroAlunos(rs.getInt("numAlunos"));
+                a.setNumMatricula(rs.getInt("numMatricula"));
 
                 Professor prof = new Professor();
                 Statement stm = con.getConnection().createStatement();
@@ -389,6 +394,7 @@ public class AulaDAO {
                 a.setDiaSemana(rs.getInt("DiaSemana"));
                 a.setStatus(rs.getInt("Status"));
                 a.setNumeroAlunos(rs.getInt("numAlunos"));
+                a.setNumMatricula(rs.getInt("numMatricula"));
 
                 Professor prof = new Professor();
                 Statement stm = con.getConnection().createStatement();
@@ -449,6 +455,7 @@ public class AulaDAO {
                 a.setDiaSemana(rs.getInt("DiaSemana"));
                 a.setStatus(rs.getInt("Status"));
                 a.setNumeroAlunos(rs.getInt("numAlunos"));
+                a.setNumMatricula(rs.getInt("numMatricula"));
 
                 Professor prof = new Professor();
                 Statement stm = con.getConnection().createStatement();

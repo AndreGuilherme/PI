@@ -92,6 +92,11 @@ public class AulaController {
     public void preencheFormAluno(Aula aula) {
         alunoView.recebeAula(aula);
     }
+    
+//    public boolean verificaDisponibilidade(Aula aula) {
+//        return AulaDAO.obterInstancia().verificaDisponibilidade(aula);
+//    }
+    
 
     public ArrayList<Aula> listarTodos() {
         return AulaDAO.obterInstancia().listarTodos();

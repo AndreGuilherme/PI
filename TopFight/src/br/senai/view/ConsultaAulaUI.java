@@ -246,8 +246,10 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
             }
 
             if (this.controleAula) {
-                AulaController.obterInstancia().preencheFormAluno(aula);
-                this.dispose();
+                //if (AulaController.obterInstancia().verificaDisponibilidade(aula)) {
+                    AulaController.obterInstancia().preencheFormAluno(aula);
+                    this.dispose();
+                //}
             } else {
                 CadastroAulaUI cadatroAula = new CadastroAulaUI(aula);
                 cadatroAula.setVisible(true);
@@ -315,7 +317,7 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
 
     private void atualizarTabelaAula() {
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.setColumnIdentifiers(new String[]{"Nome do Professor", "Dia da Semana", "Hora Inicial", "Hora Final", "Qnd. Alunos", "Status"});
+        modelo.setColumnIdentifiers(new String[]{"Nome do Professor", "Dia da Semana", "Hora Inicial", "Hora Final", "Máx. Alunos", "Qtd. Matricula", "Status"});
         this.listaAula = AulaController.obterInstancia().listarTodos();
         for (int i = 0; i < this.listaAula.size(); i++) {
             String dia = "";
@@ -346,6 +348,7 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
                 this.listaAula.get(i).gethInicio(),
                 this.listaAula.get(i).gethFim(),
                 this.listaAula.get(i).getNumeroAlunos(),
+                this.listaAula.get(i).getNumMatricula(),
                 status});
         }
         tableAulas.setModel(modelo);

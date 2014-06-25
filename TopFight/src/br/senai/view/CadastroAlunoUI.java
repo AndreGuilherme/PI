@@ -507,7 +507,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 AlunoController.obterInstancia().alterar(this.alunoAlteracao, this.listAlunoAula);
                 JOptionPane.showMessageDialog(this, "Aluno alterado com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-                ConsultaAlunoUI conAluno=  new ConsultaAlunoUI(false);
+                ConsultaAlunoUI conAluno = new ConsultaAlunoUI(false);
                 conAluno.show();
                 FormPrincipal.getPainelPrincipal().add(conAluno);
             } else {
@@ -678,7 +678,10 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 }
             }
         }
-        if (flag == 1) {
+        if (aula.getNumeroAlunos() <= aula.getNumMatricula()) {
+            JOptionPane.showMessageDialog(rootPane, "Aula ja atingiu o numero máximo de alunos");
+            this.show();
+        } else if (flag == 1) {
             JOptionPane.showMessageDialog(rootPane, "Aula ja cadastrada para o aluno");
             this.show();
         } else if (flag == 2) {

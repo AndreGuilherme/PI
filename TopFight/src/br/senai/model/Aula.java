@@ -11,6 +11,7 @@ public class Aula {
     private int status;
     private int numeroAlunos;
     private int diaSemana;
+    private int numMatricula;
 
     public int getIdAula() {
         return idAula;
@@ -66,5 +67,13 @@ public class Aula {
 
     public void setDiaSemana(int diaSemana) {
         this.diaSemana = diaSemana;
+    }
+
+    public int getNumMatricula() {
+        return numMatricula;
+    }
+
+    public void setNumMatricula(int numMatricula) {
+        this.numMatricula = numMatricula;
     }
 }
