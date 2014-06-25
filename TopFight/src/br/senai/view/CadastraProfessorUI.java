@@ -433,7 +433,12 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
                 this.professorAlteracao.setDscObservacao(txAreaObs.getText());
                 this.professorAlteracao.setDscCPF(txtCPF.getText());
                 if (!txtNum.getText().equals("")) {
-                    this.professorAlteracao.setNunNumero(Integer.parseInt(txtNum.getText()));
+                    try {
+                        this.professorAlteracao.setNunNumero(Integer.parseInt(txtNum.getText()));
+                    } catch (NumberFormatException e) {
+                        txtNum.grabFocus();
+                        throw new Exception("Apenas números");
+                    }
                 }
                 //Ativo
                 this.professorAlteracao.setStatus(1);
@@ -464,7 +469,12 @@ public class CadastraProfessorUI extends javax.swing.JInternalFrame {
                 professor.setDscObservacao(txAreaObs.getText());
                 professor.setTelefone(txtTelefone.getText());
                 if (!txtNum.getText().equals("")) {
-                    professor.setNunNumero(Integer.parseInt(txtNum.getText()));
+                    try {
+                        professor.setNunNumero(Integer.parseInt(txtNum.getText()));
+                    } catch (NumberFormatException e) {
+                        txtNum.grabFocus();
+                        throw new Exception("Apenas números");
+                    }
                 }
                 professor.setStatus(1); //Ativo
                 professor.setSexo(0);

@@ -2,6 +2,7 @@ package br.senai.view;
 
 import br.senai.controller.ProfessorController;
 import br.senai.model.Professor;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -281,6 +282,7 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
 
     private void atualizarTabelaProfessor(ArrayList<Professor> profPesquisa) {
         DefaultTableModel modelo = new DefaultTableModel();
+        SimpleDateFormat formatador = new SimpleDateFormat("dd-MM-yyyy");
         modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
         for (int i = 0; i < profPesquisa.size(); i++) {
             String sexo = "";
@@ -298,7 +300,7 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
 
             modelo.addRow(new Object[]{profPesquisa.get(i).getDscNome(),
                 profPesquisa.get(i).getDscCPF(),
-                profPesquisa.get(i).getDtDataNasc(),
+                formatador.format(profPesquisa.get(i).getDtDataNasc()),
                 sexo,
                 status});
         }
@@ -307,6 +309,7 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
 
     private void atualizarTabelaProfessor() {
         DefaultTableModel modelo = new DefaultTableModel();
+        SimpleDateFormat formatador = new SimpleDateFormat("dd-MM-yyyy");
         modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
         this.listaProf = ProfessorController.obterInstancia().listarTodos();
         for (int i = 0; i < this.listaProf.size(); i++) {
@@ -325,7 +328,7 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
 
             modelo.addRow(new Object[]{this.listaProf.get(i).getDscNome(),
                 this.listaProf.get(i).getDscCPF(),
-                this.listaProf.get(i).getDtDataNasc(),
+                formatador.format(this.listaProf.get(i).getDtDataNasc()),
                 sexo,
                 status});
         }

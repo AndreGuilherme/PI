@@ -23,6 +23,7 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
     /**
      *
      * @param aluno
+     * @param listaAulas
      */
     public CadastroAlunoUI(Aluno aluno, ArrayList<Aula> listaAulas) {
         initComponents();
@@ -43,10 +44,10 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         txtNomeAluno.setText(aluno.getDscNome().toString());
         txtCPFAluno.setText(aluno.getDscCPF().toString());
 
-        if (aluno.getSexo() == 1) {
-            rbSexoMascAluno.isSelected();
+        if (aluno.getSexo() == 0) {
+            rbSexoMascAluno.setSelected(true);
         } else {
-            rbSexoFemAluno.isSelected();
+            rbSexoFemAluno.setSelected(true);
         }
 
         if (aluno.getStatus() == 1) {
@@ -479,7 +480,12 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 this.alunoAlteracao.setDscObservacao(txAreaObs.getText());
                 this.alunoAlteracao.setDscCPF(txtCPFAluno.getText());
                 if (!txtNumAluno.getText().equals("")) {
-                    this.alunoAlteracao.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                    try {
+                        this.alunoAlteracao.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                    } catch (NumberFormatException e) {
+                        txtNumAluno.grabFocus();
+                        throw new Exception("Apenas números");
+                    }
                 }
                 //Ativo
                 this.alunoAlteracao.setStatus(1);
@@ -501,9 +507,9 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 AlunoController.obterInstancia().alterar(this.alunoAlteracao, this.listAlunoAula);
                 JOptionPane.showMessageDialog(this, "Aluno alterado com sucesso", "SUCESSO", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-                ConsultaAulaUI consAula = new ConsultaAulaUI(false);
-                consAula.show();
-                FormPrincipal.getPainelPrincipal().add(consAula);
+                ConsultaAlunoUI conAluno=  new ConsultaAlunoUI(false);
+                conAluno.show();
+                FormPrincipal.getPainelPrincipal().add(conAluno);
             } else {
                 Aluno aluno = new Aluno();
                 aluno.setDscNome(txtNomeAluno.getText());
@@ -516,7 +522,12 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
                 aluno.setDscCPF(txtCPFAluno.getText());
                 aluno.setTelefone(txtTelefoneAluno.getText());
                 if (!txtNumAluno.getText().equals("")) {
-                    aluno.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                    try {
+                        aluno.setNunNumero(Integer.parseInt(txtNumAluno.getText()));
+                    } catch (NumberFormatException e) {
+                        txtNumAluno.grabFocus();
+                        throw new Exception("Apenas números");
+                    }
                 }
                 aluno.setStatus(1); //Ativo
                 aluno.setSexo(0);
@@ -640,8 +651,9 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
         txtCPFAluno.setBackground(Color.WHITE);
         jDateNasc.setDate(null);
         modelo = new DefaultTableModel();
+        modelo.setColumnIdentifiers(new String[]{"Professor", "Dias da Semana", "Horários", "Status"});
         this.listAlunoAula.clear();
-        tableAulasAluno.setModel(new DefaultTableModel());
+        tableAulasAluno.setModel(modelo);
     }
 
     private void centralizar() {

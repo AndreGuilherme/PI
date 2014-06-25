@@ -36,16 +36,29 @@ public class ProfessorController {
 
     public void inserir(Professor professor) throws Exception {
         if (professor.getDscNome().isEmpty() || professor.getDscNome() == null) {
-            throw new Exception("Nome do Aluno inválido");
+            throw new Exception("Nome do Professor inválido");
         }
         professor.setDscCPF(professor.getDscCPF().replace("-", "").replace(".", "").replace("_", ""));
         if (professor.getDscCPF().isEmpty() || professor.getDscCPF().equals("") || !Utils.validarCPF(professor.getDscCPF())) {
             throw new Exception("CPF inválido");
         }
-
         if (professor.getDtDataNasc() == null) {
             throw new Exception("Data inválida");
         }
+
+        if (professor.getDscEndereco().isEmpty()) {
+            throw new Exception("Campo Endereço inválido");
+        }
+        if (professor.getNunNumero() == null) {
+            throw new Exception("Campo número inválido");
+        }
+        if (professor.getDscComplemento().isEmpty()) {
+            throw new Exception("Campo complemento inválido");
+        }
+        if (professor.getDscBairro().isEmpty()) {
+            throw new Exception("Campo Bairro inválido");
+        }
+
         professor.setTelefone(professor.getTelefone().replace("(", "").replace(")", "").replace("-", "").replace("_", "").replace(" ", ""));
 
         if (professor.getTelefone().isEmpty() || professor.getTelefone().equals("")) {
@@ -62,15 +75,26 @@ public class ProfessorController {
 
     public void alterar(Professor professor) throws Exception {
         if (professor.getDscNome().isEmpty() || professor.getDscNome() == null) {
-            throw new Exception("Nome do Aluno inválido");
+            throw new Exception("Nome do Professor inválido");
         }
         professor.setDscCPF(professor.getDscCPF().replace("-", "").replace(".", "").replace("_", ""));
         if (professor.getDscCPF().isEmpty() || professor.getDscCPF().equals("") || !Utils.validarCPF(professor.getDscCPF())) {
             throw new Exception("CPF inválido");
         }
-
         if (professor.getDtDataNasc() == null) {
             throw new Exception("Data inválida");
+        }
+        if (professor.getDscEndereco().isEmpty()) {
+            throw new Exception("Campo Endereço inválido");
+        }
+        if (professor.getNunNumero() == null) {
+            throw new Exception("Campo número inválido");
+        }
+        if (professor.getDscComplemento().isEmpty()) {
+            throw new Exception("Campo complemento inválido");
+        }
+        if (professor.getDscBairro().isEmpty()) {
+            throw new Exception("Campo Bairro inválido");
         }
         professor.setTelefone(professor.getTelefone().replace("(", "").replace(")", "").replace("-", "").replace("_", "").replace(" ", ""));
 
@@ -89,6 +113,7 @@ public class ProfessorController {
         }
 
     }
+
     public ArrayList<RelatorioProfAula> listarRelatorioAula(String profName) {
         return ProfessorDAO.obterInstancia().listarRelatorioAula(profName);
     }

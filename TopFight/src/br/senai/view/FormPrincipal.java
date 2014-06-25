@@ -44,7 +44,6 @@ public class FormPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuItem7 = new javax.swing.JMenuItem();
         jdpPainelPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuCadastro = new javax.swing.JMenu();
@@ -58,8 +57,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jMenuRelatorios = new javax.swing.JMenu();
         jGerarRelatorios = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-
-        jMenuItem7.setText("jMenuItem7");
+        jMenuSair = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Academia TopFight");
@@ -82,6 +80,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jMenuCadastro.setText("Cadastro");
 
         jMenuCadAluno.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.ALT_MASK));
+        jMenuCadAluno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boxing_Gloves.png"))); // NOI18N
         jMenuCadAluno.setText("Aluno");
         jMenuCadAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,6 +90,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jMenuCadastro.add(jMenuCadAluno);
 
         jMenuCadAula.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.ALT_MASK));
+        jMenuCadAula.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/WeightTraining_Bench.png"))); // NOI18N
         jMenuCadAula.setText("Aula");
         jMenuCadAula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -100,6 +100,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jMenuCadastro.add(jMenuCadAula);
 
         jMenuCadProfessor.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, java.awt.event.InputEvent.ALT_MASK));
+        jMenuCadProfessor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boss.png"))); // NOI18N
         jMenuCadProfessor.setText("Professor");
         jMenuCadProfessor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -114,6 +115,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jMenuPesquisa.setText("Pesquisa");
 
         jMenuPesAluno.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuPesAluno.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boxing_Gloves.png"))); // NOI18N
         jMenuPesAluno.setText("Aluno");
         jMenuPesAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,6 +125,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jMenuPesquisa.add(jMenuPesAluno);
 
         jMenuPesAula.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuPesAula.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/WeightTraining_Bench.png"))); // NOI18N
         jMenuPesAula.setText("Aula");
         jMenuPesAula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -132,6 +135,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jMenuPesquisa.add(jMenuPesAula);
 
         jMenuPesProfessor.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, java.awt.event.InputEvent.CTRL_MASK));
+        jMenuPesProfessor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Boss.png"))); // NOI18N
         jMenuPesProfessor.setText("Professor");
         jMenuPesProfessor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -146,6 +150,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         jMenuRelatorios.setText("Relatórios");
 
         jGerarRelatorios.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, java.awt.event.InputEvent.SHIFT_MASK));
+        jGerarRelatorios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Sync.png"))); // NOI18N
         jGerarRelatorios.setText("Relatórios");
         jGerarRelatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,6 +168,12 @@ public class FormPrincipal extends javax.swing.JFrame {
                 jMenu3ActionPerformed(evt);
             }
         });
+
+        jMenuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
+        jMenuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
+        jMenuSair.setText("Sair");
+        jMenu3.add(jMenuSair);
+
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -269,12 +280,12 @@ public class FormPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuCadAula;
     private javax.swing.JMenuItem jMenuCadProfessor;
     private javax.swing.JMenu jMenuCadastro;
-    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuPesAluno;
     private javax.swing.JMenuItem jMenuPesAula;
     private javax.swing.JMenuItem jMenuPesProfessor;
     private javax.swing.JMenu jMenuPesquisa;
     private javax.swing.JMenu jMenuRelatorios;
+    private javax.swing.JMenuItem jMenuSair;
     private javax.swing.JDesktopPane jdpPainelPrincipal;
     // End of variables declaration//GEN-END:variables
 }

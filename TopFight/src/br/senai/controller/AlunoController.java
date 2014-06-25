@@ -30,7 +30,18 @@ public class AlunoController {
         if (aluno.getDtDataNasc() == null) {
             throw new Exception("Data inválida");
         }
-
+        if (aluno.getDscEndereco().isEmpty()) {
+            throw new Exception("Campo Endereço inválido");
+        }
+        if (aluno.getNunNumero() == null) {
+            throw new Exception("Campo número inválido");
+        }
+        if (aluno.getDscComplemento().isEmpty()) {
+            throw new Exception("Campo complemento inválido");
+        }
+        if (aluno.getDscBairro().isEmpty()) {
+            throw new Exception("Campo Bairro inválido");
+        }
         try {
             aluno.setPeso(Double.parseDouble(aluno.getPeso().toString()));
         } catch (Exception e) {
@@ -47,9 +58,6 @@ public class AlunoController {
 
         if (aluno.getTelefone().isEmpty() || aluno.getTelefone().equals("")) {
             throw new Exception("Telefone inválido");
-        }
-        if (al.isEmpty()) {
-            throw new Exception("Aluno precisa de pelo menos uma aula");
         }
 
         AlunoDAO.obterInstancia().inserir(aluno);
@@ -73,7 +81,18 @@ public class AlunoController {
         if (aluno.getDtDataNasc() == null) {
             throw new Exception("Data inválida");
         }
-
+        if (aluno.getDscEndereco().isEmpty()) {
+            throw new Exception("Campo Endereço inválido");
+        }
+        if (aluno.getNunNumero() == null) {
+            throw new Exception("Campo número inválido");
+        }
+        if (aluno.getDscComplemento().isEmpty()) {
+            throw new Exception("Campo complemento inválido");
+        }
+        if (aluno.getDscBairro().isEmpty()) {
+            throw new Exception("Campo Bairro inválido");
+        }
         try {
             aluno.setPeso(Double.parseDouble(aluno.getPeso().toString()));
         } catch (Exception e) {
@@ -91,14 +110,10 @@ public class AlunoController {
             throw new Exception("Telefone inválido");
         }
 
-        if (al.isEmpty()) {
-            throw new Exception("Aluno precisa de pelo menos uma aula");
-        }
-
         AlunoDAO.obterInstancia().alterar(aluno);
         inserirAulas(al, aluno.getId(), true);
     }
-    
+
     public ArrayList<Aula> listarTodasAulasPorAluno(int idAluno) {
         return AlunoDAO.obterInstancia().listarTodasAulasPorAluno(idAluno);
     }
