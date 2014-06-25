@@ -163,15 +163,15 @@ public class FormPrincipal extends javax.swing.JFrame {
 
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
         jMenu3.setText("Sair");
-        jMenu3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu3ActionPerformed(evt);
-            }
-        });
 
         jMenuSair.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         jMenuSair.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
         jMenuSair.setText("Sair");
+        jMenuSair.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuSairActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuSair);
 
         jMenuBar1.add(jMenu3);
@@ -228,15 +228,15 @@ public class FormPrincipal extends javax.swing.JFrame {
         jdpPainelPrincipal.add(pesqProf);
     }//GEN-LAST:event_jMenuPesProfessorActionPerformed
 
-    private void jMenu3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu3ActionPerformed
-        
-    }//GEN-LAST:event_jMenu3ActionPerformed
-
     private void jGerarRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jGerarRelatoriosActionPerformed
         Relatorios rel = new Relatorios();
         rel.setVisible(true);
         jdpPainelPrincipal.add(rel);
     }//GEN-LAST:event_jGerarRelatoriosActionPerformed
+
+    private void jMenuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuSairActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jMenuSairActionPerformed
 
     /**
      * @param args the command line arguments
