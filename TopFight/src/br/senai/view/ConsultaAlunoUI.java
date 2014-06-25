@@ -69,6 +69,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
         btnLimparAlunos = new javax.swing.JButton();
 
         setClosable(true);
+        setIconifiable(true);
         setVisible(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -189,8 +190,8 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
                     .addComponent(btnBuscarAlunos)
                     .addComponent(btnLimparAlunos))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
