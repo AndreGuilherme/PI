@@ -7,6 +7,8 @@ package br.senai.view;
 import br.senai.controller.AulaController;
 import br.senai.model.Aula;
 import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -19,18 +21,22 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
     boolean controleAula;
     AulaController aulaController;
     private ArrayList<Aula> listaAula;
+    Icon i = null;
 
     /**
      * Creates new form PesquisarAula
      *
      * @param controle
      */
+
     public ConsultaAulaUI(boolean controle) {
         initComponents();
         checkAtivo.setSelected(true);
         this.controleAula = controle;
         if (this.controleAula) {
             btnAlterar.setText("Selecionar");
+            i = new ImageIcon("src/imagens/Check_16x16.png");
+            btnAlterar.setIcon(i);
             btnNovo.setVisible(false);
         }
         atualizarTabelaAula();
@@ -247,8 +253,8 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
 
             if (this.controleAula) {
                 //if (AulaController.obterInstancia().verificaDisponibilidade(aula)) {
-                    AulaController.obterInstancia().preencheFormAluno(aula);
-                    this.dispose();
+                AulaController.obterInstancia().preencheFormAluno(aula);
+                this.dispose();
                 //}
             } else {
                 CadastroAulaUI cadatroAula = new CadastroAulaUI(aula);
@@ -356,7 +362,7 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
 
     private void atualizarTabelaAula(ArrayList<Aula> aulaPesquisa) {
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.setColumnIdentifiers(new String[]{"Nome do Professor", "Dia da Semana", "Hora Inicial", "Hora Final", "Qnd. Alunos", "Status"});
+        modelo.setColumnIdentifiers(new String[]{"Nome do Professor", "Dia da Semana", "Hora Inicial", "Hora Final", "Máx. Alunos", "Qtd. Matricula", "Status"});
         for (int i = 0; i < aulaPesquisa.size(); i++) {
             String dia = "";
             String status = "";
@@ -386,6 +392,7 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
                 aulaPesquisa.get(i).gethInicio(),
                 aulaPesquisa.get(i).gethFim(),
                 aulaPesquisa.get(i).getNumeroAlunos(),
+                aulaPesquisa.get(i).getNumMatricula(),
                 status});
         }
         tableAulas.setModel(modelo);

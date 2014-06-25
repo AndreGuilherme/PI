@@ -69,11 +69,11 @@ public class FormPrincipal extends javax.swing.JFrame {
         jdpPainelPrincipal.setLayout(jdpPainelPrincipalLayout);
         jdpPainelPrincipalLayout.setHorizontalGroup(
             jdpPainelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 668, Short.MAX_VALUE)
+            .addGap(0, 958, Short.MAX_VALUE)
         );
         jdpPainelPrincipalLayout.setVerticalGroup(
             jdpPainelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGap(0, 551, Short.MAX_VALUE)
         );
 
         jMenuCadastro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/save.png"))); // NOI18N
@@ -186,7 +186,7 @@ public class FormPrincipal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jdpPainelPrincipal, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(jdpPainelPrincipal)
         );
 
         pack();

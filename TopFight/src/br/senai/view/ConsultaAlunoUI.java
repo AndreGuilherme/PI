@@ -9,6 +9,8 @@ import br.senai.model.Aluno;
 import br.senai.model.Aula;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,6 +26,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
     AlunoController contAluno;
     private ArrayList<Aluno> listaAluno;
     private boolean controleAluno;
+    Icon i = null;
 
     public ConsultaAlunoUI(boolean controle) {
         initComponents();
@@ -32,6 +35,8 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
         this.controleAluno = controle;
         if (this.controleAluno) {
             btnAlterarAluno.setText("Selecionar");
+            i = new ImageIcon("src/imagens/Check_16x16.png");
+            btnAlterarAluno.setIcon(i);
             btnNovoAluno.setVisible(false);
         }
         atualizarTabelaAluno();
@@ -64,6 +69,7 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
         btnLimparAlunos = new javax.swing.JButton();
 
         setClosable(true);
+        setVisible(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Pesquisa de Alunos");

@@ -4,12 +4,15 @@ import br.senai.controller.ProfessorController;
 import br.senai.model.Professor;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
 
     boolean controleProfessor;
+    Icon i = null;
 
     public ConsultaProfessorUI(boolean controle) {
         initComponents();
@@ -18,6 +21,8 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
         this.controleProfessor = controle;
         if (this.controleProfessor) {
             btnAlterar.setText("Selecionar");
+            i = new ImageIcon("src/imagens/Check_16x16.png");
+            btnAlterar.setIcon(i);
             btnNovo.setVisible(false);
         }
         atualizarTabelaProfessor();
