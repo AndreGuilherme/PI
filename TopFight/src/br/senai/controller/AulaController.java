@@ -44,6 +44,18 @@ public class AulaController {
         if (diferencaTempo < 30) {
             throw new Exception("Tempo minimo de aula é de 30 minutos. \n Favor ajustar.");
         }
+        for (Aula al : listarTodos()) {
+            if ((al.gethInicio().before(aula.gethInicio()) && al.gethFim().after(aula.gethInicio()))
+                    || (al.gethInicio().before(aula.gethFim()) && al.gethFim().after(aula.gethFim()))
+                    || (al.gethInicio().getTime() > aula.gethInicio().getTime())
+                    && (al.gethFim().getTime() < aula.gethFim().getTime())) {
+                if (aula.getDiaSemana() == al.getDiaSemana()) {
+                    if (aula.getProfessor().getNumIdProfessor() == al.getProfessor().getNumIdProfessor()) {
+                        throw new Exception("Professor " + aula.getProfessor().getDscNome() + ", já possiu uma aula cadastrada nesse dia e horário.");
+                    }
+                }
+            }
+        }
 
         if (!AulaDAO.obterInstancia().ValidaHorarioAulas(aula)) {
             throw new Exception("Professor " + aula.getProfessor().getDscNome() + ", já possiu uma aula cadastrada nesse dia e horário.");
@@ -78,8 +90,7 @@ public class AulaController {
         }
         aulaDAO = new AulaDAO();
         aulaDAO.alterar(aula);
-                
-        
+
     }
 
     public void buscaAulas(CadastroAlunoUI cadAluno) {
@@ -92,12 +103,10 @@ public class AulaController {
     public void preencheFormAluno(Aula aula) {
         alunoView.recebeAula(aula);
     }
-    
+
 //    public boolean verificaDisponibilidade(Aula aula) {
 //        return AulaDAO.obterInstancia().verificaDisponibilidade(aula);
 //    }
-    
-
     public ArrayList<Aula> listarTodos() {
         return AulaDAO.obterInstancia().listarTodos();
     }

@@ -670,8 +670,10 @@ public class CadastroAlunoUI extends javax.swing.JInternalFrame {
             }
             if ((al.gethInicio().before(aula.gethInicio()) && al.gethFim().after(aula.gethInicio()))
                     || (al.gethInicio().before(aula.gethFim()) && al.gethFim().after(aula.gethFim()))
-                    || (al.gethInicio().getTime() > aula.gethInicio().getTime())
-                    && (al.gethFim().getTime() < aula.gethFim().getTime())) {
+                    || ((al.gethInicio().getTime() > aula.gethInicio().getTime())
+                    && (al.gethFim().getTime() < aula.gethFim().getTime()))
+                    || (al.gethInicio().getTime() == aula.gethInicio().getTime() 
+                    && (al.gethFim().getTime() == aula.gethFim().getTime()))) {
                 if (aula.getDiaSemana() == al.getDiaSemana()) {
                     flag = 2;
                     break;
