@@ -327,25 +327,26 @@ public class ConsultaAlunoUI extends javax.swing.JInternalFrame {
     }
 
     private void atualizarTabelaAluno(ArrayList<Aluno> alunoPesquisa) {
+        this.listaAluno = alunoPesquisa;
         DefaultTableModel modelo = new DefaultTableModel();
         SimpleDateFormat formatador = new SimpleDateFormat("dd-MM-yyyy");
         modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
-        for (int i = 0; i < alunoPesquisa.size(); i++) {
+        for (int i = 0; i < this.listaAluno.size(); i++) {
             String sexo = "";
             String status = "";
-            if (alunoPesquisa.get(i).getSexo() == 0) {
+            if (this.listaAluno.get(i).getSexo() == 0) {
                 sexo = "Masculino";
             } else {
                 sexo = "Feminino";
             }
-            if (alunoPesquisa.get(i).getStatus() == 1) {
+            if (this.listaAluno.get(i).getStatus() == 1) {
                 status = "Ativo";
             } else {
                 status = "Inativo";
             }
-            modelo.addRow(new Object[]{alunoPesquisa.get(i).getDscNome(),
-                alunoPesquisa.get(i).getDscCPF(),
-                formatador.format(alunoPesquisa.get(i).getDtDataNasc()),
+            modelo.addRow(new Object[]{this.listaAluno.get(i).getDscNome(),
+                this.listaAluno.get(i).getDscCPF(),
+                formatador.format(this.listaAluno.get(i).getDtDataNasc()),
                 sexo,
                 status});
         }

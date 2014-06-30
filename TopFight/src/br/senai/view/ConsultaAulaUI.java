@@ -361,38 +361,39 @@ public class ConsultaAulaUI extends javax.swing.JInternalFrame {
     }
 
     private void atualizarTabelaAula(ArrayList<Aula> aulaPesquisa) {
+        this.listaAula = aulaPesquisa;
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"Nome do Professor", "Dia da Semana", "Hora Inicial", "Hora Final", "Máx. Alunos", "Qtd. Matricula", "Status"});
-        for (int i = 0; i < aulaPesquisa.size(); i++) {
+        for (int i = 0; i < this.listaAula.size(); i++) {
             String dia = "";
             String status = "";
-            if (aulaPesquisa.get(i).getDiaSemana() == 1) {
+            if (this.listaAula.get(i).getDiaSemana() == 1) {
                 dia = "Seg.";
-            } else if (aulaPesquisa.get(i).getDiaSemana() == 2) {
+            } else if (this.listaAula.get(i).getDiaSemana() == 2) {
                 dia = "Ter.";
-            } else if (aulaPesquisa.get(i).getDiaSemana() == 3) {
+            } else if (this.listaAula.get(i).getDiaSemana() == 3) {
                 dia = "Qua.";
-            } else if (aulaPesquisa.get(i).getDiaSemana() == 4) {
+            } else if (this.listaAula.get(i).getDiaSemana() == 4) {
                 dia = "Qui.";
-            } else if (aulaPesquisa.get(i).getDiaSemana() == 5) {
+            } else if (this.listaAula.get(i).getDiaSemana() == 5) {
                 dia = "Sex";
-            } else if (aulaPesquisa.get(i).getDiaSemana() == 6) {
+            } else if (this.listaAula.get(i).getDiaSemana() == 6) {
                 dia = "Sáb.";
-            } else if (aulaPesquisa.get(i).getDiaSemana() == 7) {
+            } else if (this.listaAula.get(i).getDiaSemana() == 7) {
                 dia = "Dom.";
             }
-            if (aulaPesquisa.get(i).getStatus() == 0) {
+            if (this.listaAula.get(i).getStatus() == 0) {
                 status = "Inativo";
             } else {
                 status = "Ativo";
             }
-
-            modelo.addRow(new Object[]{aulaPesquisa.get(i).getProfessor().getDscNome(),
+            
+            modelo.addRow(new Object[]{this.listaAula.get(i).getProfessor().getDscNome(),
                 dia,
-                aulaPesquisa.get(i).gethInicio(),
-                aulaPesquisa.get(i).gethFim(),
-                aulaPesquisa.get(i).getNumeroAlunos(),
-                aulaPesquisa.get(i).getNumMatricula(),
+                this.listaAula.get(i).gethInicio(),
+                this.listaAula.get(i).gethFim(),
+                this.listaAula.get(i).getNumeroAlunos(),
+                this.listaAula.get(i).getNumMatricula(),
                 status});
         }
         tableAulas.setModel(modelo);

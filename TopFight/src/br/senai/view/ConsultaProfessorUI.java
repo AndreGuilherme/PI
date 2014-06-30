@@ -286,26 +286,27 @@ public class ConsultaProfessorUI extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnLimparActionPerformed
 
     private void atualizarTabelaProfessor(ArrayList<Professor> profPesquisa) {
+        this.listaProf = profPesquisa;
         DefaultTableModel modelo = new DefaultTableModel();
         SimpleDateFormat formatador = new SimpleDateFormat("dd-MM-yyyy");
         modelo.setColumnIdentifiers(new String[]{"Nome", "CPF", "Data Nasc.", "Sexo", "Status"});
-        for (int i = 0; i < profPesquisa.size(); i++) {
+        for (int i = 0; i < this.listaProf.size(); i++) {
             String sexo = "";
             String status = "";
-            if (profPesquisa.get(i).getSexo() == 0) {
+            if (this.listaProf.get(i).getSexo() == 0) {
                 sexo = "Masculino";
             } else {
                 sexo = "Feminino";
             }
-            if (profPesquisa.get(i).getStatus() == 0) {
+            if (this.listaProf.get(i).getStatus() == 0) {
                 status = "Inativo";
             } else {
                 status = "Ativo";
             }
 
-            modelo.addRow(new Object[]{profPesquisa.get(i).getDscNome(),
-                profPesquisa.get(i).getDscCPF(),
-                formatador.format(profPesquisa.get(i).getDtDataNasc()),
+            modelo.addRow(new Object[]{this.listaProf.get(i).getDscNome(),
+                this.listaProf.get(i).getDscCPF(),
+                formatador.format(this.listaProf.get(i).getDtDataNasc()),
                 sexo,
                 status});
         }

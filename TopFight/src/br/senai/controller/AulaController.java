@@ -49,6 +49,7 @@ public class AulaController {
                     || (al.gethInicio().before(aula.gethFim()) && al.gethFim().after(aula.gethFim()))
                     || (al.gethInicio().getTime() > aula.gethInicio().getTime())
                     && (al.gethFim().getTime() < aula.gethFim().getTime())) {
+
                 if (aula.getDiaSemana() == al.getDiaSemana()) {
                     if (aula.getProfessor().getNumIdProfessor() == al.getProfessor().getNumIdProfessor()) {
                         throw new Exception("Professor " + aula.getProfessor().getDscNome() + ", já possiu uma aula cadastrada nesse dia e horário.");
@@ -85,9 +86,22 @@ public class AulaController {
             throw new Exception("Tempo minimo de aula é de 30 minutos. \n Favor ajustar.");
         }
 
-        if (!AulaDAO.obterInstancia().ValidaHorarioAulas(aula)) {
-            throw new Exception("Professor " + aula.getProfessor().getDscNome() + ", já possiu uma aula cadastrada nesse dia e horário.");
+        for (Aula al : listarTodos()) {
+
+            if ((al.gethInicio().before(aula.gethInicio()) && al.gethFim().after(aula.gethInicio()))
+                    || (al.gethInicio().before(aula.gethFim()) && al.gethFim().after(aula.gethFim()))
+                    || (al.gethInicio().getTime() > aula.gethInicio().getTime())
+                    && (al.gethFim().getTime() < aula.gethFim().getTime())) {
+                if (aula.getDiaSemana() == al.getDiaSemana()) {
+                    if (aula.getIdAula() != al.getIdAula()) {
+                        if (aula.getProfessor().getNumIdProfessor() == al.getProfessor().getNumIdProfessor()) {
+                            throw new Exception("Professor " + aula.getProfessor().getDscNome() + ", já possiu uma aula cadastrada nesse dia e horário.");
+                        }
+                    }
+                }
+            }
         }
+
         aulaDAO = new AulaDAO();
         aulaDAO.alterar(aula);
 
