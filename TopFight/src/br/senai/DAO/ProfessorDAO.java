@@ -8,8 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.zip.DataFormatException;
 
 public class ProfessorDAO {
 
@@ -273,7 +276,7 @@ public class ProfessorDAO {
                     + "	JOIN Aluno as al\n"
                     + "		ON al.id_Aluno = aa.id_Aluno\n"
                     + "	JOIN Pessoa as ps \n"
-                    + "		ON ps.id_Pessoa = al.id_Pessoa\n"
+                    + "		ON ps.id_Pessoa = al.id_Pessoa\n" 
                     + "Where ps.Status = 1\n"
                     + "Group by pp.dsc_Nome,a.inicio,a.fim,a.DiaSemana,a.numAlunos";
             ResultSet rs = st.executeQuery(query);
@@ -297,33 +300,41 @@ public class ProfessorDAO {
         return this.listaRel;
     }
 
-    public ArrayList<RelatorioProfAula> listarRelatorioAula(String profName) {
+    public ArrayList<RelatorioProfAula> listarRelatorioAula(String profName , String horaInicio , String horaFinal) throws ParseException {
         this.listaRel = new ArrayList<>();
         try {
-            Statement st = con.getConnection().createStatement();
-            String query = "select \n"
-                    + "pp.dsc_Nome AS 'NomeProf',\n"
-                    + "a.inicio AS 'HrInicio',\n"
-                    + "a.fim AS 'HrFinal',\n"
-                    + "a.DiaSemana AS 'DiaSemana',\n"
-                    + "a.numAlunos AS 'QntNumAluno',\n"
-                    + "Count(al.id_Aluno) AS 'NumAlunoAula',\n"
-                    + "a.status AS 'Status'\n"
-                    + " from professor as p\n"
-                    + "	LEFT JOIN Pessoa as pp\n"
-                    + "		ON p.id_Pessoa = pp.id_Pessoa\n"
-                    + "	LEFT JOIN Aula AS a\n"
-                    + "		ON a.id_Professor = p.id_Professor\n"
-                    + "	LEFT JOIN aulaaluno as aa\n"
-                    + "		ON aa.id_Aula = a.id_Aula\n"
-                    + "	LEFT JOIN Aluno as al\n"
-                    + "		ON al.id_Aluno = aa.id_Aluno\n"
-                    + "	LEFT JOIN Pessoa as ps \n"
-                    + "		ON ps.id_Pessoa = al.id_Pessoa\n"
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            String query = "select "
+                    + "pp.dsc_Nome AS NomeProf,"
+                    + "a.inicio AS HrInicio,"
+                    + "a.fim AS HrFinal,"
+                    + "a.DiaSemana AS DiaSemana,"
+                    + "a.numAlunos AS QntNumAluno,"
+                    + "Count(al.id_Aluno) AS NumAlunoAula,"
+                    + "a.status AS Status"
+                    + " from professor as p"
+                    + "	LEFT JOIN Pessoa as pp"
+                    + "		ON p.id_Pessoa = pp.id_Pessoa"
+                    + "	LEFT JOIN Aula AS a"
+                    + "		ON a.id_Professor = p.id_Professor"
+                    + "	LEFT JOIN aulaaluno as aa"
+                    + "		ON aa.id_Aula = a.id_Aula"
+                    + "	LEFT JOIN Aluno as al"
+                    + "		ON al.id_Aluno = aa.id_Aluno"
+                    + "	LEFT JOIN Pessoa as ps "
+                    + "		ON ps.id_Pessoa = al.id_Pessoa"
                     //+ "Where ps.Status = 1\n"
-                    + "Where pp.dsc_Nome = '" + profName + "'\n"
-                    + "Group by pp.dsc_Nome,a.inicio,a.fim,a.DiaSemana,a.numAlunos";
-            ResultSet rs = st.executeQuery(query);
+                    + " Where pp.dsc_Nome = ?  "
+                    + " and a.inicio >= ?"
+                    + " and a.fim <= ?"
+                    + " Group by pp.dsc_Nome,a.inicio,a.fim,a.DiaSemana,a.numAlunos";
+            PreparedStatement st = con.getConnection().prepareStatement(query);
+            Date dataIn =  sdf.parse(horaInicio);
+            Date dataFi =  sdf.parse(horaFinal);
+            st.setString(1, profName );
+            st.setTime(2, new java.sql.Time( dataIn.getTime() ));
+            st.setTime(3, new java.sql.Time( dataFi.getTime() ));
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 RelatorioProfAula profAula = new RelatorioProfAula();
                 profAula.setNomeProf(rs.getString("NomeProf"));

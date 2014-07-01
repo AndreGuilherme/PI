@@ -225,6 +225,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtHrInicioAula">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtHrInicioAulaActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(maskHrInicio);"/>
             <AuxValue name="JavaCodeGenerator_CreateCodePre" type="java.lang.String" value="javax.swing.text.MaskFormatter maskHrInicio = null;&#xd;&#xa;try{&#xd;&#xa;maskHrInicio= new javax.swing.text.MaskFormatter(&quot;##:##&quot;);&#xd;&#xa;maskHrInicio.setPlaceholderCharacter(&apos;_&apos;);&#xd;&#xa;&#xd;&#xa;}&#xd;&#xa;catch (java.text.ParseException exc) {}"/>

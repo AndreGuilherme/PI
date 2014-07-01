@@ -6,6 +6,7 @@ import br.senai.view.CadastroAlunoUI;
 import br.senai.view.ConsultaAulaUI;
 import br.senai.view.FormPrincipal;
 import java.util.ArrayList;
+import javax.swing.JTextField;
 
 public class AulaController {
 
@@ -153,7 +154,6 @@ public class AulaController {
         HOUR_IN_MILLIS(3600000),
         DAY_IN_MILLIS(86400000),
         WEEK_IN_MILLIS(604800000);
-
         private int unit;
 
         Tempo(int unit) {
@@ -164,5 +164,4 @@ public class AulaController {
             return unit;
         }
     }
-
 }

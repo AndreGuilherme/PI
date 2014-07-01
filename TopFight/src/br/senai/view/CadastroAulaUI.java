@@ -126,6 +126,12 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Hora Término:");
 
+        txtHrInicioAula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHrInicioAulaActionPerformed(evt);
+            }
+        });
+
         jLabel6.setText("Ativo: ");
 
         jLabel7.setText("Max. Alunos: ");
@@ -170,7 +176,7 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
                                 .addComponent(txtHrInicioAula, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,6 +315,10 @@ public class CadastroAulaUI extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void txtHrInicioAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHrInicioAulaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHrInicioAulaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscarProfessor;

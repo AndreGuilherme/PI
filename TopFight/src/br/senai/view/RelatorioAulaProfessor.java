@@ -5,6 +5,7 @@
  */
 package br.senai.view;
 
+import br.senai.controller.AulaController;
 import br.senai.controller.ProfessorController;
 import br.senai.model.Professor;
 import br.senai.model.RelatorioProfAula;
@@ -20,6 +21,7 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
 
     ArrayList<Professor> listaProf = ProfessorController.obterInstancia().listarTodos();
     private ArrayList<RelatorioProfAula> listaProfAula;
+    AulaController aulaController;
 
     /**
      * Creates new form RelatorioAulaProfessor
@@ -54,6 +56,25 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableProfAula = new javax.swing.JTable();
         btnLimpar = new javax.swing.JButton();
+        javax.swing.text.MaskFormatter maskHrInicio = null;
+        try{
+            maskHrInicio= new javax.swing.text.MaskFormatter("##:##");
+            maskHrInicio.setPlaceholderCharacter('_');
+
+        }
+        catch (java.text.ParseException exc) {}
+        txtHrInicioAula = new javax.swing.JFormattedTextField(maskHrInicio);
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        javax.swing.text.MaskFormatter maskHrFinal = null;
+        try{
+            maskHrFinal= new javax.swing.text.MaskFormatter("##:##");
+            maskHrFinal.setPlaceholderCharacter('_');
+
+        }
+        catch (java.text.ParseException exc) {}
+        txtHrFinalAula = new javax.swing.JFormattedTextField(maskHrFinal);
+        jButton1Buscar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
 
         setClosable(true);
@@ -70,6 +91,11 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
         cbxProfessor.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbxProfessorItemStateChanged(evt);
+            }
+        });
+        cbxProfessor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxProfessorActionPerformed(evt);
             }
         });
 
@@ -94,6 +120,24 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
             }
         });
 
+        txtHrInicioAula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHrInicioAulaActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Hora inicial:");
+
+        jLabel5.setText("Hora Término:");
+
+        jButton1Buscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Find.png"))); // NOI18N
+        jButton1Buscar.setText("Buscar");
+        jButton1Buscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1BuscarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -101,13 +145,25 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 698, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(97, 97, 97)
-                        .addComponent(btnLimpar)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbxProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtHrInicioAula, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtHrFinalAula, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(32, 32, 32)
+                                .addComponent(jButton1Buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLimpar)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -117,11 +173,18 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(cbxProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbxProfessor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtHrInicioAula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5)
+                    .addComponent(txtHrFinalAula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1Buscar)
                     .addComponent(btnLimpar))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(11, 11, 11)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         btnFechar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/cancel.png"))); // NOI18N
@@ -155,19 +218,16 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFechar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbxProfessorItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxProfessorItemStateChanged
-
-        if (cbxProfessor.getSelectedIndex() > -1) {
-            atualizarTabela(cbxProfessor.getSelectedItem().toString());
-        }
+      
     }//GEN-LAST:event_cbxProfessorItemStateChanged
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
@@ -182,22 +242,50 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
         cbxProfessor.setSelectedIndex(-1);
     }//GEN-LAST:event_btnLimparActionPerformed
 
+    private void cbxProfessorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxProfessorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxProfessorActionPerformed
+
+    private void txtHrInicioAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHrInicioAulaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHrInicioAulaActionPerformed
+
+    private void jButton1BuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1BuscarActionPerformed
+           String horaInicial = txtHrInicioAula.getText();
+           String horaFinal = txtHrFinalAula.getText();
+           if (cbxProfessor.getSelectedIndex() > -1) {
+            atualizarTabela(cbxProfessor.getSelectedItem().toString(),horaInicial , horaFinal);
+        }
+           
+    }//GEN-LAST:event_jButton1BuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnBuscar1;
+    private javax.swing.JButton btnBuscar2;
+    private javax.swing.JButton btnBuscar3;
+    private javax.swing.JButton btnBuscar4;
+    private javax.swing.JButton btnBuscar5;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JComboBox cbxProfessor;
+    private javax.swing.JButton jButton1Buscar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tableProfAula;
+    private javax.swing.JTextField txtHrFinalAula;
+    private javax.swing.JTextField txtHrInicioAula;
     // End of variables declaration//GEN-END:variables
 
-    private void atualizarTabela(String profName) {
+    private void atualizarTabela(String profName , String horaInicial,String horaFinal ) {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"Professor", "Hora Inicio", "Hora Final", "Dia da Semana", "Qnt. Alunos/Aula", "Qnt. Alunos Matr.", "Status Aula"});
-        this.listaProfAula = ProfessorController.obterInstancia().listarRelatorioAula(profName);
+        this.listaProfAula = ProfessorController.obterInstancia().listarRelatorioAula(profName,horaInicial,horaFinal);
         for (int i = 0; i < this.listaProfAula.size(); i++) {
             String status = "";
             String dia = "";
@@ -232,4 +320,6 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
         }
         tableProfAula.setModel(modelo);
     }
+    
+    
 }

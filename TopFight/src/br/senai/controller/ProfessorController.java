@@ -114,7 +114,11 @@ public class ProfessorController {
 
     }
 
-    public ArrayList<RelatorioProfAula> listarRelatorioAula(String profName) {
-        return ProfessorDAO.obterInstancia().listarRelatorioAula(profName);
+    public ArrayList<RelatorioProfAula> listarRelatorioAula(String profName, String horaInicial, String horaFinal) {
+        System.out.println("Nome do Professor: " + profName);
+        System.out.println("hora Inicial: " + horaInicial);
+        System.out.println("hora Final: " + horaFinal);
+        return ProfessorDAO.obterInstancia().listarRelatorioAula(profName, horaInicial , horaFinal);
+        
     }
 }
