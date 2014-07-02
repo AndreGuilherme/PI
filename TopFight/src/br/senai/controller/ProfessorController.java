@@ -7,6 +7,7 @@ import br.senai.util.Utils;
 import br.senai.view.CadastroAulaUI;
 import br.senai.view.ConsultaProfessorUI;
 import br.senai.view.FormPrincipal;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class ProfessorController {
@@ -114,10 +115,7 @@ public class ProfessorController {
 
     }
 
-    public ArrayList<RelatorioProfAula> listarRelatorioAula(String profName, String horaInicial, String horaFinal) {
-        System.out.println("Nome do Professor: " + profName);
-        System.out.println("hora Inicial: " + horaInicial);
-        System.out.println("hora Final: " + horaFinal);
+    public ArrayList<RelatorioProfAula> listarRelatorioAula(String profName, String horaInicial, String horaFinal) throws ParseException {
         return ProfessorDAO.obterInstancia().listarRelatorioAula(profName, horaInicial , horaFinal);
         
     }

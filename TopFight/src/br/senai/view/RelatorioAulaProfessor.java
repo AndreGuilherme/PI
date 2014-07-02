@@ -9,7 +9,10 @@ import br.senai.controller.AulaController;
 import br.senai.controller.ProfessorController;
 import br.senai.model.Professor;
 import br.senai.model.RelatorioProfAula;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
@@ -254,7 +257,11 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
            String horaInicial = txtHrInicioAula.getText();
            String horaFinal = txtHrFinalAula.getText();
            if (cbxProfessor.getSelectedIndex() > -1) {
-            atualizarTabela(cbxProfessor.getSelectedItem().toString(),horaInicial , horaFinal);
+               try {
+                   atualizarTabela(cbxProfessor.getSelectedItem().toString(),horaInicial , horaFinal);
+               } catch (ParseException ex) {
+                   Logger.getLogger(RelatorioAulaProfessor.class.getName()).log(Level.SEVERE, null, ex);
+               }
         }
            
     }//GEN-LAST:event_jButton1BuscarActionPerformed
@@ -282,7 +289,7 @@ public class RelatorioAulaProfessor extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtHrInicioAula;
     // End of variables declaration//GEN-END:variables
 
-    private void atualizarTabela(String profName , String horaInicial,String horaFinal ) {
+    private void atualizarTabela(String profName , String horaInicial,String horaFinal ) throws ParseException {
         DefaultTableModel modelo = new DefaultTableModel();
         modelo.setColumnIdentifiers(new String[]{"Professor", "Hora Inicio", "Hora Final", "Dia da Semana", "Qnt. Alunos/Aula", "Qnt. Alunos Matr.", "Status Aula"});
         this.listaProfAula = ProfessorController.obterInstancia().listarRelatorioAula(profName,horaInicial,horaFinal);

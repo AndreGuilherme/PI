@@ -22,7 +22,7 @@ public class Relatorios extends javax.swing.JInternalFrame {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jBtnRelX = new javax.swing.JToggleButton();
+        jBtnRelAlunoAula = new javax.swing.JToggleButton();
         jBtnRelAulProf = new javax.swing.JToggleButton();
         btnGerarRels = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -34,11 +34,21 @@ public class Relatorios extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        buttonGroup1.add(jBtnRelX);
-        jBtnRelX.setText("Relatório X");
+        buttonGroup1.add(jBtnRelAlunoAula);
+        jBtnRelAlunoAula.setText("Relatório Aluno (Aulas/ Semana)");
+        jBtnRelAlunoAula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnRelAlunoAulaActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(jBtnRelAulProf);
         jBtnRelAulProf.setText("Relatório Aula por Professor");
+        jBtnRelAulProf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnRelAulProfActionPerformed(evt);
+            }
+        });
 
         btnGerarRels.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/Sync.png"))); // NOI18N
         btnGerarRels.setText("Gerar Relatório");
@@ -54,15 +64,15 @@ public class Relatorios extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addComponent(jBtnRelX, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                .addComponent(jBtnRelAlunoAula, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
                 .addComponent(btnGerarRels, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(20, 20, 20)
-                    .addComponent(jBtnRelAulProf, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(357, Short.MAX_VALUE)))
+                    .addComponent(jBtnRelAulProf, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(323, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -72,7 +82,7 @@ public class Relatorios extends javax.swing.JInternalFrame {
                 .addContainerGap(94, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jBtnRelX, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jBtnRelAlunoAula, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
@@ -130,8 +140,11 @@ public class Relatorios extends javax.swing.JInternalFrame {
             rel.setVisible(true);
             this.hide();
             FormPrincipal.getPainelPrincipal().add(rel);
-        } else if (jBtnRelX.isSelected()) {
-            JOptionPane.showMessageDialog(null, "Relatório em manutenção.", "ERRO", JOptionPane.ERROR_MESSAGE);
+        } else if (jBtnRelAlunoAula.isSelected()) {
+            RelatorioAulaAlunoSemana rel = new RelatorioAulaAlunoSemana();
+            rel.setVisible(true);
+            this.hide();
+            FormPrincipal.getPainelPrincipal().add(rel);
         } else {
             JOptionPane.showMessageDialog(null, "Favor escolher um modelo de relatório.", "Informação", JOptionPane.WARNING_MESSAGE);
         }
@@ -141,12 +154,20 @@ public class Relatorios extends javax.swing.JInternalFrame {
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jBtnRelAlunoAulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnRelAlunoAulaActionPerformed
+        
+    }//GEN-LAST:event_jBtnRelAlunoAulaActionPerformed
+
+    private void jBtnRelAulProfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnRelAulProfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jBtnRelAulProfActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGerarRels;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JToggleButton jBtnRelAlunoAula;
     private javax.swing.JToggleButton jBtnRelAulProf;
-    private javax.swing.JToggleButton jBtnRelX;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

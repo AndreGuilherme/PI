@@ -11,7 +11,7 @@ public class ConexaoSingleton {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost:3306/topfight";
-            con = DriverManager.getConnection(url, "root", "");
+            con = DriverManager.getConnection(url, "root", "12345");
             con.setAutoCommit(true);
             return con;
         } catch (ClassNotFoundException e) {
